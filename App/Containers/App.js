@@ -1,4 +1,4 @@
-import store from '../Redux/store';
+import store from '../Redux/CreateStore';
 
 import React from 'react';
 
