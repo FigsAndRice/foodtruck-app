@@ -9,29 +9,32 @@ class UserMenu extends Component {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows([
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin',
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin',
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin',
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin',
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin',
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin',
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin',
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin'
+        {imgurl: '',food : 'Chicken Rice',price: '20.99' },
+        {imgurl: '',food : 'Chicken Tikka',price: '10.99' },
+        {imgurl: '',food : 'Chicken Masala',price: '9.99' },
+        {imgurl: '',food : 'Pepper Chicken',price: '11.50' },
+        {imgurl: '',food : 'Chicken 65',price: '15.99' },
+        {imgurl: '',food : 'Tandoori Chicken',price: '7.89' },
+        {imgurl: '',food : 'Chicken Lolipop',price: '6.99' },
+        {imgurl: '',food : 'Chicken Curry',price: '8.99' },
+        {imgurl: '',food : 'Chicken Biriyani',price: '25.99' },
+        {imgurl: '',food : 'Chicken Gravy',price: '20.99' }
       ])
     };
   }
   render() {
     return (
       <View style = {styles.container}>
-       {/* <View style={{paddingTop: 22}}> */}
-       {/* <ScrollView style={{paddingTop: 70}}> */}
           <ListView
             style = {listStyle}
             dataSource = {this.state.dataSource}
-            renderRow = {(rowData) => <Text>{rowData}</Text>}
+            renderRow = {(rowData) => { return (
+                <View>
+                  <Text>{rowData.food} : ${rowData.price}</Text>
+                </View>
+              )}
+            }
           />
-      {/* </ScrollView> */}
-     {/* </View> */}
     </View>
     );
   }
