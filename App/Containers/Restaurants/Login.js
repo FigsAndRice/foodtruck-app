@@ -14,11 +14,17 @@ class Login extends Component {
     }
 
     this.login = this.login.bind(this);
+    this.cancel = this.cancel.bind(this);
   }
 
-  login(e) {
-    e.preventDefault();
-    window.alert('Rounded button pressed!');
+  login() {
+    // SEND USERNAME AND PW TO BACKEND
+    window.alert(this.state.username, this.state.password);
+  }
+
+  cancel() {
+    // SEND BACK TO SPLASH SCREEN
+
   }
 
   render() {
@@ -36,6 +42,7 @@ class Login extends Component {
           onChangeText={(text) => this.setState({password: text})}
           value={this.state.password}
         />
+        <RoundedButton onPress={this.cancel} text="Cancel" />
         <RoundedButton onPress={this.login} text="Login" />
       </View>
     )

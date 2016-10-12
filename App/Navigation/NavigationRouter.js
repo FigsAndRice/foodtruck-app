@@ -17,13 +17,13 @@ class NavigationRouter extends Component {
     return (
       <Router>
         <Scene initial key='presentationScreen' component={PresentationScreen} />
-        <Scene key='results' component={Results} title='Components' />
-        <Scene key='register' component={Register} title='Components' />
-        <Scene key='login' component={Login} title='Components' />
-        <Scene key='profile' component={Profile} title='Components' />
-        <Scene key='editProfile' component={EditProfile} title='Components' />
-        <Scene key='userMenu' component={UserMenu} title='Components' />
-        <Scene key='menuEdit' component={MenuEdit} title='Components' />
+        <Scene key='results' component={Results} title="Results"/>
+        <Scene key='register' component={Register} title="Register"/>
+        <Scene key='login' component={Login} title="Login"/>
+        <Scene key='profile' component={Profile} title="Profile"/>
+        <Scene key='editProfile' component={EditProfile} title="Edit Profile"/>
+        <Scene key='userMenu' component={UserMenu} title='Menu' />
+        <Scene key='menuEdit' component={MenuEdit} title='Edit Menu' />
         {/* <Scene key='componentExamples' component={AllComponentsScreen} title='Components' /> */}
       </Router>
     )
