@@ -9,33 +9,31 @@ import styles from '../Styles/RootContainerStyle';
 class Results extends Component {
     constructor(props) {
         super(props);
-        this.displayName = 'RootContainer';
+        this.displayName = 'Results';
 
         this.state = {
           region: {
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitude: 39.299236,
+            longitude: -76.609383
           }
         }
       this.onRegionChange = this.onRegionChange.bind(this);
     }
-
-
     onRegionChange(region) {
       this.setState({ region });
     }
-
     render() {
       return (
       	<View>
         <MapView
-            style={{height: 250, marginTop: 80, margin: 20}}
+            style={{ height: 250, marginTop: 80, margin: 20 }}
             showsUserLocation={true}
-            followUserLocation={true}
+            // followUserLocation={true}
+            region={this.state.region}
+            maxDelta={1}
+            minDelta={0.1}
             // initialRegion={this.state.region}
-            // onRegionChane={this.onRegionChange}
+            // onRegionChange={this.onRegionChange}
           />
           <RoundedButton onPress={NavigationActions.results}>Search</RoundedButton>
     		</View>
