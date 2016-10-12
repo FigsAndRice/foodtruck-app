@@ -4,6 +4,24 @@ import { StyleSheet } from 'react-native'
 import { Fonts, Colors, Metrics } from '../Themes/'
 
 export default StyleSheet.create({
+  redButton: {
+    height: 45,
+    borderRadius: 20,
+    marginHorizontal: Metrics.section,
+    marginVertical: Metrics.baseMargin,
+    padding: 10,
+    backgroundColor: '#ff5722',
+    justifyContent: 'center'
+  },
+  yellowButton: {
+    height: 45,
+    borderRadius: 20,
+    marginHorizontal: Metrics.section,
+    marginVertical: Metrics.baseMargin,
+    padding: 10,
+    backgroundColor: '#ffeb3b',
+    justifyContent: 'center'
+  },
   button: {
     height: 45,
     borderRadius: 20,

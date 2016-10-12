@@ -10,6 +10,10 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor:'#009688'
   },
+  inline: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
