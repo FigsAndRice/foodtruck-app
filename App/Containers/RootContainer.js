@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StatusBar } from 'react-native';
+import { View, StatusBar, Text } from 'react-native';
+
 import styles from './Styles/RootContainerStyle';
 class RootContainer extends React.Component {
     constructor(props) {
@@ -7,10 +8,12 @@ class RootContainer extends React.Component {
         this.displayName = 'RootContainer';
     }
     render() {
-        return 
-        	<View style={styles.applicationView}>
-		        <StatusBar barStyle='light-content' /> 
-      		</View>
+      return (
+      	<View style={styles.applicationView}>
+	        <StatusBar barStyle='light-content' />
+          <Text>Test</Text>
+    		</View>
+      )
     }
 }
 
