@@ -12,9 +12,11 @@ class App extends React.Component {
         this.displayName = 'App';
     }
     render() {
-        return <Provider store={store}>
-        				<RootContainer />
-      				</Provider>
+      return (
+        <Provider store={store}>
+          <RootContainer />
+        </Provider>
+      )
     }
 }
 
