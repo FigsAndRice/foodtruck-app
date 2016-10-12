@@ -6,8 +6,8 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor:'#009688'
   },
   welcome: {
@@ -22,10 +22,13 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   text: {
-    color: 'white'
+    color: 'white',
+    fontSize: 100,
   },
   textBox: {
     height: 40,
+    width: 250,
+    alignSelf: 'center',
     borderColor: 'gray',
     backgroundColor: '#d4f8f5',
     borderWidth: 1,
