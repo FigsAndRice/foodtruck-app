@@ -22,6 +22,15 @@ export default StyleSheet.create({
     backgroundColor: '#ffeb3b',
     justifyContent: 'center'
   },
+  greenButton: {
+    height: 45,
+    borderRadius: 20,
+    marginHorizontal: Metrics.section,
+    marginVertical: Metrics.baseMargin,
+    padding: 10,
+    backgroundColor: '#13ce66',
+    justifyContent: 'center'
+  },
   button: {
     height: 45,
     borderRadius: 20,
