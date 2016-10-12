@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StatusBar } from 'react-native';
-import styles from './Styles/RootContainerStyle'c
+import styles from './Styles/RootContainerStyle';
 class RootContainer extends React.Component {
     constructor(props) {
         super(props);
