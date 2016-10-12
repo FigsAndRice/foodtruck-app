@@ -9,6 +9,7 @@ export default StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: Metrics.section,
     marginVertical: Metrics.baseMargin,
+    padding: 10,
     backgroundColor: Colors.frost,
     justifyContent: 'center'
   },

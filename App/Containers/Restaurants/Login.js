@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, TextInput, StatusBar, View } from 'react-native';
 import RoundedButton from '../Components/RoundedButton';
+import { Actions as NavigationActions } from 'react-native-router-flux';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -24,7 +25,8 @@ class Login extends Component {
 
   cancel() {
     // SEND BACK TO SPLASH SCREEN
-
+    window.alert('CANCELED');
+    NavigationActions.register;
   }
 
   render() {
