@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
-import { Scene, Router } from 'react-native-router-flux'
+import React, { Component } from 'react';
+import { Scene, Router } from 'react-native-router-flux';
 
 // screens identified by the router
-import PresentationScreen from '../Containers/PresentationScreen'
-import Results from '../Containers/Consumer/Results'
-import UserMenu from '../Containers/Consumer/UserMenu'
-import Register from '../Containers/Restaurants/Register'
-import Login from '../Containers/Restaurants/Login'
-import Profile from '../Containers/Restaurants/Profile'
-import EditProfile from '../Containers/Restaurants/EditProfile'
-import MenuEdit from '../Containers/Restaurants/MenuEdit'
+import PresentationScreen from '../Containers/PresentationScreen';
+import Results from '../Containers/Consumer/Results';
+import UserMenu from '../Containers/Consumer/UserMenu';
+import Register from '../Containers/Restaurants/Register';
+import Login from '../Containers/Restaurants/Login';
+import Profile from '../Containers/Restaurants/Profile';
+import EditProfile from '../Containers/Restaurants/EditProfile';
+import MenuEdit from '../Containers/Restaurants/MenuEdit';
 
 
 class NavigationRouter extends Component {
-  render () {
+  render() {
     return (
       <Router>
-        <Scene initial key='presentationScreen' component={PresentationScreen} title='Fook' />
+        <Scene initial key='presentationScreen' component={PresentationScreen} />
         <Scene key='results' component={Results} title='Components' />
         <Scene key='register' component={Register} title='Components' />
         <Scene key='login' component={Login} title='Components' />
@@ -30,4 +30,4 @@ class NavigationRouter extends Component {
   }
 }
 
-export default NavigationRouter
+export default NavigationRouter;

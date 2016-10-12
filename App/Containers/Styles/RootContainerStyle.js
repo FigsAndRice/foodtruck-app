@@ -22,8 +22,8 @@ export default StyleSheet.create({
     alignSelf: 'center'
   },
   text: {
-    color: 'white',
-    fontSize: 100,
+    color: '#d4f8f5',
+    fontSize: 100
   },
   textBox: {
     height: 40,
