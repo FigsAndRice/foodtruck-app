@@ -1,3 +1,7 @@
+from flask import current_app
+from flask_mail import Message
+from app import mail
+
 def password_check(password):
     """
     Verify the strength of 'password'
@@ -36,3 +40,16 @@ def password_check(password):
         'lowercase_error' : lowercase_error,
         'symbol_error' : symbol_error,
     }
+
+class Register():
+    def __init__(self):
+        sender = current_app.config['MAIL_DEFAULT_SENDER']
+
+        msg = Message(
+            "Confirmation",
+            sender=sender,
+            recipients=['danny.b.lim@gmail.com', 'hyeinu65@gmail.com', 'juancafe2@gmail.com', ]
+        )
+
+        msg.html = '<div><h3>Welcome Putos</h3> <img src="https://image.freepik.com/free-vector/retro-food-truck_23-2147530708.jpg" alt="" /></div>'
+        mail.send(msg)
