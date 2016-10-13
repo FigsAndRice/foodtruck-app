@@ -1,8 +1,12 @@
 from flask import Flask
 from flask_mongoengine import MongoEngine
 from flask_mail import Mail
+from dotenv import load_dotenv, find_dotenv
+    
+
 db = MongoEngine()
 mail = Mail()
+load_dotenv(find_dotenv())
 
 def create_app(config_settings):
 	app = Flask(__name__)

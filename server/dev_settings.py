@@ -1,3 +1,5 @@
+import os
+
 # Flask configuration 
 DEBUG = True
 TESTING = False
@@ -6,10 +8,11 @@ SECRET_KEY = '\xedaK\xb9\xfc\xf90&\x05(i\xe6XVB\x03\x04\xbf\xff\xd6$MP\xc4'
 # flask wtf settings
 WTF_CSRF_ENABLED = True
 
+
 # flask mail settings
 MAIL_DEFAULT_SENDER = 'figsandrice@gmail.com'
-MAIL_USERNAME = 'figsandrice@gmail.com'
-MAIL_PASSWORD = 'xA3g2@b4'
+MAIL_PASSWORD = str(os.environ['EMAIL_PASSWORD'])
+MAIL_USERNAME = str(os.environ['EMAIL_USERNAME'])
 MAIL_SERVER = 'smtp.googlemail.com'
 MAIL_PORT = 465
 MAIL_USE_TLS = False
