@@ -1,3 +1,5 @@
+
+
 def password_check(password):
     """
     Verify the strength of 'password'

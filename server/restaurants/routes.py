@@ -1,16 +1,20 @@
 from flask import (Blueprint, request, jsonify)
-
+from restaurants.models import Restaurant
 restaurants_app = Blueprint('restaurants_app', __name__)
 
 @restaurants_app.route('/register', methods=['POST'])
 def register():
 	content = request.get_json()
+	res = Restaurant(email="juancafe4@g.com", pwd="secret")
+	res.save()	
 	print content
-	return "Hello";
+	return u"Hello";
 
 @restaurants_app.route('/', methods=['GET'])
 def users():
-	return (jsonify({'username': "hyeinuXXX69"}), 200)
+	for res in Restaurant.objects:
+		print res.email
+	return (jsonify({'username': u"hyeinuXXX69"}), 200)
 
 
 	
