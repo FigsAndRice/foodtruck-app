@@ -28,6 +28,7 @@ class Profile extends Component {
   constructor(props) {
     super(props);
 
+    // GET TRUE STATE OF OPEN / HOURS FROM BACKEND
     this.state = {
       open: false,
       hours: 0
@@ -42,15 +43,18 @@ class Profile extends Component {
   }
 
   open() {
-    if (this.state.open) {
-      this.setState({open: false});
-    } else {
-      this.setState({open: true});
-      window.alert(Date.now() + this.state.hours*60*60*1000);
-      // ADD LOGIC TO PUSH TO BACKEND HOURS STATE
+    if (parseInt(this.state.hours) > 0) {
+      if (this.state.open) {
+        this.setState({open: false});
+      } else {
+        this.setState({open: true});
+        window.alert(Date.now() + this.state.hours*60*60*1000);
+        // ADD LOGIC TO PUSH TO BACKEND HOURS STATE
+      }
     }
   }
 
+  // ON RENDER, GET RESTAURANT NAME AND WRITE: "WELCOME, NAME"
   render() {
     let openButton;
     if (this.state.open) {
@@ -60,11 +64,11 @@ class Profile extends Component {
     } else {
       openButton = (
         <View>
-          <Text style={style.text}>Hours</Text>
           <Picker
             style= {style.picker}
             selectedValue= {this.state.hours.toString()}
             onValueChange= {this.pick}>
+            <Picker.Item label="Hours" value="0" />
             <Picker.Item label="1" value="1" />
             <Picker.Item label="2" value="2" />
             <Picker.Item label="3" value="3" />
@@ -85,7 +89,6 @@ class Profile extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.heading}>Profile</Text>
         <YellowButton text="Edit Info" onPress={NavigationActions.editProfile} />
         {openButton}
       </View>

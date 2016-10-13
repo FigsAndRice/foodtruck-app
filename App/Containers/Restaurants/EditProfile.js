@@ -11,8 +11,12 @@ const style = {
   picker: {
     width: 200,
   },
-  text: {
+  heading: {
     fontSize: 50,
+    color: '#d4f8f5'
+  },
+  text: {
+    fontSize: 15,
     color: '#d4f8f5'
   }
 }
@@ -21,6 +25,7 @@ class EditProfile extends Component {
   constructor(props) {
     super(props);
 
+    // need to change so get real info from backend
     this.state = {
       name: '',
       password1: '',
@@ -43,14 +48,15 @@ class EditProfile extends Component {
 
   save() {
     window.alert(this.state.name);
+    // need to change so make all fields required
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={style.text}>Edit Profile</Text>
+        <Text style={style.heading}>Edit Profile</Text>
         <View style={styles.inline}>
-          <Text>Name: </Text>
+          <Text style={style.text}>Name:</Text>
           <TextInput
             style={styles.textBox}
             value={this.state.name}
@@ -59,7 +65,7 @@ class EditProfile extends Component {
           />
         </View>
         <View style={styles.inline}>
-          <Text>Password: </Text>
+          <Text style={style.text}>PW:</Text>
           <TextInput
             style={styles.textBox}
             value={this.state.password1}
@@ -68,7 +74,7 @@ class EditProfile extends Component {
           />
         </View>
         <View style={styles.inline}>
-          <Text>Repeat Password:</Text>
+          <Text style={style.text}>PW (Repeat):</Text>
           <TextInput
             style={styles.textBox}
             value={this.state.password2}
@@ -76,25 +82,22 @@ class EditProfile extends Component {
             placeholder="Password"
           />
         </View>
-        <View style={styles.inline}>
-          <Text>Cuisine:</Text>
-          <Picker
-            style= {style.picker}
-            selectedValue= {this.state.cuisine}
-            onValueChange= {this.pick}>
-            <Picker.Item label="Cuisine Type" value="none" />
-            <Picker.Item label="African" value="african" />
-            <Picker.Item label="American" value="american" />
-            <Picker.Item label="Asian" value="asian" />
-            <Picker.Item label="French" value="french" />
-            <Picker.Item label="Italian" value="italian" />
-            <Picker.Item label="Indian" value="indian" />
-            <Picker.Item label="Mexican" value="mexican" />
-            <Picker.Item label="Latin American" value="latin-american" />
-            <Picker.Item label="Middle Eastern" value="middle-eastern" />
-            <Picker.Item label="Fusion" value="fusion" />
-          </Picker>
-        </View>
+        <Picker
+          style= {style.picker}
+          selectedValue= {this.state.cuisine}
+          onValueChange= {this.pick}>
+          <Picker.Item label="Cuisine Type" value="none" />
+          <Picker.Item label="African" value="african" />
+          <Picker.Item label="American" value="american" />
+          <Picker.Item label="Asian" value="asian" />
+          <Picker.Item label="French" value="french" />
+          <Picker.Item label="Italian" value="italian" />
+          <Picker.Item label="Indian" value="indian" />
+          <Picker.Item label="Mexican" value="mexican" />
+          <Picker.Item label="Latin American" value="latin-american" />
+          <Picker.Item label="Middle Eastern" value="middle-eastern" />
+          <Picker.Item label="Fusion" value="fusion" />
+        </Picker>
         <View style={styles.inline}>
           <YellowButton text="Cancel" onPress={this.cancel} />
           <GreenButton text="Save" onPress={this.save} />
