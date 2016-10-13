@@ -7,7 +7,7 @@ restaurants_app = Blueprint('restaurants_app', __name__)
 def register():
 	content = request.get_json()
 	try:
-		res = Restaurant(email="juancafe2@gmail.com", pwd="secret")
+		res = Restaurant(email="juancafe4@gmail.com", pwd="secret")
 		res.save()
 	except:
 		return (jsonify({'error': "Email alredy in used. Try logging in or use another email"}), 400)

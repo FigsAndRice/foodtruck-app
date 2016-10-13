@@ -51,7 +51,6 @@ class Restaurant(db.Document):
 
   def set_password(self, password):
     self.pwd = generate_password_hash(password, method=current_app.config['PROJECT_PASSWORD_HASH_METHOD'])
-    print 'hash password %s'  %self.pwd
 
 
 
