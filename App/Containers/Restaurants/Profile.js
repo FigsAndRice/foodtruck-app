@@ -12,9 +12,15 @@ const style = {
   picker: {
     width: 200,
   },
-  text: {
+  heading: {
     fontSize: 50,
     color: '#d4f8f5'
+  },
+  text: {
+    fontSize: 25,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }
 
@@ -27,13 +33,8 @@ class Profile extends Component {
       hours: 0
     }
 
-    this.edit = this.edit.bind(this);
     this.pick = this.pick.bind(this);
     this.open = this.open.bind(this);
-  }
-
-  edit() {
-    NavigationActions.editProfile;
   }
 
   pick(hours) {
@@ -41,13 +42,12 @@ class Profile extends Component {
   }
 
   open() {
-    if (this.state.hours > 0) {
-      if (this.state.open) {
-        this.setState({open: false});
-      } else {
-        this.setState({open: true});
-        window.alert(Date.now() + this.state.hours*60*60*1000);
-      }
+    if (this.state.open) {
+      this.setState({open: false});
+    } else {
+      this.setState({open: true});
+      window.alert(Date.now() + this.state.hours*60*60*1000);
+      // ADD LOGIC TO PUSH TO BACKEND HOURS STATE
     }
   }
 
@@ -60,6 +60,7 @@ class Profile extends Component {
     } else {
       openButton = (
         <View>
+          <Text style={style.text}>Hours</Text>
           <Picker
             style= {style.picker}
             selectedValue= {this.state.hours.toString()}
@@ -84,8 +85,8 @@ class Profile extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>Profile</Text>
-        <YellowButton text="Edit Info" onPress={this.edit} />
+        <Text style={styles.heading}>Profile</Text>
+        <YellowButton text="Edit Info" onPress={NavigationActions.editProfile} />
         {openButton}
       </View>
     )
