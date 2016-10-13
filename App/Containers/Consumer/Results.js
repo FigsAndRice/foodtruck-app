@@ -31,7 +31,7 @@ class Results extends Component {
             // followUserLocation={true}
             region={this.state.region}
             maxDelta={1}
-            minDelta={0.1}
+            minDelta={0.01}
             // initialRegion={this.state.region}
             // onRegionChange={this.onRegionChange}
           />
