@@ -14,3 +14,6 @@ MONGODB_SETTINGS = {
 	'db': 'food_truck_finder'
 	# 'host': 'mongodb://juancafe2:admin@ds057066.mlab.com:57066/food_truck_finder'
 }
+
+#project settings
+PROJECT_PASSWORD_HASH_METHOD = 'pbkdf2:sha1'

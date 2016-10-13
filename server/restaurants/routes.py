@@ -6,14 +6,14 @@ restaurants_app = Blueprint('restaurants_app', __name__)
 def register():
 	content = request.get_json()
 	res = Restaurant(email="juancafe4@g.com", pwd="secret")
-	res.save()	
+	# res.save()	
 	print content
 	return u"Hello";
 
 @restaurants_app.route('/', methods=['GET'])
 def users():
 	for res in Restaurant.objects:
-		print res.email
+		print res
 	return (jsonify({'username': u"hyeinuXXX69"}), 200)
 
 

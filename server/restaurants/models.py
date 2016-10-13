@@ -1,5 +1,6 @@
 from app import db
-
+from werkzeug.security import generate_password_hash
+from flask import current_app
 class Restaurant(db.Document):
   # name = db.StringField(
   #   verbose_name=u'Name',
@@ -38,6 +39,19 @@ class Restaurant(db.Document):
   # 	verbose_name=u'Lng'
   # )
   # menu = db.ListField(db.StringField(verbose_name=u'Menu', max_length=50))
+
+  def __unicode__(self):
+    return self.email
+
+  def __init__(self, *args, **kwargs):
+    password = kwargs.pop('pwd', None)
+    super(Restaurant,self).__init__(*args, **kwargs)
+    if password:
+      self.set_password(password)
+
+  def set_password(self, password):
+    self.pwd = generate_password_hash(password, method=current_app.config['PROJECT_PASSWORD_HASH_METHOD'])
+    print 'hash password %s'  %self.pwd
 
 
 
