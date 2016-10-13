@@ -23,12 +23,13 @@ class Login extends Component {
   login() {
     // SEND USERNAME AND PW TO BACKEND
     window.alert(this.state.username, this.state.password);
+    NavigationActions.profile();
   }
 
   cancel() {
     // SEND BACK TO SPLASH SCREEN
     window.alert('CANCELED');
-    NavigationActions.register;
+    NavigationActions.presentationScreen();
   }
 
   render() {
@@ -38,13 +39,13 @@ class Login extends Component {
         <Text style={styles.text}>Login</Text>
         <TextInput
           style={styles.textBox}
-          placeholder='Username'
+          placeholder='USERNAME'
           onChangeText={(text) => this.setState({username: text})}
           value={this.state.username}
         />
         <TextInput
           style={styles.textBox}
-          placeholder='Password'
+          placeholder='PASSWORD'
           onChangeText={(text) => this.setState({password: text})}
           value={this.state.password}
         />

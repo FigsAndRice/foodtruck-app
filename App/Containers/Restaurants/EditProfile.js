@@ -4,6 +4,7 @@ import { Actions as NavigationActions } from 'react-native-router-flux';
 
 import GreenButton from '../Components/GreenButton';
 import YellowButton from '../Components/YellowButton';
+import RedButton from '../Components/YellowButton';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -54,34 +55,25 @@ class EditProfile extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={style.heading}>Edit Profile</Text>
-        <View style={styles.inline}>
-          <Text style={style.text}>Name:</Text>
-          <TextInput
-            style={styles.textBox}
-            value={this.state.name}
-            onChangeText={(text) => this.setState({name: text})}
-            placeholder="Truck Name"
-          />
-        </View>
-        <View style={styles.inline}>
-          <Text style={style.text}>PW:</Text>
-          <TextInput
-            style={styles.textBox}
-            value={this.state.password1}
-            onChangeText={(text) => this.setState({password1: text})}
-            placeholder="Password"
-          />
-        </View>
-        <View style={styles.inline}>
-          <Text style={style.text}>PW (Repeat):</Text>
-          <TextInput
-            style={styles.textBox}
-            value={this.state.password2}
-            onChangeText={(text) => this.setState({password2: text})}
-            placeholder="Password"
-          />
-        </View>
+        <TextInput
+          style={styles.textBox}
+          value={this.state.name}
+          onChangeText={(text) => this.setState({name: text})}
+          placeholder="TRUCK NAME"
+        />
+        <TextInput
+          style={styles.textBox}
+          value={this.state.password1}
+          onChangeText={(text) => this.setState({password1: text})}
+          placeholder="PASSWORD"
+        />
+        <TextInput
+          style={styles.textBox}
+          value={this.state.password2}
+          onChangeText={(text) => this.setState({password2: text})}
+          placeholder="RE-PASSWORD"
+        />
+        <YellowButton text="Edit Menu" onPress={NavigationActions.menuEdit} />
         <Picker
           style= {style.picker}
           selectedValue= {this.state.cuisine}
@@ -99,7 +91,7 @@ class EditProfile extends Component {
           <Picker.Item label="Fusion" value="fusion" />
         </Picker>
         <View style={styles.inline}>
-          <YellowButton text="Cancel" onPress={this.cancel} />
+          <RedButton text="Cancel" onPress={this.cancel} />
           <GreenButton text="Save" onPress={this.save} />
         </View>
       </View>
