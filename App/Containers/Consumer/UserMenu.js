@@ -41,12 +41,12 @@ class UserMenu extends Component {
                 <TouchableHighlight onPress={this._onMenuClicked.bind(null,rowData)}>
                   <View style={itemStyle}>
                     <Image
-                      style={{width: 70, height: 70}}
+                      style={{width: 90, height: 90}}
                       source={{uri: rowData.imgurl}}
                     />
                     <View style={infoStyle}>
-                      <Text>{rowData.food}</Text>
-                      <Text>${rowData.price}</Text>
+                      <Text style={{color:'white'}}>{rowData.food}</Text>
+                      <Text style={{color:'white'}}>${rowData.price}</Text>
                     </View>
                   </View>
                 </TouchableHighlight>
@@ -60,14 +60,14 @@ class UserMenu extends Component {
 
 const listStyle = {
   paddingTop: 70,
-  width: 350,
+  width: 340,
 }
 
 const itemStyle = {
-  height: 80,
+  height: 100,
   padding: 5,
   flexDirection: 'row',
-  flexWrap: 'wrap'
+  flexWrap: 'wrap',
 }
 
 const infoStyle = {
