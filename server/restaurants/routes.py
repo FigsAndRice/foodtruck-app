@@ -1,5 +1,6 @@
 from flask import (Blueprint, request, jsonify)
 from restaurants.models import Restaurant
+from restaurants.middlewares import Register
 restaurants_app = Blueprint('restaurants_app', __name__)
 
 @restaurants_app.route('/register', methods=['POST'])
@@ -12,8 +13,7 @@ def register():
 
 @restaurants_app.route('/', methods=['GET'])
 def users():
-	for res in Restaurant.objects:
-		print res
+	res = Register()
 	return (jsonify({'username': u"hyeinuXXX69"}), 200)
 
 
