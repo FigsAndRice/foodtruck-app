@@ -83,14 +83,14 @@ class Register():
         msg = Message(
             "Confirmation",
             sender=sender,
-            recipients=['danny.b.lim@gmail.com', 'hyeinu65@gmail.com', 'juancafe2@gmail.com', ]
+            recipients=[self.email]
         )
 
         context = dict(
             name=self.name,
             email=self.email
         )
-        
+
         html = render_template(
             'confirmation.html', **context
         )

@@ -12,15 +12,16 @@ def register():
 	#1. check email
 	if not register.check_email():
 		return (jsonify({'error': 'Not valid email address.'}), 404)
+	if len(Restaurant.objects(email=content['email'])):
+		return (jsonify({'error': 'Email is alredy in used.'}), 404)
 	#2. check password
 	check_password = register.check_password()
-
 	if check_password:
 		return (jsonify({'error': check_password}), 404)
 	#3. hash password
 	res = Restaurant(**content)
 	res.set_password(content['pwd'])
-	register.send_email()
+	#register.send_email()
 	#4. save
 	#res.save()
 	content.pop('pwd', None)
@@ -28,8 +29,12 @@ def register():
 	return (jsonify(content), 200)
 
 
-@restaurants_app.route('/', methods=['GET'])
+@restaurants_app.route('/', methods=['GET', 'DELETE'])
 def users():
+	if request.method == 'DELETE':
+		for res in Restaurant.objects:
+			res.delete()
+		return jsonify({'message': 'All Restaurants have been deleted'})
 	#res = Register()
 
 	# user = Restaurant.objects.get(email="juancafe2@gmail.com")
