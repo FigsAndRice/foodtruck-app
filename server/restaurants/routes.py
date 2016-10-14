@@ -3,6 +3,7 @@ from restaurants.models import Restaurant
 from restaurants.middlewares import Register
 restaurants_app = Blueprint('restaurants_app', __name__)
 
+#Register route
 @restaurants_app.route('/register', methods=['POST'])
 def register():
 	content = request.get_json()
@@ -31,21 +32,27 @@ def register():
 	content.pop('pwd', None)
 	return (jsonify(content), 200)
 
-
+#Get or Delete al the users 
 @restaurants_app.route('/', methods=['GET', 'DELETE'])
 def users():
+	#Deletes ALL users
 	if request.method == 'DELETE':
 		for res in Restaurant.objects:
 			res.delete()
 		return jsonify({'message': 'All Restaurants have been deleted'})
-	#res = Register()
+	
+	if request.method == 'GET':
+		users = []
 
-	# user = Restaurant.objects.get(email="juancafe2@gmail.com")
+		for res in Restaurant.objects:
+			res.pwd = None
+			users.append(res)
+		return jsonify(users)
 
-	# print 'user %s' %user.pwd
-	# print user.check_password('admin')
-	return (jsonify({'username': u"hyeinuXXX69"}), 200)
 
+@restaurants_app.route('/login', methods=['POST'])
+def login():
+	pass
 
 	
 	
