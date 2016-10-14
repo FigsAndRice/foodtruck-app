@@ -11,10 +11,11 @@ export function register(registerObj) {
 };
 
 export function login(loginObj) {
+  NavigationActions.profile();
   // axios.post('http://localhost:5000/api/restaurants/login', loginObj)
   //   .then(res => {
   //     // GET REQUEST TO RECEIVE PROFILE
   //     NavigationActions.profile();
   //   })
-  //   .catch(console.error);
+  //   .catch(alert('Incorrect email / password combination'));
 };

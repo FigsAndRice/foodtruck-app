@@ -14,7 +14,7 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      email: '',
       password: ''
     }
 
@@ -25,7 +25,7 @@ class Login extends Component {
   login() {
     // SEND USERNAME AND PW TO BACKEND
     let loginObj = {
-      username: this.state.username,
+      email: this.state.username,
       pwd: this.state.password
     };
     login(loginObj);
@@ -33,7 +33,6 @@ class Login extends Component {
 
   cancel() {
     // SEND BACK TO SPLASH SCREEN
-    window.alert('CANCELED');
     NavigationActions.presentationScreen();
   }
 
@@ -44,8 +43,8 @@ class Login extends Component {
         <Text style={styles.text}>Login</Text>
         <TextInput
           style={styles.textBox}
-          placeholder='USERNAME'
-          onChangeText={(text) => this.setState({username: text})}
+          placeholder='EMAIL'
+          onChangeText={(text) => this.setState({email: text})}
           value={this.state.username}
         />
         <TextInput
@@ -53,6 +52,7 @@ class Login extends Component {
           placeholder='PASSWORD'
           onChangeText={(text) => this.setState({password: text})}
           value={this.state.password}
+          secureTextEntry={true}
         />
         <View style={styles.inline}>
           <RedButton onPress={this.cancel} text="Cancel" />

@@ -77,12 +77,14 @@ class Register extends Component {
           placeholder="PASSWORD"
           onChangeText={(text) => this.setState({password1: text})}
           value={this.state.password1}
+          secureTextEntry={true}
         />
         <TextInput
           style={styles.textBox}
           placeholder="RE-PASSWORD"
           onChangeText={(text) => this.setState({password2: text})}
           value={this.state.password2}
+          secureTextEntry={true}
         />
         <TouchableHighlight style={style.button} onPress={this._onPressButton}>
             <Text>Register</Text>
