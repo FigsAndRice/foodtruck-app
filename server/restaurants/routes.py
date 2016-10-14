@@ -7,18 +7,22 @@ restaurants_app = Blueprint('restaurants_app', __name__)
 def register():
 	content = request.get_json()
 	
-	res = Restaurant(email="juancafe2@gmail.com", pwd="secret")
-	res.save()
+	# res = Restaurant(email="juancafe2@gmail.com", pwd="admin")
+	# res.set_password('admin')
+	# res.save()
 	
 	# return (jsonify({'error': "Email alredy in used. Try logging in or use another email"}), 400)
-	print content
-	return u"Hello";
+	return (jsonify(content), 200)
+
 
 @restaurants_app.route('/', methods=['GET'])
 def users():
 	#res = Register()
-	for res in Restaurant.objects:
-		print 'here %s' %res
+
+	user = Restaurant.objects.get(email="juancafe2@gmail.com")
+
+	print 'user %s' %user.pwd
+	print user.check_password('admin')
 	return (jsonify({'username': u"hyeinuXXX69"}), 200)
 
 
