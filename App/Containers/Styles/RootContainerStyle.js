@@ -11,6 +11,7 @@ export default StyleSheet.create({
     backgroundColor:'#009688'
   },
   inline: {
+    justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap'
   },
