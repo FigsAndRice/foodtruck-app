@@ -44,3 +44,6 @@ android/keystores/debug.keystore
 *.pyc
 server/*.pyc
 sever/restaurants/*.pyc
+
+#ios
+ios/Pods/
