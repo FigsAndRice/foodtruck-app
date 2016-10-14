@@ -1,7 +1,7 @@
 from flask import current_app
 from flask_mail import Message
 from app import mail
-
+import validators
 def password_check(password):
     """
     Verify the strength of 'password'
@@ -41,15 +41,32 @@ def password_check(password):
         'symbol_error' : symbol_error,
     }
 
+
+##Conditinons name email pwd cuisine
 class Register():
-    def __init__(self):
-        sender = current_app.config['MAIL_DEFAULT_SENDER']
+    def __init__(self,  **kwargs):
+        for (k, v) in kwargs.items():
+         setattr(self, k, v)
 
-        msg = Message(
-            "Confirmation",
-            sender=sender,
-            recipients=['danny.b.lim@gmail.com', 'hyeinu65@gmail.com', 'juancafe2@gmail.com', ]
-        )
 
-        msg.html = '<div><h3>Welcome Putos</h3> <img src="https://image.freepik.com/free-vector/retro-food-truck_23-2147530708.jpg" alt="" /></div>'
-        mail.send(msg)
+        #sender = current_app.config['MAIL_DEFAULT_SENDER']
+        
+
+        # msg = Message(
+        #     "Confirmation",
+        #     sender=sender,
+        #     recipients=['danny.b.lim@gmail.com', 'hyeinu65@gmail.com', 'juancafe2@gmail.com', ]
+        # )
+
+        # msg.html = '<div><h3>Welcome Putos</h3> <img src="https://image.freepik.com/free-vector/retro-food-truck_23-2147530708.jpg" alt="" /></div>'
+        # mail.send(msg)
+
+    #Verifes if the email alredy exists and if the email is valid
+    def check_email(self):
+        pass
+    #verifies if password meets the requirements
+    def check_password(self):
+        pass
+    #sends email
+    def send_email(self):
+        pass

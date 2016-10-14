@@ -7,6 +7,12 @@ restaurants_app = Blueprint('restaurants_app', __name__)
 def register():
 	content = request.get_json()
 	
+	register = Register(**content)
+
+	#1. check email
+	#2. check password
+	#3. hash password
+	#4. save
 	# res = Restaurant(email="juancafe2@gmail.com", pwd="admin")
 	# res.set_password('admin')
 	# res.save()
