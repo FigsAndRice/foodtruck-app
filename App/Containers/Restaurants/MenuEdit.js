@@ -68,6 +68,7 @@ class MenuEdit extends Component {
           >
           <View style={{marginTop: 22, alignSelf: 'center'}}>
           <View style={{marginTop: 50}}>
+            <Text style={{alignSelf:'center'}}>ADD NEW ITEM</Text>
             <TextInput
               onChangeText={(text) => this.setState({itemName: text})}
               style={textBox}
