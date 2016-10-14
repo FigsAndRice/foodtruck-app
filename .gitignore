@@ -42,3 +42,5 @@ android/keystores/debug.keystore
 
 #Python
 *.pyc
+server/*.pyc
+sever/restaurants/*.pyc
