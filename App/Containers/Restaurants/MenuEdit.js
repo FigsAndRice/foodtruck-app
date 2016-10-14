@@ -64,6 +64,7 @@ class MenuEdit extends Component {
           animationType={"slide"}
           transparent={false}
           visible={this.state.addModalVisible}
+          onRequestClose={() => {alert("Modal has been closed.")}}
           >
           <View style={{marginTop: 22, alignSelf: 'center'}}>
           <View style={{marginTop: 50}}>
