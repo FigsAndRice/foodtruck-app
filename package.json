@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "apisauce": "^0.5.0",
+    "axios": "^0.15.0",
     "ramda": "^0.22.1",
     "react": "^15.3.2",
     "react-native": "^0.35.0",

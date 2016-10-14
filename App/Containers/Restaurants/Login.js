@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Text, TextInput, StatusBar, View } from 'react-native';
+import { Actions as NavigationActions } from 'react-native-router-flux';
+
 import RoundedButton from '../Components/RoundedButton';
 import RedButton from '../Components/RedButton';
 import YellowButton from '../Components/YellowButton';
-import { Actions as NavigationActions } from 'react-native-router-flux';
+import { login } from '../../Redux/Actions/UserActions';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -22,8 +24,11 @@ class Login extends Component {
 
   login() {
     // SEND USERNAME AND PW TO BACKEND
-    window.alert(this.state.username, this.state.password);
-    NavigationActions.profile();
+    let loginObj = {
+      username: this.state.username,
+      pwd: this.state.password
+    };
+    login(loginObj);
   }
 
   cancel() {
