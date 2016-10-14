@@ -20,25 +20,25 @@ class Restaurant(db.Document):
   	required=True
   )
 
-  # cuisine = db.StringField(
-  # 	verbose_name=u'Cuisine',
-  # 	max_length=100,
-  #   required=True,
-  # )
-  # isOpen = db.BooleanField(
-  # 	verbose_name=u'Open',
-  # 	default=False
-  # )
-  # hours = db.IntField(
-  # 	verbose_name=u'Hours'
-  # )
-  # lat = db.StringField(
-  # 	verbose_name=u'Lat'
-  # )
-  # lng = db.StringField(
-  # 	verbose_name=u'Lng'
-  # )
-  # menu = db.ListField(db.StringField(verbose_name=u'Menu', max_length=50))
+  cuisine = db.StringField(
+  	verbose_name=u'Cuisine',
+  	max_length=100,
+    required=True,
+  )
+  isOpen = db.BooleanField(
+  	verbose_name=u'Open',
+  	default=False
+  )
+  hours = db.IntField(
+  	verbose_name=u'Hours'
+  )
+  lat = db.StringField(
+  	verbose_name=u'Lat'
+  )
+  lng = db.StringField(
+  	verbose_name=u'Lng'
+  )
+  menu = db.ListField(db.StringField(verbose_name=u'Menu', max_length=50))
 
   def __unicode__(self):
     return self.email

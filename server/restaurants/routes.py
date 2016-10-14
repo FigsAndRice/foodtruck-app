@@ -23,9 +23,12 @@ def register():
 	res.set_password(content['pwd'])
 	register.send_email()
 	#4. save
-	res.save()
+	try:
+		res.save()
+	except Exception as e:
+		return (jsonify({'error': "There is an error at the database. Please try later..."}), 500)
+	
 	content.pop('pwd', None)
-	# return (jsonify({'error': "Email alredy in used. Try logging in or use another email"}), 400)
 	return (jsonify(content), 200)
 
 
