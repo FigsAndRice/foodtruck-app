@@ -1,7 +1,9 @@
-from flask import current_app
+from flask import current_app, render_template
 from flask_mail import Message
 from app import mail
-import validators
+from validators import email
+import re
+
 def password_check(password):
     """
     Verify the strength of 'password'
@@ -15,7 +17,8 @@ def password_check(password):
     """
 
     # calculating the length
-    length_error = len(password) < 8
+    short_length_error = len(password) < 8 
+    long_length_error = len(password) > 16
 
     # searching for digits
     digit_error = re.search(r"\d", password) is None
@@ -30,11 +33,12 @@ def password_check(password):
     symbol_error = re.search(r"\W", password) is None
 
     # overall result
-    password_ok = not ( length_error or digit_error or uppercase_error or lowercase_error or symbol_error )
+    password_ok = not ( short_length_error or long_length_error or digit_error or uppercase_error or lowercase_error or symbol_error )
 
     return {
         'password_ok' : password_ok,
-        'length_error' : length_error,
+        'short_length_error' : short_length_error,
+        'long_length_error' : long_length_error,
         'digit_error' : digit_error,
         'uppercase_error' : uppercase_error,
         'lowercase_error' : lowercase_error,
@@ -49,24 +53,46 @@ class Register():
          setattr(self, k, v)
 
 
-        #sender = current_app.config['MAIL_DEFAULT_SENDER']
-        
-
-        # msg = Message(
-        #     "Confirmation",
-        #     sender=sender,
-        #     recipients=['danny.b.lim@gmail.com', 'hyeinu65@gmail.com', 'juancafe2@gmail.com', ]
-        # )
-
-        # msg.html = '<div><h3>Welcome Putos</h3> <img src="https://image.freepik.com/free-vector/retro-food-truck_23-2147530708.jpg" alt="" /></div>'
-        # mail.send(msg)
-
     #Verifes if the email alredy exists and if the email is valid
     def check_email(self):
-        pass
+        if not email(self.email):
+            return False
+        return True
+    
     #verifies if password meets the requirements
     def check_password(self):
-        pass
+        result = password_check(self.pwd)
+        if result['short_length_error']:
+            return 'Password must have at least 8 characters.'
+        if result['long_length_error']:   
+            return 'Password must be less than 16 characters.'
+        if result['digit_error']:
+            return 'Password must contain at least one digit.'
+        if result['uppercase_error']:
+            return 'Password must contain at least one uppercase letter.'
+        if result['lowercase_error']:
+            return 'Password must contain at least one lowercase letter.'
+        if result['symbol_error']:
+            return 'Password must contain at least one symbol !@#$%^&*()_+=-<>:"...'
+
+        return ''
     #sends email
     def send_email(self):
-        pass
+        sender = current_app.config['MAIL_DEFAULT_SENDER']
+        
+        msg = Message(
+            "Confirmation",
+            sender=sender,
+            recipients=['danny.b.lim@gmail.com', 'hyeinu65@gmail.com', 'juancafe2@gmail.com', ]
+        )
+
+        context = dict(
+            name=self.name,
+            email=self.email
+        )
+        
+        html = render_template(
+            'confirmation.html', **context
+        )
+        msg.html = html
+        mail.send(msg)

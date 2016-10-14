@@ -2,11 +2,11 @@ from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
 class Restaurant(db.Document):
-  # name = db.StringField(
-  #   verbose_name=u'Name',
-  #   max_length=100,
-  #   required=True
-  # )
+  name = db.StringField(
+    verbose_name=u'Name',
+    max_length=100,
+    required=True
+  )
   email = db.EmailField (
   	verbose_name=u'Email',
     max_length=100,
