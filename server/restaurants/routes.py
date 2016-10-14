@@ -19,10 +19,10 @@ def register():
 def users():
 	#res = Register()
 
-	user = Restaurant.objects.get(email="juancafe2@gmail.com")
+	# user = Restaurant.objects.get(email="juancafe2@gmail.com")
 
-	print 'user %s' %user.pwd
-	print user.check_password('admin')
+	# print 'user %s' %user.pwd
+	# print user.check_password('admin')
 	return (jsonify({'username': u"hyeinuXXX69"}), 200)
 
 
