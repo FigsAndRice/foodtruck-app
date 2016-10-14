@@ -7,6 +7,7 @@ class UserMenu extends Component {
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    // Hardcoded data
     this.state = {
       dataSource: ds.cloneWithRows([
         {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Rice',price: '20.99' },
