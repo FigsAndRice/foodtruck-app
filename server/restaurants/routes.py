@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from restaurants.models import Restaurant
 from restaurants.middlewares import Register
 restaurants_app = Blueprint('restaurants_app', __name__)
@@ -50,9 +50,13 @@ def users():
 		return jsonify(users)
 
 
-@restaurants_app.route('/login', methods=['POST'])
+@restaurants_app.route('/login', methods=['GET'])
 def login():
-	pass
+	if 'email' in session:
+		return jsonify({'error': 'User alredy login.'})
+	session['email'] = 'juancafe2@gmail.com'
+	print 'here %s' % session['email']
 
+	return 'login'
 	
 	
