@@ -96,3 +96,5 @@ class Register():
         )
         msg.html = html
         mail.send(msg)
+
+
