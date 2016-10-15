@@ -57,6 +57,12 @@ def login():
 	session['email'] = 'juancafe2@gmail.com'
 	print 'here %s' % session['email']
 
+
 	return 'login'
 	
-	
+@restaurants_app.route('/logout', methods=['GET'])
+def logout():
+	session.pop('email', None)
+
+	return jsonify({"message": "You have been logout"})
+
