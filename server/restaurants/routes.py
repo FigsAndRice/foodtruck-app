@@ -67,7 +67,7 @@ def login():
 	if not user.check_password(content['pwd']):
 		return jsonify({"error": "Error logging in. Please try again."}), 401
 	session['email'] = content['email']
-	return 'login'
+	return jsonify({'message': 'You are login!'})
 	
 @restaurants_app.route('/logout', methods=['GET'])
 def logout():
@@ -78,4 +78,4 @@ def logout():
 @restaurants_app.route('/profile', methods=['GET'])
 @login_required
 def profile():
-	return 'This is my profile'
+	return jsonify(Restaurant.objects(email=session['email']).first())
