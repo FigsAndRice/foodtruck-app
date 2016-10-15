@@ -66,3 +66,8 @@ def logout():
 
 	return jsonify({"message": "You have been logout"})
 
+
+@restaurants_app.route('/profile', methods=['GET'])
+
+def profile():
+	return 'profile'
