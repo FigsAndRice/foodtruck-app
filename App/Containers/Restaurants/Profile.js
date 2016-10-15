@@ -5,6 +5,8 @@ import { Actions as NavigationActions } from 'react-native-router-flux';
 import YellowButton from '../Components/YellowButton';
 import RedButton from '../Components/RedButton';
 import GreenButton from '../Components/GreenButton';
+import RoundedButton from '../Components/RoundedButton';
+import { logout } from '../../Redux/Actions/UserActions';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -42,6 +44,7 @@ class Profile extends Component {
 
     this.pick = this.pick.bind(this);
     this.open = this.open.bind(this);
+    this.logoutProfile = this.logoutProfile.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +84,10 @@ class Profile extends Component {
     }
   }
 
+  logoutProfile() {
+    logout();
+  }
+
   // ON RENDER, GET RESTAURANT NAME AND WRITE: "WELCOME, NAME"
   render() {
     let hours = [1,2,3,4,5,6,7,8,9,10,11,12];
@@ -113,6 +120,7 @@ class Profile extends Component {
     return (
       <View style={styles.container}>
         <YellowButton text="Edit Info" onPress={NavigationActions.editProfile} />
+        <RoundedButton text="Logout" onPress={this.logoutProfile} />
         {openButton}
       </View>
     )

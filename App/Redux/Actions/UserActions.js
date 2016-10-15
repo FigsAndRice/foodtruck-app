@@ -19,3 +19,13 @@ export function login(loginObj) {
   //   })
   //   .catch(alert('Incorrect email / password combination'));
 };
+
+export function logout() {
+  alert('LOGGED OUT!');
+  NavigationActions.presentationScreen();
+  // axios.get('http://localhost:5000/api/restaurants/logout')
+  //   .then(res => {
+  //     NavigationActions.presentationScreen();
+  //   })
+  //   .catch(alert('Logout unsuccessful.'));
+};
