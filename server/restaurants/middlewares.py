@@ -97,10 +97,4 @@ class Register():
         msg.html = html
         mail.send(msg)
 
-class Login():
-    def __init__(self, **kwargs):
-        for (k, v) in kwargs.items():
-            setattr(self, k, v)
 
-    def check_email(self):
-        pass 
