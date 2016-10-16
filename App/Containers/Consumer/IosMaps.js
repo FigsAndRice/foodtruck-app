@@ -62,7 +62,6 @@ export default class IosMaps extends Component{
   render(){
     let mrks = markers.map(marker => {
       let { latitude, longitude, title } = marker;
-      marker.onClick = this._press.bind(null, title);
       return marker
     })
     return(
@@ -72,10 +71,9 @@ export default class IosMaps extends Component{
         // showsUserLocation={true}
         // followUserLocation={true}
         region={this.state.region}
-        maxDelta={0.1}
+        maxDelta={0.2}
         minDelta={0.01}
         onAnnotationPress={this._press}
-        // initialRegion={this.state.region}
         // onRegionChange={this.onRegionChange}
         annotations={mrks}
         zoomEnabled={true}
