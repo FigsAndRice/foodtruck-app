@@ -57,6 +57,8 @@ export default class IosMaps extends Component{
     this.setState({ region });
   }
   _press(annotation){
+    //this is where the truck info comes up at the bottom
+    //pass a function in from the results page to display res info
     alert(annotation.title)
   }
   render(){
