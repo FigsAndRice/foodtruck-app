@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 import { create } from 'apisauce';
 import { Actions as NavigationActions } from 'react-native-router-flux';
@@ -23,6 +24,7 @@ export function logout() {
   axios.get('http://localhost:5000/api/restaurants/logout')
     .then(res => {
       console.log(res.data);
+      AsyncStorage.removeItem('user');
       NavigationActions.presentationScreen();
     })
     .catch(console.error);
@@ -36,7 +38,8 @@ export function getProfile(cookie) {
 
   api.get('/api/restaurants/profile')
     .then(res => {
-      alert(res.data);
+      console.log(res.data);
+      AsyncStorage.setItem('user', JSON.stringify(res.data));
       NavigationActions.profile();
     })
     .catch(console.error)

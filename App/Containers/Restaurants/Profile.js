@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Picker } from 'react-native';
+import { View, Text, TextInput, Picker, AsyncStorage } from 'react-native';
 import { Actions as NavigationActions } from 'react-native-router-flux';
 
 import YellowButton from '../Components/YellowButton';
@@ -73,6 +73,7 @@ class Profile extends Component {
   }
 
   open() {
+    console.log(AsyncStorage.getItem('user'));
     if (parseInt(this.state.hours) > 0) {
       if (this.state.open) {
         this.setState({open: false});
