@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Text, TextInput, StatusBar, View } from 'react-native';
+import { Actions as NavigationActions } from 'react-native-router-flux';
+
 import RoundedButton from '../Components/RoundedButton';
 import RedButton from '../Components/RedButton';
 import YellowButton from '../Components/YellowButton';
-import { Actions as NavigationActions } from 'react-native-router-flux';
+import { login } from '../../Redux/Actions/UserActions';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -12,7 +14,7 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      username: '',
+      email: '',
       password: ''
     }
 
@@ -22,13 +24,15 @@ class Login extends Component {
 
   login() {
     // SEND USERNAME AND PW TO BACKEND
-    window.alert(this.state.username, this.state.password);
-    NavigationActions.profile();
+    let loginObj = {
+      email: this.state.username,
+      pwd: this.state.password
+    };
+    login(loginObj);
   }
 
   cancel() {
     // SEND BACK TO SPLASH SCREEN
-    window.alert('CANCELED');
     NavigationActions.presentationScreen();
   }
 
@@ -39,8 +43,8 @@ class Login extends Component {
         <Text style={styles.text}>Login</Text>
         <TextInput
           style={styles.textBox}
-          placeholder='USERNAME'
-          onChangeText={(text) => this.setState({username: text})}
+          placeholder='EMAIL'
+          onChangeText={(text) => this.setState({email: text})}
           value={this.state.username}
         />
         <TextInput
@@ -48,6 +52,7 @@ class Login extends Component {
           placeholder='PASSWORD'
           onChangeText={(text) => this.setState({password: text})}
           value={this.state.password}
+          secureTextEntry={true}
         />
         <View style={styles.inline}>
           <RedButton onPress={this.cancel} text="Cancel" />

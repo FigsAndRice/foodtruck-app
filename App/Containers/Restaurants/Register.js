@@ -2,26 +2,42 @@ import React, { Component } from 'react';
 import { View, ScrollView, StatusBar, Text, TextInput, StyleSheet, Picker, TouchableHighlight } from 'react-native';
 
 import styles from '../Styles/RootContainerStyle';
+import { register } from '../../Redux/Actions/UserActions';
 
 class Register extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state= {
       name: '',
       cuisine: '',
-      username: '',
-      password: '',
+      email: '',
+      password1: '',
       password2: ''
     }
     this.picking=this.picking.bind(this);
+    this._onPressButton = this._onPressButton.bind(this);
   }
 
-  picking(cuisine){
-    this.setState({cuisine});
+  picking(cuisine) {
+    this.setState({ cuisine });
   }
 
-  _onPressButton(){
-    alert("clicked");
+  _onPressButton() {
+    if (this.state.name && this.state.cuisine && this.state.email && this.state.password1 && this.state.password1) {
+      if (this.state.password1 !== this.state.password2) {
+        alert("Please type matching passwords.");
+        return;
+      };
+      let registerObj = {
+        name: this.state.name,
+        email: this.state.email,
+        pwd: this.state.password1,
+        cuisine: this.state.cuisine
+      };
+      register(registerObj);
+    } else {
+      alert("Please fill out all fields.");
+    }
   }
 
   render(){
@@ -52,21 +68,23 @@ class Register extends Component {
         </Picker>
         <TextInput
           style={styles.textBox}
-          placeholder="USERNAME"
-          onChangeText={(text) => this.setState({username: text})}
-          value={this.state.username}
+          placeholder="EMAIL"
+          onChangeText={(text) => this.setState({email: text})}
+          value={this.state.email}
         />
         <TextInput
           style={styles.textBox}
           placeholder="PASSWORD"
-          onChangeText={(text) => this.setState({password: text})}
-          value={this.state.password}
+          onChangeText={(text) => this.setState({password1: text})}
+          value={this.state.password1}
+          secureTextEntry={true}
         />
         <TextInput
           style={styles.textBox}
           placeholder="RE-PASSWORD"
           onChangeText={(text) => this.setState({password2: text})}
           value={this.state.password2}
+          secureTextEntry={true}
         />
         <TouchableHighlight style={style.button} onPress={this._onPressButton}>
             <Text>Register</Text>
