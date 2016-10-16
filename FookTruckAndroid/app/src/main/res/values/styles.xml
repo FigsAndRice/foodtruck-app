@@ -8,4 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyButton" parent="android:Theme.Material">
+        <item name="android:colorButtonNormal">@color/buttonsColor</item>
+    </style>
 </resources>

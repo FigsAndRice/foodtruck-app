@@ -10,7 +10,7 @@ public class Restaurant {
     private String email;
     private String cuisine;
     private String hours;
-    private boolean isOpen
+    private boolean isOpen;
     private String lat;
     private String lng;
     private ArrayList<String> menus;
