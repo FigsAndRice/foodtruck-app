@@ -25,7 +25,7 @@ class Login extends Component {
   login() {
     // SEND USERNAME AND PW TO BACKEND
     let loginObj = {
-      email: this.state.username,
+      email: this.state.email,
       pwd: this.state.password
     };
     login(loginObj);
@@ -45,7 +45,7 @@ class Login extends Component {
           style={styles.textBox}
           placeholder='EMAIL'
           onChangeText={(text) => this.setState({email: text})}
-          value={this.state.username}
+          value={this.state.email}
         />
         <TextInput
           style={styles.textBox}
