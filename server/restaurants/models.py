@@ -30,13 +30,16 @@ class Restaurant(db.Document):
   	default=False
   )
   hours = db.IntField(
-  	verbose_name=u'Hours'
+  	verbose_name=u'Hours',
+    default=0
   )
   lat = db.StringField(
-  	verbose_name=u'Lat'
+  	verbose_name=u'Lat',
+    default='0'
   )
   lng = db.StringField(
-  	verbose_name=u'Lng'
+  	verbose_name=u'Lng',
+    default='0'
   )
   menu = db.ListField(db.StringField(verbose_name=u'Menu', max_length=50))
 
