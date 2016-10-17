@@ -48,6 +48,13 @@ class Profile extends Component {
   }
 
   componentDidMount() {
+    AsyncStorage.getItem('user', (err, result) => {
+      let user = JSON.parse(result);
+      if (user.hours) {
+        this.setState({hours: user.hours});
+      }
+      this.setState({open: user.isOpen});
+    })
     navigator.geolocation.getCurrentPosition(
       (position) => {
         let initialPosition = JSON.stringify(position);
@@ -73,7 +80,6 @@ class Profile extends Component {
   }
 
   open() {
-    console.log(AsyncStorage.getItem('user'));
     if (parseInt(this.state.hours) > 0) {
       if (this.state.open) {
         this.setState({open: false});
