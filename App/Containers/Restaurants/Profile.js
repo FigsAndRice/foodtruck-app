@@ -6,7 +6,8 @@ import YellowButton from '../Components/YellowButton';
 import RedButton from '../Components/RedButton';
 import GreenButton from '../Components/GreenButton';
 import RoundedButton from '../Components/RoundedButton';
-import { editProfile, logout } from '../../Redux/Actions/UserActions';
+import Countdown from '../Components/Countdown';
+import { editProfile, logout, updateOpen } from '../../Redux/Actions/UserActions';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -21,12 +22,6 @@ const style = {
   text: {
     fontSize: 25,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  timer: {
-    fontSize: 20,
-    color: '#d4f8f5',
     alignItems: 'center',
     justifyContent: 'center'
   }
@@ -52,16 +47,12 @@ class Profile extends Component {
       region: {
         latitude: 39.299236,
         longitude: -76.609383
-      },
-      hoursLeft: 0,
-      minutesLeft: 0,
-      secondsLeft: 0
+      }
     }
 
     this.pick = this.pick.bind(this);
     this.openTruck = this.openTruck.bind(this);
     this.logoutProfile = this.logoutProfile.bind(this);
-    this.tick = this.tick.bind(this);
   }
 
   componentDidMount() {
@@ -78,14 +69,6 @@ class Profile extends Component {
         lng: user.lng,
         menu: user.menu
       });
-      if (user.isOpen) {
-        this.setState({
-          hoursLeft: Math.floor(((user.hours - Date.now()) / 1000 / 60 / 60) % 60),
-          minutesLeft: Math.floor(((user.hours - Date.now()) / 1000 / 60) % 60),
-          secondsLeft: Math.floor(((user.hours - Date.now()) / 1000) % 60)
-        });
-        this.timer = window.setInterval(this.tick, 1000);
-      }
     })
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -105,7 +88,6 @@ class Profile extends Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
-    window.clearInterval(this.timer);
   }
 
   pick(hours) {
@@ -122,7 +104,6 @@ class Profile extends Component {
       });
       putObj.isOpen = false;
       putObj.hours = 0;
-      window.clearInterval(this.timer);
     } else {
       if (this.state.hours <= 0) {
         alert('Please specify hours open.');
@@ -132,46 +113,16 @@ class Profile extends Component {
       putObj.hours = Date.now() + this.state.hours*60*60*1000;
       this.setState({
         isOpen: true,
-        hoursLeft: Math.floor(((putObj.hours - Date.now()) / 1000 / 60 / 60) % 60),
-        minutesLeft: Math.floor(((putObj.hours - Date.now()) / 1000 / 60) % 60),
-        secondsLeft: Math.floor(((putObj.hours - Date.now()) / 1000) % 60)
+        hours: putObj.hours
       });
-      this.timer = window.setInterval(this.tick, 1000);
     }
     editProfile(this.state.id, putObj);
     AsyncStorage.setItem('user', JSON.stringify(putObj), () => {
       AsyncStorage.mergeItem('user', JSON.stringify(putObj));
     });
   }
-
   logoutProfile() {
     logout();
-  }
-
-  tick() {
-    if (this.state.isOpen) {
-      if (this.state.minutesLeft === 0) {
-        this.setState({
-          minutesLeft: 60,
-          hoursLeft: this.state.hoursLeft - 1
-        });
-      }
-      if (this.state.secondsLeft === 0) {
-        this.setState({
-          secondsLeft: 60,
-          minutesLeft: this.state.minutesLeft - 1
-        });
-      }
-      this.setState({
-        secondsLeft: this.state.secondsLeft - 1
-      });
-    } else {
-      this.setState({
-        hoursLeft: this.state.hoursLeft,
-        minutesLeft: this.state.minutesLeft,
-        secondsLeft: this.state.secondsLeft
-      });
-    }
   }
 
   render() {
@@ -182,13 +133,11 @@ class Profile extends Component {
       )
     })
 
-    //<Text style={style.timer}>{Math.floor((timeLeft / 1000 / 60 / 60) % 60) + ':' + Math.floor((timeLeft / 1000 / 60) % 60) + ' until closing'}</Text>
     let openButton;
     if (this.state.isOpen === true) {
-      let { timeLeft } = this.state;
       openButton = (
         <View>
-          <Text style={style.timer}>{`${String('0' + this.state.hoursLeft).slice(-2)}:${String('0' + this.state.minutesLeft).slice(-2)}:${String('0' + this.state.secondsLeft).slice(-2)} until closing.`}</Text>
+          <Countdown hours={this.state.hours}/>
           <RedButton text="Close" onPress={this.openTruck} />
         </View>
       )
