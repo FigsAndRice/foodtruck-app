@@ -44,11 +44,11 @@ export default class IosMaps extends Component{
   constructor(props) {
       super(props);
       this.displayName = 'Maps';
-
+      let { latitude, longitude } = this.props;
       this.state = {
         region: {
-          latitude: 39.299236,
-          longitude: -76.609383
+          latitude,
+          longitude
         }
       }
     this.onRegionChange = this.onRegionChange.bind(this);
@@ -70,7 +70,7 @@ export default class IosMaps extends Component{
       <View>
         <MapView
         style={{ height: 350, marginTop: 80, margin: 20 }}
-        // showsUserLocation={true}
+        showsUserLocation={true}
         // followUserLocation={true}
         region={this.state.region}
         maxDelta={0.2}

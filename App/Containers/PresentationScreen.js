@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { View, StatusBar, Text, TextInput, StyleSheet } from 'react-native';
 import { Actions as NavigationActions }  from 'react-native-router-flux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -6,6 +7,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import RoundedButton from './Components/RoundedButton';
 import YellowButton from './Components/YellowButton';
 import Example from './GoogleAutoComplete';
+import { setLocation } from '../Redux/Actions/LocationActions'
 
 import styles from './Styles/RootContainerStyle';
 
@@ -27,11 +29,7 @@ class RootContainer extends Component {
           location: ''
         }
     }
-    _onPress(data, details){
-
-    }
     render() {
-      console.log('this.state:', this.state)
       return (
       	<View style={styles.container} className="container">
           <Text style={styles.text}>Fook</Text>
@@ -54,8 +52,8 @@ class RootContainer extends Component {
               types: '(cities)', // default: 'geocode'
             }}
             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-            console.log('details:', details.geometry.location)
             this.setState({location: details.geometry.location})
+            this.props.setLocation(details.geometry.location.lat, details.geometry.location.lng)
           }}
           styles={{
             textInputContainer: {
@@ -88,4 +86,16 @@ class RootContainer extends Component {
     }
 }
 
-export default RootContainer;
+const mapStateToProps = (state) => {
+  return {
+    state
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLocation: (lat, lng) => { dispatch(setLocation(lat, lng)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);

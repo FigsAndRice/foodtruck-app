@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Platform,  View, Text } from 'react-native';
 import { Actions as NavigationActions }  from 'react-native-router-flux';
 
@@ -15,8 +16,9 @@ class Results extends Component {
     }
     render() {
       let mapView;
+      let { lat, lng } = this.props.location;
       if(Platform.OS === 'ios'){
-        mapView = <IosMaps />;
+        mapView = <IosMaps latitude={lat} longitude={lng} />;
       } else {
         mapView = <View />;
       }
@@ -30,4 +32,16 @@ class Results extends Component {
     }
 }
 
-export default Results;
+const mapStateToProps = (state) => {
+  return {
+    location: state.location
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // setLocation: (lat, lng) => { dispatch(setLocation(lat, lng)) }
+  }
+}
+
+export default connect(mapStateToProps, null)(Results);
