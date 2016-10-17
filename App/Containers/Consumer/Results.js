@@ -4,7 +4,7 @@ import { Actions as NavigationActions }  from 'react-native-router-flux';
 
 import RoundedButton from '../Components/RoundedButton';
 import IosMaps from './IosMaps';
-import UserMenu from './UserMenu';
+import TruckInfo from './TruckInfo';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -24,7 +24,7 @@ class Results extends Component {
       	<View>
           {mapView}
           {/* <RoundedButton onPress={NavigationActions.results}>Search</RoundedButton> */}
-          <UserMenu />
+          <TruckInfo />
     		</View>
       )
     }
