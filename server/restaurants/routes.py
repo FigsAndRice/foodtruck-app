@@ -60,12 +60,39 @@ def update(id):
 	#get by id 
 	if request.method == 'GET':
 		user['pwd'] = None
-		return jsonify(user)
+		return jsonify({
+		'id': id,
+		'email': user['email'],
+		'name': user['name'],
+		'cuisine': user['cuisine'],
+		'isOpen': user['isOpen'],
+		'hours': user['hours'],
+		'lat': user['lat'],
+		'lng': user['lng'],
+		'menu': user['menu']
+		})
 	#delete by id
 	if request.method == 'DELETE':
 		user.delete()
 		return jsonify({'message': 'User has been deleted'}), 400
-	if request.method == 'DELETE':
+	#update by id
+	if request.method == 'PUT':
+		content = request.get_json()
+		
+		user.modify(**content)
+		user = 	Restaurant.objects(id=id).first()
+		return jsonify({
+		'id': id,
+		'email': user['email'],
+		'name': user['name'],
+		'cuisine': user['cuisine'],
+		'isOpen': user['isOpen'],
+		'hours': user['hours'],
+		'lat': user['lat'],
+		'lng': user['lng'],
+		'menu': user['menu']
+		})
+
 
 @restaurants_app.route('/login', methods=['POST'])
 def login():
@@ -95,6 +122,17 @@ def logout():
 @login_required
 def profile():
 	user =  Restaurant.objects(email=session['email']).first()
-	return jsonify(**user)
+	id = str(user['id'])
+	return jsonify({
+		'id': id,
+		'email': user['email'],
+		'name': user['name'],
+		'cuisine': user['cuisine'],
+		'isOpen': user['isOpen'],
+		'hours': user['hours'],
+		'lat': user['lat'],
+		'lng': user['lng'],
+		'menu': user['menu']
+		})
 
 
