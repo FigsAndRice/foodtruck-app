@@ -23,6 +23,12 @@ const style = {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  timer: {
+    fontSize: 20,
+    color: '#d4f8f5',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }
 
@@ -46,12 +52,14 @@ class Profile extends Component {
       region: {
         latitude: 39.299236,
         longitude: -76.609383
-      }
+      },
+      timeLeft: 0
     }
 
     this.pick = this.pick.bind(this);
     this.openTruck = this.openTruck.bind(this);
     this.logoutProfile = this.logoutProfile.bind(this);
+    this.tick = this.tick.bind(this);
   }
 
   componentDidMount() {
@@ -68,6 +76,10 @@ class Profile extends Component {
         lng: user.lng,
         menu: user.menu
       });
+      if (user.isOpen) {
+        this.setState({timeLeft: user.hours - Date.now()});
+        this.timer = window.setInterval(this.tick, 1000);
+      }
     })
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -87,6 +99,7 @@ class Profile extends Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
+    window.clearInterval(this.timer);
   }
 
   pick(hours) {
@@ -97,13 +110,22 @@ class Profile extends Component {
     let { id, name, email, cuisine, isOpen, hours, lat, lng, menu } = this.state;
     let putObj = { id, name, email, cuisine, isOpen, hours, lat, lng, menu };
     if (this.state.isOpen) {
-      this.setState({isOpen: false, hours: 0});
+      this.setState({
+        isOpen: false,
+        hours: 0,
+        timeLeft: 0
+      });
       putObj.isOpen = false;
       putObj.hours = 0;
+      window.clearInterval(this.timer);
     } else {
-      this.setState({isOpen: true});
       putObj.isOpen = true;
       putObj.hours = Date.now() + this.state.hours*60*60*1000;
+      this.setState({
+        isOpen: true,
+        timeLeft: putObj.hours - Date.now()
+      });
+      this.timer = window.setInterval(this.tick, 1000);
     }
     editProfile(this.state.id, putObj);
     AsyncStorage.setItem('user', JSON.stringify(putObj), () => {
@@ -115,7 +137,14 @@ class Profile extends Component {
     logout();
   }
 
-  // ON RENDER, GET RESTAURANT NAME AND WRITE: "WELCOME, NAME"
+  tick() {
+    if (this.state.isOpen) {
+      this.setState({timeLeft: this.state.timeLeft - 1000});
+    } else {
+      this.setState({timeLeft: this.state.timeLeft});
+    }
+  }
+
   render() {
     let hours = [1,2,3,4,5,6,7,8,9,10,11,12];
     let hourItems = hours.map(hour => {
@@ -126,8 +155,12 @@ class Profile extends Component {
 
     let openButton;
     if (this.state.isOpen === true) {
+      let { timeLeft } = this.state;
       openButton = (
-        <RedButton text="Close" onPress={this.openTruck} />
+        <View>
+          <Text style={style.timer}>{Math.floor((timeLeft / 1000 / 60 / 60) % 60) + ':' + Math.floor((timeLeft / 1000 / 60) % 60) + ' until closing'}</Text>
+          <RedButton text="Close" onPress={this.openTruck} />
+        </View>
       )
     } else {
       openButton = (
