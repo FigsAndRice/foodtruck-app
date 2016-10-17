@@ -22,8 +22,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -119,80 +123,140 @@ public class LoginActivity extends AppCompatActivity {
             alertDialog.show();
         } else {
             loading.setVisibility(View.VISIBLE);
-            StringRequest request = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            loading.setVisibility(View.INVISIBLE);
-                            alertDialog.setTitle("HTTP 200");
-                            alertDialog.setMessage("You are login!");
+            try {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("email", email);
+                jsonObject.put("pwd", pwd);
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                loading.setVisibility(View.INVISIBLE);
+                                alertDialog.setTitle("HTTP 200");
+                                alertDialog.setMessage("You are login!");
+                                alertDialog.show();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("error log in ", String.valueOf(error.networkResponse.statusCode));
+                        NetworkResponse networkResponse = error.networkResponse;
+                        loading.setVisibility(View.INVISIBLE);
+                        if (error.networkResponse == null) {
+                            Log.d("throw error", error.getClass().toString());
+                            if (error.getClass().equals(NoConnectionError.class)
+                                    || error.getClass().equals(TimeoutError.class)) {
+                                // Show timeout error message
+                                Toast.makeText(getBaseContext(),
+                                        "Sorry cannot connect this time",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        if (networkResponse != null && networkResponse.statusCode == 401) {
+                            // HTTP Status Code: 401 Unauthorized
+                            status = networkResponse.statusCode;
+                            Log.d("error64", String.valueOf(networkResponse.statusCode));
+
+                            alertDialog.setTitle("HTTP 401");
+                            alertDialog.setMessage("Wrong email or password");
                             alertDialog.show();
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //Log.d("error log in ", String.valueOf(error.networkResponse.statusCode));
-                    NetworkResponse networkResponse = error.networkResponse;
-                    loading.setVisibility(View.INVISIBLE);
-                    if (error.networkResponse == null) {
-                        Log.d("throw error", error.getClass().toString());
-                        if (error.getClass().equals(NoConnectionError.class)
-                                || error.getClass().equals(TimeoutError.class)) {
-                            // Show timeout error message
-                            Toast.makeText(getBaseContext(),
-                                    "Sorry cannot connect this time",
-                                    Toast.LENGTH_LONG).show();
+                    }
+                }) {
+                    @Override
+                    protected Response parseNetworkResponse(NetworkResponse response) {
+                        Map headers = response.headers;
+                        if (response != null && response.statusCode == 200) {
+
+                            cookie = (String) headers.get("set-cookie");
+                            Log.d("Headers", cookie);
+                            Log.d("connect.sid", "new cookie " + headers.get("connect.sid"));
+    //                        SharedPreferences.Editor editor = MainActivity.this.getSharedPreferences(Cookie, MODE_PRIVATE).edit();
+    //                        editor.putString("Cookie", cookie);
+    //                        editor.commit();
                         }
+                        return super.parseNetworkResponse(response);
+
                     }
+                };
+                queue.add(jsonObjectRequest);
+            } catch (JSONException e) {
+                Log.e("Error JSON shiiit", String.valueOf(e));
+            }
+//            StringRequest request = new StringRequest(Request.Method.POST, url,
+//                    new Response.Listener<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            loading.setVisibility(View.INVISIBLE);
+//                            alertDialog.setTitle("HTTP 200");
+//                            alertDialog.setMessage("You are login!");
+//                            alertDialog.show();
+//                        }
+//                    }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    //Log.d("error log in ", String.valueOf(error.networkResponse.statusCode));
+//                    NetworkResponse networkResponse = error.networkResponse;
+//                    loading.setVisibility(View.INVISIBLE);
+//                    if (error.networkResponse == null) {
+//                        Log.d("throw error", error.getClass().toString());
+//                        if (error.getClass().equals(NoConnectionError.class)
+//                                || error.getClass().equals(TimeoutError.class)) {
+//                            // Show timeout error message
+//                            Toast.makeText(getBaseContext(),
+//                                    "Sorry cannot connect this time",
+//                                    Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//
+//                    if (networkResponse != null && networkResponse.statusCode == 401) {
+//                        // HTTP Status Code: 401 Unauthorized
+//                        status = networkResponse.statusCode;
+//                        Log.d("error64", String.valueOf(networkResponse.statusCode));
+//
+//
+//                        alertDialog.setTitle("HTTP 401");
+//                        alertDialog.setMessage("Wrong email or password");
+//                        alertDialog.show();
+//                    }
+//
+//                }
+//            }) {
+//                @Override
+//                public String getBodyContentType() {
+//                    return "application/json; charset=utf-8";
+//                }
+//                @Override
+//                protected Map<String, String> getParams() throws AuthFailureError {
+//                    Map<String, String> params = new HashMap<String, String>();
+//                    //add params <key,value>
+//                    params.put("email", email);
+//                    params.put("pwd", pwd);
+//                    return params;
+//                }
+//
+//
+//
+//                @Override
+//                protected Response parseNetworkResponse(NetworkResponse response) {
+//                    Map headers = response.headers;
+//                    if (response != null && response.statusCode == 200) {
+//
+//                        cookie = (String) headers.get("set-cookie");
+//                        Log.d("Headers", cookie);
+//                        Log.d("connect.sid", "new cookie " + headers.get("connect.sid"));
+////                        SharedPreferences.Editor editor = MainActivity.this.getSharedPreferences(Cookie, MODE_PRIVATE).edit();
+////                        editor.putString("Cookie", cookie);
+////                        editor.commit();
+//                    }
+//                    return super.parseNetworkResponse(response);
+//
+//                }
+//            };
 
-                    if (networkResponse != null && networkResponse.statusCode == 401) {
-                        // HTTP Status Code: 401 Unauthorized
-                        status = networkResponse.statusCode;
-                        Log.d("error64", String.valueOf(networkResponse.statusCode));
 
-
-                        alertDialog.setTitle("HTTP 401");
-                        alertDialog.setMessage("Wrong email or password");
-                        alertDialog.show();
-                    }
-
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<String, String>();
-                    //add params <key,value>
-                    params.put("email", email);
-                    params.put("password", pwd);
-                    return params;
-                }
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<String, String>();
-                    // add headers <key,value>
-                    headers.put("Content-Type", "application/x-www-form-urlencoded");
-                    return headers;
-                }
-
-                @Override
-                protected Response parseNetworkResponse(NetworkResponse response) {
-                    Map headers = response.headers;
-                    if (response != null && response.statusCode == 200) {
-
-                        cookie = (String) headers.get("set-cookie");
-                        Log.d("Headers", cookie);
-                        Log.d("connect.sid", "new cookie " + headers.get("connect.sid"));
-//                        SharedPreferences.Editor editor = MainActivity.this.getSharedPreferences(Cookie, MODE_PRIVATE).edit();
-//                        editor.putString("Cookie", cookie);
-//                        editor.commit();
-                    }
-                    return super.parseNetworkResponse(response);
-
-                }
-            };
-
-            queue.add(request);
         }
     }
 }
