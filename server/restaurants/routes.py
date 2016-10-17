@@ -57,9 +57,15 @@ def update(id):
 	if not len(user):
 		return jsonify({'error': 'Food Truck could not be found!'}), 400
 	
+	#get by id 
 	if request.method == 'GET':
 		user['pwd'] = None
 		return jsonify(user)
+	#delete by id
+	if request.method == 'DELETE':
+		user.delete()
+		return jsonify({'message': 'User has been deleted'}), 400
+	if request.method == 'DELETE':
 
 @restaurants_app.route('/login', methods=['POST'])
 def login():
