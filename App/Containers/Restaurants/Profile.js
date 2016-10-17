@@ -53,7 +53,9 @@ class Profile extends Component {
         latitude: 39.299236,
         longitude: -76.609383
       },
-      timeLeft: 0
+      hoursLeft: 0,
+      minutesLeft: 0,
+      secondsLeft: 0
     }
 
     this.pick = this.pick.bind(this);
@@ -77,7 +79,11 @@ class Profile extends Component {
         menu: user.menu
       });
       if (user.isOpen) {
-        this.setState({timeLeft: user.hours - Date.now()});
+        this.setState({
+          hoursLeft: Math.floor(((user.hours - Date.now()) / 1000 / 60 / 60) % 60),
+          minutesLeft: Math.floor(((user.hours - Date.now()) / 1000 / 60) % 60),
+          secondsLeft: Math.floor(((user.hours - Date.now()) / 1000) % 60)
+        });
         this.timer = window.setInterval(this.tick, 1000);
       }
     })
@@ -112,18 +118,23 @@ class Profile extends Component {
     if (this.state.isOpen) {
       this.setState({
         isOpen: false,
-        hours: 0,
-        timeLeft: 0
+        hours: 0
       });
       putObj.isOpen = false;
       putObj.hours = 0;
       window.clearInterval(this.timer);
     } else {
+      if (this.state.hours <= 0) {
+        alert('Please specify hours open.');
+        return;
+      }
       putObj.isOpen = true;
       putObj.hours = Date.now() + this.state.hours*60*60*1000;
       this.setState({
         isOpen: true,
-        timeLeft: putObj.hours - Date.now()
+        hoursLeft: Math.floor(((putObj.hours - Date.now()) / 1000 / 60 / 60) % 60),
+        minutesLeft: Math.floor(((putObj.hours - Date.now()) / 1000 / 60) % 60),
+        secondsLeft: Math.floor(((putObj.hours - Date.now()) / 1000) % 60)
       });
       this.timer = window.setInterval(this.tick, 1000);
     }
@@ -139,9 +150,27 @@ class Profile extends Component {
 
   tick() {
     if (this.state.isOpen) {
-      this.setState({timeLeft: this.state.timeLeft - 1000});
+      if (this.state.minutesLeft === 0) {
+        this.setState({
+          minutesLeft: 60,
+          hoursLeft: this.state.hoursLeft - 1
+        });
+      }
+      if (this.state.secondsLeft === 0) {
+        this.setState({
+          secondsLeft: 60,
+          minutesLeft: this.state.minutesLeft - 1
+        });
+      }
+      this.setState({
+        secondsLeft: this.state.secondsLeft - 1
+      });
     } else {
-      this.setState({timeLeft: this.state.timeLeft});
+      this.setState({
+        hoursLeft: this.state.hoursLeft,
+        minutesLeft: this.state.minutesLeft,
+        secondsLeft: this.state.secondsLeft
+      });
     }
   }
 
@@ -153,12 +182,13 @@ class Profile extends Component {
       )
     })
 
+    //<Text style={style.timer}>{Math.floor((timeLeft / 1000 / 60 / 60) % 60) + ':' + Math.floor((timeLeft / 1000 / 60) % 60) + ' until closing'}</Text>
     let openButton;
     if (this.state.isOpen === true) {
       let { timeLeft } = this.state;
       openButton = (
         <View>
-          <Text style={style.timer}>{Math.floor((timeLeft / 1000 / 60 / 60) % 60) + ':' + Math.floor((timeLeft / 1000 / 60) % 60) + ' until closing'}</Text>
+          <Text style={style.timer}>{`${String('0' + this.state.hoursLeft).slice(-2)}:${String('0' + this.state.minutesLeft).slice(-2)}:${String('0' + this.state.secondsLeft).slice(-2)} until closing.`}</Text>
           <RedButton text="Close" onPress={this.openTruck} />
         </View>
       )
