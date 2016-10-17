@@ -49,9 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         queue = Volley.newRequestQueue(this);
         initLayout();
-//        Intent i = new Intent(getApplicationContext(), FoodTruckMap.class);
-//
-//        startActivity(i);
+
         addListeners();
 
     }
@@ -75,7 +73,9 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+//                login();
+                Intent i = new Intent(getApplicationContext(), FoodTruckMap.class);
+                startActivity(i);
             }
         });
         newUser.setOnClickListener(new View.OnClickListener() {
