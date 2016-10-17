@@ -69,7 +69,7 @@ export default class IosMaps extends Component{
     return(
       <View>
         <MapView
-        style={{ height: 250, marginTop: 80, margin: 20 }}
+        style={{ height: 350, marginTop: 80, margin: 20 }}
         // showsUserLocation={true}
         // followUserLocation={true}
         region={this.state.region}
