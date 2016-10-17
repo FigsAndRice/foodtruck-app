@@ -49,7 +49,10 @@ def users():
 			res.pwd = None
 			users.append(res)
 		return jsonify(users)
-
+@restaurants_app.route('/<id>', methods=['GET', 'DELETE', 'PUT'])
+def update(id):
+	Restaurant.objects(id=id)
+	return jsonify(Restaurant.objects(id=id))
 
 @restaurants_app.route('/login', methods=['POST'])
 def login():
@@ -91,3 +94,5 @@ def profile():
 		'lng': user['lng'],
 		'menu': user['menu']
 		})
+
+
