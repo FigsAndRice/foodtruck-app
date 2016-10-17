@@ -49,10 +49,17 @@ def users():
 			res.pwd = None
 			users.append(res)
 		return jsonify(users)
+
+#Update user
 @restaurants_app.route('/<id>', methods=['GET', 'DELETE', 'PUT'])
 def update(id):
-	Restaurant.objects(id=id)
-	return jsonify(Restaurant.objects(id=id))
+	user = 	Restaurant.objects(id=id).first()
+	if not len(user):
+		return jsonify({'error': 'Food Truck could not be found!'}), 400
+	
+	if request.method == 'GET':
+		user['pwd'] = None
+		return jsonify(user)
 
 @restaurants_app.route('/login', methods=['POST'])
 def login():
@@ -82,17 +89,6 @@ def logout():
 @login_required
 def profile():
 	user =  Restaurant.objects(email=session['email']).first()
-	id = str(user['id'])
-	return jsonify({
-		'id': id,
-		'email': user['email'],
-		'name': user['name'],
-		'cuisine': user['cuisine'],
-		'isOpen': user['isOpen'],
-		'hours': user['hours'],
-		'lat': user['lat'],
-		'lng': user['lng'],
-		'menu': user['menu']
-		})
+	return jsonify(**user)
 
 
