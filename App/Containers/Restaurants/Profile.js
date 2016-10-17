@@ -6,7 +6,7 @@ import YellowButton from '../Components/YellowButton';
 import RedButton from '../Components/RedButton';
 import GreenButton from '../Components/GreenButton';
 import RoundedButton from '../Components/RoundedButton';
-import { open, logout } from '../../Redux/Actions/UserActions';
+import { editProfile, logout } from '../../Redux/Actions/UserActions';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -32,9 +32,15 @@ class Profile extends Component {
 
     // GET TRUE STATE OF OPEN / HOURS FROM BACKEND
     this.state = {
-      open: false,
+      id: '',
+      name: '',
+      email: '',
+      cuisine: '',
+      isOpen: false,
       hours: 0,
-      id: null,
+      lat: '',
+      lng: '',
+      menu: [],
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       region: {
@@ -51,12 +57,16 @@ class Profile extends Component {
   componentDidMount() {
     AsyncStorage.getItem('user', (err, result) => {
       let user = JSON.parse(result);
-      if (user.hours) {
-        this.setState({hours: user.hours});
-      }
       this.setState({
-        open: user.isOpen,
-        id: user.id
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        cuisine: user.cuisine,
+        isOpen: user.isOpen,
+        hours: user.hours,
+        lat: user.lat,
+        lng: user.lng,
+        menu: user.menu
       });
     })
     navigator.geolocation.getCurrentPosition(
@@ -84,23 +94,21 @@ class Profile extends Component {
   }
 
   openTruck() {
-    if (parseInt(this.state.hours) > 0) {
-      let putObj;
-      if (this.state.open) {
-        this.setState({open: false, hours: 0});
-        putObj = {
-          isOpen: false,
-          hours: 0
-        };
-      } else {
-        this.setState({open: true});
-        putObj = {
-          isOpen: true,
-          hours: Date.now() + this.state.hours*60*60*1000
-        };
-      }
-      open(this.state.id, putObj);
+    let { id, name, email, cuisine, isOpen, hours, lat, lng, menu } = this.state;
+    let putObj = { id, name, email, cuisine, isOpen, hours, lat, lng, menu };
+    if (this.state.isOpen) {
+      this.setState({isOpen: false, hours: 0});
+      putObj.isOpen = false;
+      putObj.hours = 0;
+    } else {
+      this.setState({isOpen: true});
+      putObj.isOpen = true;
+      putObj.hours = Date.now() + this.state.hours*60*60*1000;
     }
+    editProfile(this.state.id, putObj);
+    AsyncStorage.setItem('user', JSON.stringify(putObj), () => {
+      AsyncStorage.mergeItem('user', JSON.stringify(putObj));
+    });
   }
 
   logoutProfile() {
@@ -117,7 +125,7 @@ class Profile extends Component {
     })
 
     let openButton;
-    if (this.state.open) {
+    if (this.state.isOpen === true) {
       openButton = (
         <RedButton text="Close" onPress={this.openTruck} />
       )

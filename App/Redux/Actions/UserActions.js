@@ -17,7 +17,10 @@ export function login(loginObj) {
       cookie = res.headers['set-cookie'];
       getProfile(cookie);
     })
-    .catch(console.error);
+    .catch(() => {
+      alert('Incorrect email/password combination.')
+      NavigationActions.login();
+    });
 };
 
 export function logout() {
@@ -46,8 +49,8 @@ export function getProfile(cookie) {
     .catch(console.error)
 }
 
-export function open(id, statusAndHours) {
-  axios.put(`http://localhost:5000/api/restaurants/${id}`, statusAndHours)
+export function editProfile(id, updateObj) {
+  axios.put(`http://localhost:5000/api/restaurants/${id}`, updateObj)
     .then(res => {
       console.log(res.data);
     })
