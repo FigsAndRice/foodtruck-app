@@ -7,7 +7,6 @@ SECRET_KEY = '\xedaK\xb9\xfc\xf90&\x05(i\xe6XVB\x03\x04\xbf\xff\xd6$MP\xc4'
 
 
 
-
 # flask mail settings
 MAIL_DEFAULT_SENDER = 'figsandrice@gmail.com'
 MAIL_PASSWORD = str(os.environ['EMAIL_PASSWORD'])
