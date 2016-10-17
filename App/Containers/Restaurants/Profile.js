@@ -6,7 +6,7 @@ import YellowButton from '../Components/YellowButton';
 import RedButton from '../Components/RedButton';
 import GreenButton from '../Components/GreenButton';
 import RoundedButton from '../Components/RoundedButton';
-import { logout } from '../../Redux/Actions/UserActions';
+import { open, logout } from '../../Redux/Actions/UserActions';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -34,6 +34,7 @@ class Profile extends Component {
     this.state = {
       open: false,
       hours: 0,
+      id: null,
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       region: {
@@ -43,7 +44,7 @@ class Profile extends Component {
     }
 
     this.pick = this.pick.bind(this);
-    this.open = this.open.bind(this);
+    this.openTruck = this.openTruck.bind(this);
     this.logoutProfile = this.logoutProfile.bind(this);
   }
 
@@ -53,7 +54,10 @@ class Profile extends Component {
       if (user.hours) {
         this.setState({hours: user.hours});
       }
-      this.setState({open: user.isOpen});
+      this.setState({
+        open: user.isOpen,
+        id: user.id
+      });
     })
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -79,15 +83,23 @@ class Profile extends Component {
     this.setState({hours: parseInt(hours)});
   }
 
-  open() {
+  openTruck() {
     if (parseInt(this.state.hours) > 0) {
+      let putObj;
       if (this.state.open) {
-        this.setState({open: false});
+        this.setState({open: false, hours: 0});
+        putObj = {
+          isOpen: false,
+          hours: 0
+        };
       } else {
         this.setState({open: true});
-        window.alert(Date.now() + this.state.hours*60*60*1000);
-        // ADD LOGIC TO PUSH TO BACKEND HOURS STATE
+        putObj = {
+          isOpen: true,
+          hours: Date.now() + this.state.hours*60*60*1000
+        };
       }
+      open(this.state.id, putObj);
     }
   }
 
@@ -107,7 +119,7 @@ class Profile extends Component {
     let openButton;
     if (this.state.open) {
       openButton = (
-        <RedButton text="Close" onPress={this.open} />
+        <RedButton text="Close" onPress={this.openTruck} />
       )
     } else {
       openButton = (
@@ -119,7 +131,7 @@ class Profile extends Component {
             <Picker.Item label="Hours" value="0" />
             {hourItems}
           </Picker>
-          <GreenButton text="Open" onPress={this.open} />
+          <GreenButton text="Open" onPress={this.openTruck} />
         </View>
       )
     }

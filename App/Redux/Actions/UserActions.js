@@ -45,3 +45,11 @@ export function getProfile(cookie) {
     })
     .catch(console.error)
 }
+
+export function open(id, statusAndHours) {
+  axios.put(`http://localhost:5000/api/restaurants/${id}`, statusAndHours)
+    .then(res => {
+      console.log(res.data);
+    })
+    .catch(console.error)
+}
