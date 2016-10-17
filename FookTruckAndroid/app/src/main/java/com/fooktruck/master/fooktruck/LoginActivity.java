@@ -1,8 +1,11 @@
 package com.fooktruck.master.fooktruck;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         login = (Button) findViewById(R.id.loginbtn);
-        loading = (ProgressBar) findViewById(R.id.loading_profile)
+        loading = (ProgressBar) findViewById(R.id.loading_profile);
     }
     public void addListeners() {
         login.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +79,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login() {
-        
+        final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+        String url = "http://192.168.1.12:5000/api/restaurants/login";
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        Log.d("username", "username " + String.valueOf(username.getText()));
+        final String email =  username.getText().toString();
+        final String pwd = password.getText().toString();
+
+        if (email.isEmpty()) {
+            alertDialog.setTitle("Empty email address");
+            alertDialog.setMessage("Please type your email address");
+            alertDialog.show();
+        }
+
+        else if (pwd.isEmpty()) {
+            alertDialog.setTitle("Empty password");
+            alertDialog.setMessage("Please type your password");
+            alertDialog.show();
+        }
     }
 }
