@@ -8,7 +8,7 @@ restaurants_app = Blueprint('restaurants_app', __name__)
 @restaurants_app.route('/register', methods=['POST'])
 def register():
 	content = request.get_json()
-	
+
 	register = Register(**content)
 
 	#1. check email
@@ -29,11 +29,11 @@ def register():
 		res.save()
 	except Exception as e:
 		return (jsonify({'error': "There is an error at the database. Please try later..."}), 500)
-	
+
 	content.pop('pwd', None)
 	return (jsonify(content), 200)
 
-#Get or Delete al the users 
+#Get or Delete al the users
 @restaurants_app.route('/', methods=['GET', 'DELETE'])
 def users():
 	#Deletes ALL users
@@ -41,7 +41,7 @@ def users():
 		for res in Restaurant.objects:
 			res.delete()
 		return jsonify({'message': 'All Restaurants have been deleted'})
-	
+
 	if request.method == 'GET':
 		users = []
 
@@ -49,6 +49,49 @@ def users():
 			res.pwd = None
 			users.append(res)
 		return jsonify(users)
+
+#Update user
+@restaurants_app.route('/<id>', methods=['GET', 'DELETE', 'PUT'])
+def update(id):
+	user = 	Restaurant.objects(id=id).first()
+	if not len(user):
+		return jsonify({'error': 'Food Truck could not be found!'}), 400
+	
+	#get by id 
+	if request.method == 'GET':
+		user['pwd'] = None
+		return jsonify({
+		'id': id,
+		'email': user['email'],
+		'name': user['name'],
+		'cuisine': user['cuisine'],
+		'isOpen': user['isOpen'],
+		'hours': user['hours'],
+		'lat': user['lat'],
+		'lng': user['lng'],
+		'menu': user['menu']
+		})
+	#delete by id
+	if request.method == 'DELETE':
+		user.delete()
+		return jsonify({'message': 'User has been deleted'}), 400
+	#update by id
+	if request.method == 'PUT':
+		content = request.get_json()
+		
+		user.modify(**content)
+		user = 	Restaurant.objects(id=id).first()
+		return jsonify({
+		'id': id,
+		'email': user['email'],
+		'name': user['name'],
+		'cuisine': user['cuisine'],
+		'isOpen': user['isOpen'],
+		'hours': user['hours'],
+		'lat': user['lat'],
+		'lng': user['lng'],
+		'menu': user['menu']
+		})
 
 
 @restaurants_app.route('/login', methods=['POST'])
@@ -68,7 +111,7 @@ def login():
 		return jsonify({"error": "Error logging in. Please try again."}), 401
 	session['email'] = content['email']
 	return jsonify({'message': 'You are login!'})
-	
+
 @restaurants_app.route('/logout', methods=['GET'])
 def logout():
 	session.clear()
@@ -78,4 +121,18 @@ def logout():
 @restaurants_app.route('/profile', methods=['GET'])
 @login_required
 def profile():
-	return jsonify(Restaurant.objects(email=session['email']).first())
+	user =  Restaurant.objects(email=session['email']).first()
+	id = str(user['id'])
+	return jsonify({
+		'id': id,
+		'email': user['email'],
+		'name': user['name'],
+		'cuisine': user['cuisine'],
+		'isOpen': user['isOpen'],
+		'hours': user['hours'],
+		'lat': user['lat'],
+		'lng': user['lng'],
+		'menu': user['menu']
+		})
+
+

@@ -55,16 +55,16 @@ class Register extends Component {
           selectedValue= {this.state.cuisine}
           onValueChange= {this.picking}>
           <Picker.Item label="Cuisine Type" value="none" />
-          <Picker.Item label="African" value="african" />
-          <Picker.Item label="American" value="american" />
-          <Picker.Item label="Asian" value="asian" />
-          <Picker.Item label="French" value="french" />
-          <Picker.Item label="Italian" value="italian" />
-          <Picker.Item label="Indian" value="indian" />
-          <Picker.Item label="Mexican" value="mexican" />
-          <Picker.Item label="Latin American" value="latin-american" />
-          <Picker.Item label="Middle Eastern" value="middle-eastern" />
-          <Picker.Item label="Fusion" value="fusion" />
+          <Picker.Item label="African" value="African" />
+          <Picker.Item label="American" value="American" />
+          <Picker.Item label="Asian" value="Asian" />
+          <Picker.Item label="French" value="French" />
+          <Picker.Item label="Italian" value="Italian" />
+          <Picker.Item label="Indian" value="Indian" />
+          <Picker.Item label="Mexican" value="Mexican" />
+          <Picker.Item label="Latin American" value="Latin-American" />
+          <Picker.Item label="Middle Eastern" value="Middle-Eastern" />
+          <Picker.Item label="Fusion" value="Fusion" />
         </Picker>
         <TextInput
           style={styles.textBox}
