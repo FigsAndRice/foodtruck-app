@@ -72,11 +72,11 @@ class EditProfile extends Component {
       let { password1, id, name, email, cuisine, isOpen, hours, lat, lng, menu } = this.state;
       let updateObj = { pwd: password1, id, name, email, cuisine, isOpen, hours, lat, lng, menu };
       editProfile(updateObj.id, updateObj);
-      // updateObj.pwd = null;
-      // AsyncStorage.setItem('user', JSON.stringify(updateObj), () => {
-      //   AsyncStorage.mergeItem('user', JSON.stringify(updateObj));
-      // });
-      // NavigationActions.profile();
+      updateObj.pwd = null;
+      AsyncStorage.setItem('user', JSON.stringify(updateObj), () => {
+        AsyncStorage.mergeItem('user', JSON.stringify(updateObj));
+      });
+      NavigationActions.profile();
     } else {
       alert("Please fill out all fields.");
     }
