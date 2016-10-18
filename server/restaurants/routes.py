@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, session
 from restaurants.models import Restaurant
 from restaurants.middlewares import Register
 from decorators import login_required
+
 restaurants_app = Blueprint('restaurants_app', __name__)
 
 #Register route
@@ -47,7 +48,7 @@ def users():
 		for res in Restaurant.objects:
 			res.pwd = None
 			users.append(res)
-		return jsonify(users)
+		return jsonify(results = users)
 
 #Update user
 @restaurants_app.route('/<id>', methods=['GET', 'DELETE', 'PUT'])
@@ -55,21 +56,11 @@ def update(id):
 	user = 	Restaurant.objects(id=id).first()
 	if not len(user):
 		return jsonify({'error': 'Food Truck could not be found!'}), 400
-	
-	#get by id 
+
+	#get by id
 	if request.method == 'GET':
 		user['pwd'] = None
-		return jsonify({
-		'id': id,
-		'email': user['email'],
-		'name': user['name'],
-		'cuisine': user['cuisine'],
-		'isOpen': user['isOpen'],
-		'hours': user['hours'],
-		'lat': user['lat'],
-		'lng': user['lng'],
-		'menu': user['menu']
-		})
+		return jsonify(results = user)
 	#delete by id
 	if request.method == 'DELETE':
 		user.delete()
@@ -77,20 +68,10 @@ def update(id):
 	#update by id
 	if request.method == 'PUT':
 		content = request.get_json()
-		
+
 		user.modify(**content)
 		user = 	Restaurant.objects(id=id).first()
-		return jsonify({
-		'id': id,
-		'email': user['email'],
-		'name': user['name'],
-		'cuisine': user['cuisine'],
-		'isOpen': user['isOpen'],
-		'hours': user['hours'],
-		'lat': user['lat'],
-		'lng': user['lng'],
-		'menu': user['menu']
-		})
+		return jsonify(results = user)
 
 
 @restaurants_app.route('/login', methods=['POST'])
@@ -122,17 +103,7 @@ def logout():
 def profile():
 	user =  Restaurant.objects(email=session['email']).first()
 	id = str(user['id'])
-	return jsonify({
-		'id': id,
-		'email': user['email'],
-		'name': user['name'],
-		'cuisine': user['cuisine'],
-		'isOpen': user['isOpen'],
-		'hours': user['hours'],
-		'lat': user['lat'],
-		'lng': user['lng'],
-		'menu': user['menu']
-		})
+	return jsonify(results = user)
 
 
 #First user must login
