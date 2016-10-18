@@ -32,6 +32,13 @@
         android:layout_marginBottom="10dp"
         android:id="@+id/signup_email"
         android:layout_gravity="center_horizontal" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Password must have a legnth between 8 and 16 characters. Password must contain at leat one uppercase letter, one lowercase letter, one digit 0-9, and one special symbol $#@$%^..."
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
