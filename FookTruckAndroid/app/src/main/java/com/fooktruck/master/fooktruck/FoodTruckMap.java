@@ -1,18 +1,16 @@
 package com.fooktruck.master.fooktruck;
 
-<<<<<<< HEAD
-import android.content.pm.PackageManager;
-=======
-import android.*;
-import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
->>>>>>> master
-import android.support.v4.app.FragmentActivity;
+
+
+import android.Manifest;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,15 +22,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class FoodTruckMap extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
     private GoogleMap mMap;
     private String fine  = Manifest.permission.ACCESS_FINE_LOCATION;
-    private String coarse = Manifest.permission.ACCESS_COARSE_LOCATION;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_truck_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        verifyPermissions(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -40,18 +38,7 @@ public class FoodTruckMap extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void verifyPermissions(Activity activity) {
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
-        String [] permissions = {fine, coarse};
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                    activity,
-                    permissions,
-                    1
-            );
-        }
-    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -64,7 +51,12 @@ public class FoodTruckMap extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMyLocationEnabled(true);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+           requestPermissions(FoodTruckMap.this);
+        }
         mMap.setMinZoomPreference(11);
         // Add a marker in Sydney and move the camera
         LatLng num1 = new LatLng(39.299236, -76.609383);
@@ -84,5 +76,14 @@ public class FoodTruckMap extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(num1));
     }
 
+   public void requestPermissions(Activity activity) {
+       if (ContextCompat.checkSelfPermission(activity,
+              fine)
+               != PackageManager.PERMISSION_GRANTED) {
+           ActivityCompat.requestPermissions(this,
+                   new String[]{fine},
+                   MY_PERMISSIONS_REQUEST_LOCATION);
+       }
+   }
 
 }
