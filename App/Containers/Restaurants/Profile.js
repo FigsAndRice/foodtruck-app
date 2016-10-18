@@ -6,7 +6,8 @@ import YellowButton from '../Components/YellowButton';
 import RedButton from '../Components/RedButton';
 import GreenButton from '../Components/GreenButton';
 import RoundedButton from '../Components/RoundedButton';
-import { logout } from '../../Redux/Actions/UserActions';
+import Countdown from '../Components/Countdown';
+import { editProfile, logout, updateOpen } from '../../Redux/Actions/UserActions';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -32,8 +33,15 @@ class Profile extends Component {
 
     // GET TRUE STATE OF OPEN / HOURS FROM BACKEND
     this.state = {
-      open: false,
+      id: '',
+      name: '',
+      email: '',
+      cuisine: '',
+      isOpen: false,
       hours: 0,
+      lat: '',
+      lng: '',
+      menu: [],
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       region: {
@@ -43,11 +51,25 @@ class Profile extends Component {
     }
 
     this.pick = this.pick.bind(this);
-    this.open = this.open.bind(this);
+    this.openTruck = this.openTruck.bind(this);
     this.logoutProfile = this.logoutProfile.bind(this);
   }
 
   componentDidMount() {
+    AsyncStorage.getItem('user', (err, result) => {
+      let user = JSON.parse(result);
+      this.setState({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        cuisine: user.cuisine,
+        isOpen: user.isOpen,
+        hours: user.hours,
+        lat: user.lat,
+        lng: user.lng,
+        menu: user.menu
+      });
+    })
     navigator.geolocation.getCurrentPosition(
       (position) => {
         let initialPosition = JSON.stringify(position);
@@ -72,24 +94,37 @@ class Profile extends Component {
     this.setState({hours: parseInt(hours)});
   }
 
-  open() {
-    console.log(AsyncStorage.getItem('user'));
-    if (parseInt(this.state.hours) > 0) {
-      if (this.state.open) {
-        this.setState({open: false});
-      } else {
-        this.setState({open: true});
-        window.alert(Date.now() + this.state.hours*60*60*1000);
-        // ADD LOGIC TO PUSH TO BACKEND HOURS STATE
+  openTruck() {
+    let { id, name, email, cuisine, isOpen, hours, lat, lng, menu } = this.state;
+    let putObj = { id, name, email, cuisine, isOpen, hours, lat, lng, menu };
+    if (this.state.isOpen) {
+      this.setState({
+        isOpen: false,
+        hours: 0
+      });
+      putObj.isOpen = false;
+      putObj.hours = 0;
+    } else {
+      if (this.state.hours <= 0) {
+        alert('Please specify hours open.');
+        return;
       }
+      putObj.isOpen = true;
+      putObj.hours = Date.now() + this.state.hours*60*60*1000;
+      this.setState({
+        isOpen: true,
+        hours: putObj.hours
+      });
     }
+    editProfile(this.state.id, putObj);
+    AsyncStorage.setItem('user', JSON.stringify(putObj), () => {
+      AsyncStorage.mergeItem('user', JSON.stringify(putObj));
+    });
   }
-
   logoutProfile() {
     logout();
   }
 
-  // ON RENDER, GET RESTAURANT NAME AND WRITE: "WELCOME, NAME"
   render() {
     let hours = [1,2,3,4,5,6,7,8,9,10,11,12];
     let hourItems = hours.map(hour => {
@@ -99,9 +134,12 @@ class Profile extends Component {
     })
 
     let openButton;
-    if (this.state.open) {
+    if (this.state.hours*60*60*1000 > Date.now()) {
       openButton = (
-        <RedButton text="Close" onPress={this.open} />
+        <View>
+          <Countdown hours={this.state.hours}/>
+          <RedButton text="Close" onPress={this.openTruck} />
+        </View>
       )
     } else {
       openButton = (
@@ -113,7 +151,7 @@ class Profile extends Component {
             <Picker.Item label="Hours" value="0" />
             {hourItems}
           </Picker>
-          <GreenButton text="Open" onPress={this.open} />
+          <GreenButton text="Open" onPress={this.openTruck} />
         </View>
       )
     }
