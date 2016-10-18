@@ -53,6 +53,7 @@ class Profile extends Component {
     this.pick = this.pick.bind(this);
     this.openTruck = this.openTruck.bind(this);
     this.logoutProfile = this.logoutProfile.bind(this);
+    this.currentLocation = this.currentLocation.bind(this);
   }
 
   componentDidMount() {
@@ -70,20 +71,6 @@ class Profile extends Component {
         menu: user.menu
       });
     })
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        let initialPosition = JSON.stringify(position);
-        this.setState({initialPosition});
-      },
-      (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      let lastPosition = position;
-      let { latitude, longitude } = position.coords;
-      let region = { latitude, longitude }
-      this.setState({lastPosition, region});
-    });
   }
 
   componentWillUnmount() {
@@ -97,10 +84,16 @@ class Profile extends Component {
   openTruck() {
     let { id, name, email, cuisine, isOpen, hours, lat, lng, menu } = this.state;
     let putObj = { id, name, email, cuisine, isOpen, hours, lat, lng, menu };
+    if (!lat || !lng) {
+      alert('Please verify location.');
+      return;
+    }
     if (this.state.isOpen) {
       this.setState({
         isOpen: false,
-        hours: 0
+        hours: 0,
+        lat: '',
+        lng: ''
       });
       putObj.isOpen = false;
       putObj.hours = 0;
@@ -121,8 +114,31 @@ class Profile extends Component {
       AsyncStorage.mergeItem('user', JSON.stringify(putObj));
     });
   }
+
   logoutProfile() {
     logout();
+  }
+
+  currentLocation() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        let initialPosition = JSON.stringify(position);
+        this.setState({initialPosition});
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      let lastPosition = position;
+      let { latitude, longitude } = position.coords;
+      let region = { latitude, longitude }
+      this.setState({
+        lastPosition,
+        region,
+        lat: latitude.toString(),
+        lng: longitude.toString()
+      });
+    });
   }
 
   render() {
@@ -151,15 +167,20 @@ class Profile extends Component {
             <Picker.Item label="Hours" value="0" />
             {hourItems}
           </Picker>
-          <GreenButton text="Open" onPress={this.openTruck} />
+          <View>
+            <RoundedButton text="Location" onPress={this.currentLocation} />
+            <GreenButton text="Open" onPress={this.openTruck} />
+          </View>
         </View>
       )
     }
 
     return (
       <View style={styles.container}>
-        <YellowButton text="Edit Info" onPress={NavigationActions.editProfile} />
-        <RoundedButton text="Logout" onPress={this.logoutProfile} />
+        <View style={styles.inline}>
+          <YellowButton text="Edit Info" onPress={NavigationActions.editProfile} />
+          <RoundedButton text="Logout" onPress={this.logoutProfile} />
+        </View>
         {openButton}
       </View>
     )
