@@ -52,11 +52,13 @@ export default class IosMaps extends Component{
           longitude
         }
       }
+      this._press = this._press.bind(this);
   }
   _press(annotation){
     //this is where the truck info comes up at the bottom
     //pass a function in from the results page to display res info
-    alert(annotation.title)
+    
+    this.props.onPress(annotation);
   }
   render(){
     let mrks = markers.map(marker => {

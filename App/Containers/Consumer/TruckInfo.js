@@ -18,6 +18,7 @@ class TruckInfo extends Component {
   }
 
   render() {
+   let { truck } = this.props;
     return (
       <View>
         <View style={itemStyle}>
@@ -27,6 +28,7 @@ class TruckInfo extends Component {
             <View style={infoStyle}>
               <Text>Restaurant Name</Text>
               <Text>Restaurant Hours</Text>
+              <Text>{truck.title}</Text>
               <RoundedButton onPress={NavigationActions.results}> M e n u </RoundedButton>
             </View>
         </View>
