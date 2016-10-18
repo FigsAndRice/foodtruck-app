@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+    final String URL = "http://192.168.1.12:5000/api/restaurants/";
     protected static final String Cookie = "COOKIE_SAVE";
     private int status = -1;
     private RequestQueue queue;
@@ -115,7 +116,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login() {
         final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-        String url = "http://192.168.1.12:5000/api/restaurants/login";
 
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                 jsonObject.put("email", email);
                 jsonObject.put("pwd", pwd);
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "login", jsonObject,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -256,9 +256,31 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                 }
-
                 else
+                    createUser(signup_name.getText(), signup_email.getText(), signup_pwd.getText(), signup_cuisine.getSelectedItem().toString();
                     alertDialog.dismiss();
+
+            }
+        });
+    }
+
+    public void createUser(String name, String email, String password, String cuisine) throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("email", email);
+        json.put("pwd", password);
+        json.put("cuisine", cuisine);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "register", json,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
             }
         });
     }
