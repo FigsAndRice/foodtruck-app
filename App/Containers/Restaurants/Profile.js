@@ -60,7 +60,7 @@ class Profile extends Component {
     AsyncStorage.getItem('user', (err, result) => {
       let user = JSON.parse(result);
       this.setState({
-        id: user.id,
+        id: user._id.$oid,
         name: user.name,
         email: user.email,
         cuisine: user.cuisine,
@@ -145,7 +145,7 @@ class Profile extends Component {
     let hours = [1,2,3,4,5,6,7,8,9,10,11,12];
     let hourItems = hours.map(hour => {
       return (
-        <Picker.Item key={hour} label={hour.toString()} value={hour.toString()} />
+        <Picker.Item key={hour} label={hour.toString()} value={hour} />
       )
     })
 
@@ -162,9 +162,9 @@ class Profile extends Component {
         <View>
           <Picker
             style= {style.picker}
-            selectedValue= {this.state.hours.toString()}
+            selectedValue= {this.state.hours}
             onValueChange= {this.pick}>
-            <Picker.Item label="Hours" value="0" />
+            <Picker.Item label="Hours" value={0} />
             {hourItems}
           </Picker>
           <View>

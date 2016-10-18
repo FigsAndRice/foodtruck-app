@@ -7,7 +7,7 @@ import YellowButton from '../Components/YellowButton';
 import RedButton from '../Components/YellowButton';
 
 import styles from '../Styles/RootContainerStyle';
-import { getProfile, editProfile } from '../../Redux/Actions/UserActions';
+import { getProfile, editProfile, updatePassword } from '../../Redux/Actions/UserActions';
 
 const style = {
   picker: {
@@ -32,6 +32,7 @@ class EditProfile extends Component {
       id: '',
       name: '',
       email: '',
+      oldPassword: '',
       password1: '',
       password2: '',
       cuisine: '',
@@ -50,8 +51,8 @@ class EditProfile extends Component {
   componentDidMount() {
     AsyncStorage.getItem('user', (err, result) => {
       let user = JSON.parse(result);
-      let { id, name, email, cuisine, isOpen, hours, lat, lng, menu } = user;
-      this.setState({ id, name, email, cuisine, isOpen, hours, lat, lng, menu });
+      let { _id, name, email, cuisine, isOpen, hours, lat, lng, menu } = user;
+      this.setState({ id: _id.$oid, name, email, cuisine, isOpen, hours, lat, lng, menu });
     })
   }
 
@@ -64,18 +65,26 @@ class EditProfile extends Component {
   }
 
   save() {
+    if (!this.state.oldPassword) {
+      alert('Please input old password.');
+      return;
+    }
     if (this.state.password1 !== this.state.password2) {
       alert("Passwords do not match.");
       return;
     }
-    if (this.state.name && this.state.password1 && this.state.password2 && this.state.cuisine) {
-      let { password1, id, name, email, cuisine, isOpen, hours, lat, lng, menu } = this.state;
-      let updateObj = { pwd: password1, id, name, email, cuisine, isOpen, hours, lat, lng, menu };
-      editProfile(updateObj.id, updateObj);
-      updateObj.pwd = null;
+    if (this.state.name && this.state.oldPassword && this.state.password1 && this.state.password2 && this.state.cuisine) {
+      let { oldPassword, password1, id, name, email, cuisine, isOpen, hours, lat, lng, menu } = this.state;
+      let _id = {$oid: id};
+      let updateObj = { _id, name, email, cuisine, isOpen, hours, lat, lng, menu };
       AsyncStorage.setItem('user', JSON.stringify(updateObj), () => {
         AsyncStorage.mergeItem('user', JSON.stringify(updateObj));
       });
+      delete updateObj._id;
+      delete updateObj.email;
+      editProfile(id, updateObj);
+      let passwordObj = { old_pwd: oldPassword, new_pwd: password1, email };
+      updatePassword(passwordObj);
       NavigationActions.profile();
     } else {
       alert("Please fill out all fields.");
@@ -90,6 +99,13 @@ class EditProfile extends Component {
           value={this.state.name}
           onChangeText={(text) => this.setState({name: text})}
           placeholder="TRUCK NAME"
+        />
+        <TextInput
+          style={styles.textBox}
+          value={this.state.oldPassword}
+          onChangeText={(text) => this.setState({oldPassword: text})}
+          placeholder="OLD PASSWORD"
+          secureTextEntry={true}
         />
         <TextInput
           style={styles.textBox}

@@ -26,7 +26,6 @@ export function login(loginObj) {
 export function logout() {
   axios.get('http://localhost:5000/api/restaurants/logout')
     .then(res => {
-      console.log(res.data);
       AsyncStorage.removeItem('user');
       NavigationActions.presentationScreen();
     })
@@ -41,18 +40,31 @@ export function getProfile(cookie) {
 
   api.get('/api/restaurants/profile')
     .then(res => {
-      AsyncStorage.setItem('user', JSON.stringify(res.data), () => {
-        AsyncStorage.mergeItem('user', JSON.stringify(res.data));
+      AsyncStorage.setItem('user', JSON.stringify(res.data.results), () => {
+        AsyncStorage.mergeItem('user', JSON.stringify(res.data.results));
       });
       NavigationActions.profile();
     })
-    .catch(console.error)
-}
+    .catch(console.error);
+};
 
 export function editProfile(id, updateObj) {
   axios.put(`http://localhost:5000/api/restaurants/${id}`, updateObj)
     .then(res => {
-      console.log(res.data);
+      return res.data;
     })
-    .catch(console.error)
-}
+    .catch(console.error);
+};
+
+export function updatePassword(pwdObj) {
+  const api = create({
+    baseURL: 'http://localhost:5000',
+    headers: {'Content-Type': 'applcation/json'}
+  })
+
+  api.post('/api/restaurants/password', pwdObj)
+    .then(res => {
+      return res.data;
+    })
+    .catch(console.error);
+};
