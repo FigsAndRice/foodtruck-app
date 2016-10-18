@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, StatusBar, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 import { Actions as NavigationActions }  from 'react-native-router-flux';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import RoundedButton from './Components/RoundedButton';
 import YellowButton from './Components/YellowButton';
-import Example from './GoogleAutoComplete';
 import { setLocation } from '../Redux/Actions/LocationActions'
 
 import styles from './Styles/RootContainerStyle';
@@ -42,7 +41,6 @@ class RootContainer extends Component {
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      // var lastPosition = JSON.stringify(position);
       this.setState({lastPosition: position});
     });
   }
@@ -59,15 +57,8 @@ class RootContainer extends Component {
     return (
       <View style={styles.container} className="container">
         <Text style={styles.text}>Fook</Text>
-        {/* <TextInput
-            style={styles.textBox}
-            onChangeText={(text) => this.setState({search: text})}
-            value={this.state.search}
-            autoCorrect={false}
-            placeholder="Search"
-          /> */}
         <View style={inputStyle}>
-        <RoundedButton onPress={this._enterCurrentLocation}>Current Location</RoundedButton>
+        <RoundedButton style={inputStyle} onPress={this._enterCurrentLocation}>Current Location</RoundedButton>
         <GooglePlacesAutocomplete
           placeholder='Enter Location'
           minLength={2}
@@ -99,7 +90,6 @@ class RootContainer extends Component {
               color: '#1faadb'
             },
           }}
-          // currentLocation={true}
           />
         </View>
         <RoundedButton onPress={NavigationActions.results}>Search</RoundedButton>
@@ -112,16 +102,10 @@ class RootContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    state
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     setLocation: (lat, lng) => { dispatch(setLocation(lat, lng)) }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RootContainer);
+export default connect(null, mapDispatchToProps)(RootContainer);

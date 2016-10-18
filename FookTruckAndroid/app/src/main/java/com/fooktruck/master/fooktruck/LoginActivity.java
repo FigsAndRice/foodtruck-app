@@ -11,7 +11,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,10 +32,13 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.support.design.widget.Snackbar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+    final String URL = "http://192.168.1.12:5000/api/restaurants/";
+    private LinearLayout layout;
     protected static final String Cookie = "COOKIE_SAVE";
     private int status = -1;
     private RequestQueue queue;
@@ -47,11 +53,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        layout = (LinearLayout) findViewById(R.id.content);
         queue = Volley.newRequestQueue(this);
         initLayout();
-
         addListeners();
-
     }
 
     @Override
@@ -115,7 +120,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login() {
         final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-        String url = "http://192.168.1.12:5000/api/restaurants/login";
 
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
@@ -143,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                 jsonObject.put("email", email);
                 jsonObject.put("pwd", pwd);
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "login", jsonObject,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -212,7 +216,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText signup_pwd = (EditText) signup.findViewById(R.id.signup_password);
         final EditText signup_pwd2 = (EditText) signup.findViewById(R.id.signup_password2);
         final EditText signup_email = (EditText) signup.findViewById(R.id.signup_email);
-
+        final Spinner signup_cuisine = (Spinner) signup.findViewById(R.id.cuisine);
 
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Create Account", new DialogInterface.OnClickListener() {
@@ -250,11 +254,82 @@ public class LoginActivity extends AppCompatActivity {
                         signup_pwd.setError("Field cannot be left blank.");
                     if (signup_pwd2.getText().length() == 0)
                         signup_pwd2.setError("Field cannot be left blank.");
-                }
+                    if (signup_cuisine.getSelectedItem().toString().equals("Cuisine")) {
+                        TextView errorText = (TextView)signup_cuisine.getSelectedView();
+                        errorText.setError("Field cannot be left blank.");
+                    }
 
+                }
                 else
-                    alertDialog.dismiss();
+                    try {
+                        createUser(signup_name.getText().toString(), signup_email.getText().toString(), signup_pwd.getText().toString(), signup_cuisine.getSelectedItem().toString());
+                        alertDialog.dismiss();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
             }
         });
+    }
+
+    public void createUser(String name, String email, String password, String cuisine) throws JSONException {
+        final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("email", email);
+        json.put("pwd", password);
+        json.put("cuisine", cuisine);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "register", json,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        alertDialog.setTitle("Thanks for registering!");
+                        alertDialog.setMessage("Your account was created.");
+                        alertDialog.show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null && networkResponse.statusCode == 404) {
+                    String errorMsg = new String(networkResponse.data);
+                    errorMsg = trimMessage(errorMsg, "error");
+                    Log.d("error message ", errorMsg);
+                    Snackbar snackbar = Snackbar.make(layout, errorMsg ,Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Close", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    snackbar.show();
+                }
+
+            }
+        });
+        queue.add(jsonObjectRequest);
+    }
+
+    public String trimMessage(String json, String key){
+        String trimmedString = null;
+
+        try{
+            JSONObject obj = new JSONObject(json);
+            trimmedString = obj.getString(key);
+        } catch(JSONException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return trimmedString;
     }
 }

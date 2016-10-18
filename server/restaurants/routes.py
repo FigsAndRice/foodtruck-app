@@ -8,7 +8,6 @@ restaurants_app = Blueprint('restaurants_app', __name__)
 @restaurants_app.route('/register', methods=['POST'])
 def register():
 	content = request.get_json()
-
 	register = Register(**content)
 
 	#1. check email
@@ -97,7 +96,6 @@ def update(id):
 @restaurants_app.route('/login', methods=['POST'])
 def login():
 	content = request.get_json()
-	print 'json content %s' %content
 	email = content['email']
 
 	if 'email' in session:
@@ -137,3 +135,27 @@ def profile():
 		})
 
 
+#First user must login
+#JSON requirements are email, old_pwd, new_pwd
+
+@restaurants_app.route('/passowrd', methods=['POST'])
+@login_required
+def change_password():
+	content = request.get_json()
+
+	user = Restaurant.objects(email=content['email']).first()
+
+	if not user:
+		return jsonify({"error": "Invalid email address."}), 404
+	if not user.check_password(content['old_pwd']):
+		return jsonify({"error": "Old password is incorrect."}), 404
+
+	register = Register(pwd = content['new_pwd'])
+	check_password = register.check_password()
+	if check_password:
+		return (jsonify({'error': check_password}), 404)
+	user.set_password(content['new_pwd'])
+
+	user.save()
+
+	return jsonify({'message': 'Password updated.'})
