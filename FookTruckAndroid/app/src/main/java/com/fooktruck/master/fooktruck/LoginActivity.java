@@ -263,10 +263,11 @@ public class LoginActivity extends AppCompatActivity {
                 else
                     try {
                         createUser(signup_name.getText().toString(), signup_email.getText().toString(), signup_pwd.getText().toString(), signup_cuisine.getSelectedItem().toString());
+                        alertDialog.dismiss();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                alertDialog.dismiss();
+
 
             }
         });
@@ -296,15 +297,37 @@ public class LoginActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Snackbar snackbar = Snackbar.make(layout, "something",Snackbar.LENGTH_LONG)
-                        .setAction("Close", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null && networkResponse.statusCode == 404) {
+                    String errorMsg = new String(networkResponse.data);
+                    errorMsg = trimMessage(errorMsg, "error");
+                    Log.d("error message ", errorMsg);
+                    Snackbar snackbar = Snackbar.make(layout, errorMsg ,Snackbar.LENGTH_LONG)
+                    .setAction("Close", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                            }
-                        });
+                        }
+                    });
+                    snackbar.show();
+                }
+
             }
         });
         queue.add(jsonObjectRequest);
+    }
+
+    public String trimMessage(String json, String key){
+        String trimmedString = null;
+
+        try{
+            JSONObject obj = new JSONObject(json);
+            trimmedString = obj.getString(key);
+        } catch(JSONException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return trimmedString;
     }
 }

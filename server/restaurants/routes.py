@@ -8,7 +8,6 @@ restaurants_app = Blueprint('restaurants_app', __name__)
 @restaurants_app.route('/register', methods=['POST'])
 def register():
 	content = request.get_json()
-
 	register = Register(**content)
 
 	#1. check email
@@ -97,7 +96,6 @@ def update(id):
 @restaurants_app.route('/login', methods=['POST'])
 def login():
 	content = request.get_json()
-	print 'json content %s' %content
 	email = content['email']
 
 	if 'email' in session:
