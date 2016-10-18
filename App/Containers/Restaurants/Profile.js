@@ -134,7 +134,7 @@ class Profile extends Component {
     })
 
     let openButton;
-    if (this.state.isOpen === true) {
+    if (this.state.hours*60*60*1000 > Date.now()) {
       openButton = (
         <View>
           <Countdown hours={this.state.hours}/>

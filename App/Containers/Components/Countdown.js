@@ -73,12 +73,12 @@ export default class Countdown extends Component {
   }
 
   render() {
-    if (this.props.hours) {
+    if (this.props.hours > Date.now()) {
       return (
         <Text style={style.timer}>{`${String('0' + this.state.hoursLeft).slice(-2)}:${String('0' + this.state.minutesLeft).slice(-2)}:${String('0' + this.state.secondsLeft).slice(-2)} until closing.`}</Text>
       )
     } else {
-      return <View></View>
+      return <Text style={style.timer}>CLOSED</Text>
     }
   }
 
