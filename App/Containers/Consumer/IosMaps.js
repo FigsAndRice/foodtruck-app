@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, MapView } from 'react-native';
 
+import { getTrucks } from '../../Redux/Actions/LocationActions';
+
 let markers = [
   {
     latitude: 39.299236,
@@ -49,15 +51,27 @@ export default class IosMaps extends Component{
       this.state = {
         region: {
           latitude,
-          longitude
+          longitude,
+          trucks: []
         }
       }
       this._press = this._press.bind(this);
   }
+
+  componentDidMount() {
+    let { latitude, longitude } = this.props;
+    let maxLatitude = latitude + .05;
+    let minLatitude = latitude - .05;
+    let maxLongitude = longitude + .05;
+    let minLongitude = longitude - .05;
+    let coordsObj = { maxLatitude, minLatitude, maxLongitude, minLongitude };
+    getTrucks(coordsObj);
+  }
+
   _press(annotation){
     //this is where the truck info comes up at the bottom
     //pass a function in from the results page to display res info
-    
+
     this.props.onPress(annotation);
   }
   render(){
