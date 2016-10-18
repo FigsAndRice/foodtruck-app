@@ -38,8 +38,7 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     final String URL = "http://192.168.1.12:5000/api/restaurants/";
-    final LinearLayout layout = (LinearLayout) findViewById(R.id
-            .content);
+    private LinearLayout layout;
     protected static final String Cookie = "COOKIE_SAVE";
     private int status = -1;
     private RequestQueue queue;
@@ -54,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        layout = (LinearLayout) findViewById(R.id.content);
         queue = Volley.newRequestQueue(this);
         initLayout();
         addListeners();
@@ -291,7 +291,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -305,5 +305,6 @@ public class LoginActivity extends AppCompatActivity {
                         });
             }
         });
+        queue.add(jsonObjectRequest);
     }
 }
