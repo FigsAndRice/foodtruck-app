@@ -141,3 +141,9 @@ def change_password():
 @restaurants_app.route('/location', methods=['PUT'])
 def get_by_location():
 	content = request.get_json()
+
+	res = Restaurant.objects(lat__lte=content['maxLatitude'],
+		lat__gte=content['minLatitude'], lng__lte=content['maxLongitude'],
+		lng__gte=content['minLongitude'])
+
+	return jsonify(results= res)

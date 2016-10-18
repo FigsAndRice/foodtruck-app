@@ -33,13 +33,13 @@ class Restaurant(db.Document):
   	verbose_name=u'Hours',
     default=0
   )
-  lat = db.StringField(
+  lat = db.DecimalField(
   	verbose_name=u'Lat',
-    default='0'
+    default=0.00
   )
-  lng = db.StringField(
+  lng = db.DecimalField(
   	verbose_name=u'Lng',
-    default='0'
+    default=0.00
   )
   menu = db.ListField(db.StringField(verbose_name=u'Menu', max_length=50))
 
