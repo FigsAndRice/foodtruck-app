@@ -135,3 +135,16 @@ def profile():
 		})
 
 
+#First user must login
+#JSON requirements are email, old_pwd, new_pwd
+
+@restaurants_app.route('/passowrd', methods=['POST'])
+@login_required
+def change_password():
+	content = request.get_json()
+
+	user = Restaurant.objects(email=content['email'])
+
+	if not user:
+		return jsonify({"error": "Invalid email address."}), 400
+	
