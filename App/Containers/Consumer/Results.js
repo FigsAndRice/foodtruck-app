@@ -12,21 +12,27 @@ import styles from '../Styles/RootContainerStyle';
 class Results extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+          truck: ''
+        }
         this.displayName = 'Results';
+      this._onMarkerPress = this._onMarkerPress.bind(this);
+    }
+    _onMarkerPress(truck){
+      this.setState({truck})
     }
     render() {
       let mapView;
       let { lat, lng } = this.props.location;
       if(Platform.OS === 'ios'){
-        mapView = <IosMaps latitude={lat} longitude={lng} />;
+        mapView = <IosMaps onPress={this._onMarkerPress} latitude={lat} longitude={lng} />;
       } else {
         mapView = <View />;
       }
       return (
       	<View>
           {mapView}
-          {/* <RoundedButton onPress={NavigationActions.results}>Search</RoundedButton> */}
-          <TruckInfo />
+          <TruckInfo truck={this.state.truck}/>
     		</View>
       )
     }

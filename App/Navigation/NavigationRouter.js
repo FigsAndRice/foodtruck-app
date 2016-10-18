@@ -24,7 +24,6 @@ class NavigationRouter extends Component {
         <Scene key='editProfile' component={EditProfile} title="Edit Profile"/>
         <Scene key='userMenu' component={UserMenu} title='Menu' />
         <Scene key='menuEdit' component={MenuEdit} title='Edit Menu' />
-        {/* <Scene key='componentExamples' component={AllComponentsScreen} title='Components' /> */}
       </Router>
     )
   }

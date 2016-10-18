@@ -57,13 +57,6 @@ class RootContainer extends Component {
     return (
       <View style={styles.container} className="container">
         <Text style={styles.text}>Fook</Text>
-        {/* <TextInput
-            style={styles.textBox}
-            onChangeText={(text) => this.setState({search: text})}
-            value={this.state.search}
-            autoCorrect={false}
-            placeholder="Search"
-          /> */}
         <View style={inputStyle}>
         <RoundedButton style={inputStyle} onPress={this._enterCurrentLocation}>Current Location</RoundedButton>
         <GooglePlacesAutocomplete
@@ -97,7 +90,6 @@ class RootContainer extends Component {
               color: '#1faadb'
             },
           }}
-          // currentLocation={true}
           />
         </View>
         <RoundedButton onPress={NavigationActions.results}>Search</RoundedButton>
