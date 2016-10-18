@@ -143,8 +143,19 @@ def profile():
 def change_password():
 	content = request.get_json()
 
-	user = Restaurant.objects(email=content['email'])
+	user = Restaurant.objects(email=content['email']).first()
 
 	if not user:
-		return jsonify({"error": "Invalid email address."}), 400
-	
+		return jsonify({"error": "Invalid email address."}), 404
+	if not user.check_password(content['old_pwd']):
+		return jsonify({"error": "Old password is incorrect."}), 404
+
+	register = Register(pwd = content['new_pwd'])
+	check_password = register.check_password()
+	if check_password:
+		return (jsonify({'error': check_password}), 404)
+	user.set_password(content['new_pwd'])
+
+	user.save()
+
+	return jsonify({'message': 'Password updated.'})
