@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FookTruck</string>
+    <string name="cuisine">Cuisine</string>
     <string name="title_activity_food_truck_map">Food Truck Maps</string>
 </resources>

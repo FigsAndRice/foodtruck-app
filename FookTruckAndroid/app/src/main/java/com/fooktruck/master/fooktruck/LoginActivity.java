@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -49,9 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         queue = Volley.newRequestQueue(this);
         initLayout();
-
         addListeners();
-
     }
 
     @Override
@@ -212,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText signup_pwd = (EditText) signup.findViewById(R.id.signup_password);
         final EditText signup_pwd2 = (EditText) signup.findViewById(R.id.signup_password2);
         final EditText signup_email = (EditText) signup.findViewById(R.id.signup_email);
-
+        final Spinner signup_cuisine = (Spinner) signup.findViewById(R.id.cuisine);
 
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Create Account", new DialogInterface.OnClickListener() {
@@ -250,6 +250,11 @@ public class LoginActivity extends AppCompatActivity {
                         signup_pwd.setError("Field cannot be left blank.");
                     if (signup_pwd2.getText().length() == 0)
                         signup_pwd2.setError("Field cannot be left blank.");
+                    if (signup_cuisine.getSelectedItem().toString().equals("Cuisine")) {
+                        TextView errorText = (TextView)signup_cuisine.getSelectedView();
+                        errorText.setError("Field cannot be left blank.");
+                    }
+
                 }
 
                 else

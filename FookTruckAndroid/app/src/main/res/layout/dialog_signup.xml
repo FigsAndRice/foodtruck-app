@@ -50,5 +50,12 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:id="@+id/signup_password2" />
-
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cuisine"
+        android:spinnerMode="dialog"
+        android:prompt="@string/cuisine"
+        style="@android:style/Widget.Holo.Light.Spinner"
+        android:entries="@array/array_conditions"/>
 </LinearLayout>

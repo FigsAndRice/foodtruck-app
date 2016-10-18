@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_conditions">
+        <item>Cuisine</item>
+        <item>African</item>
+        <item>American</item>
+        <item>Asian</item>
+        <item>French</item>
+        <item>Italian</item>
+        <item>Indian</item>
+        <item>Mexican</item>
+        <item>Latin American</item>
+        <item>Middle Eastern</item>
+        <item>Fusion</item>
+    </string-array>
+</resources>
