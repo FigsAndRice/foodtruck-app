@@ -18,7 +18,8 @@ MAIL_USE_SSL = True
 
 #Mongo Settings
 MONGODB_SETTINGS = {
-	'db': 'food_truck_finder'
+	'db': 'food_truck_finder',
+	 'host': 'mongodb://juancafe2:admin@ds057066.mlab.com:57066/food_truck_finder'
 }
 
 #project settings

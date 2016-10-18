@@ -130,3 +130,14 @@ def change_password():
 	user.save()
 
 	return jsonify({'message': 'Password updated.'})
+
+
+'''
+	maxLatitude
+	minLatitude
+	maxLongitude
+	minLongitude
+'''
+@restaurants_app.route('/location', methods=['PUT'])
+def get_by_location():
+	content = request.get_json()
