@@ -97,6 +97,7 @@ def update(id):
 @restaurants_app.route('/login', methods=['POST'])
 def login():
 	content = request.get_json()
+	print 'json content %s' %content
 	email = content['email']
 
 	if 'email' in session:
