@@ -45,16 +45,13 @@ export default class IosMaps extends Component{
       super(props);
       this.displayName = 'Maps';
       let { latitude, longitude } = this.props;
+
       this.state = {
         region: {
           latitude,
           longitude
         }
       }
-    this.onRegionChange = this.onRegionChange.bind(this);
-  }
-  onRegionChange(region) {
-    this.setState({ region });
   }
   _press(annotation){
     //this is where the truck info comes up at the bottom
@@ -71,12 +68,10 @@ export default class IosMaps extends Component{
         <MapView
         style={{ height: 350, marginTop: 80, margin: 20 }}
         showsUserLocation={true}
-        // followUserLocation={true}
         region={this.state.region}
         maxDelta={0.2}
         minDelta={0.01}
         onAnnotationPress={this._press}
-        // onRegionChange={this.onRegionChange}
         annotations={mrks}
         zoomEnabled={true}
         />
@@ -84,5 +79,3 @@ export default class IosMaps extends Component{
     )
   }
 }
-
-// export default iosMaps;
