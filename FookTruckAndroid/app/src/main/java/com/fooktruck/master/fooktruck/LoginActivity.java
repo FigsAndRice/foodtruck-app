@@ -292,7 +292,9 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
+                        alertDialog.setTitle("Thanks for registering!");
+                        alertDialog.setMessage("Your account was created.");
+                        alertDialog.show();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -302,7 +304,7 @@ public class LoginActivity extends AppCompatActivity {
                     String errorMsg = new String(networkResponse.data);
                     errorMsg = trimMessage(errorMsg, "error");
                     Log.d("error message ", errorMsg);
-                    Snackbar snackbar = Snackbar.make(layout, errorMsg ,Snackbar.LENGTH_LONG)
+                    Snackbar snackbar = Snackbar.make(layout, errorMsg ,Snackbar.LENGTH_INDEFINITE)
                     .setAction("Close", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
