@@ -83,7 +83,8 @@ class Profile extends Component {
 
   openTruck() {
     let { id, name, email, cuisine, isOpen, hours, lat, lng, menu } = this.state;
-    let putObj = { id, name, email, cuisine, isOpen, hours, lat, lng, menu };
+    let _id = {$oid: id};
+    let putObj = { _id, name, email, cuisine, isOpen, hours, lat, lng, menu };
     if (!lat || !lng) {
       alert('Please verify location.');
       return;
@@ -109,10 +110,12 @@ class Profile extends Component {
         hours: putObj.hours
       });
     }
-    editProfile(this.state.id, putObj);
     AsyncStorage.setItem('user', JSON.stringify(putObj), () => {
       AsyncStorage.mergeItem('user', JSON.stringify(putObj));
     });
+    delete putObj._id;
+    delete putObj.email;
+    editProfile(this.state.id, putObj);
   }
 
   logoutProfile() {
