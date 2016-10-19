@@ -49,7 +49,6 @@ export function getProfile(cookie) {
 };
 
 export function editProfile(id, updateObj) {
-  console.log('updateObj:', updateObj)
   axios.put(`http://localhost:5000/api/restaurants/${id}`, updateObj)
     .then(res => {
       return res.data;

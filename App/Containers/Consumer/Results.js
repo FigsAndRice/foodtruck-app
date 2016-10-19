@@ -24,7 +24,7 @@ class Results extends Component {
     render() {
       let mapView;
       let { lat, lng } = this.props.location;
-      
+
       if(Platform.OS === 'ios'){
         mapView = <IosMaps onPress={this._onMarkerPress} latitude={lat} longitude={lng} />;
       } else {
@@ -41,13 +41,8 @@ class Results extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    location: state.location
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // setLocation: (lat, lng) => { dispatch(setLocation(lat, lng)) }
+    location: state.location,
+    trucks: state.trucks
   }
 }
 

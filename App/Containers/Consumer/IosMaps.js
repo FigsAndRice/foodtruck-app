@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, MapView } from 'react-native';
+import { connect } from 'react-redux';
+import { View, MapView, Text } from 'react-native';
 
 import { getTrucks } from '../../Redux/Actions/LocationActions';
 
@@ -42,7 +43,7 @@ let markers = [
   }
 ]
 
-export default class IosMaps extends Component{
+class IosMaps extends Component{
   constructor(props) {
       super(props);
       this.displayName = 'Maps';
@@ -71,10 +72,19 @@ export default class IosMaps extends Component{
   _press(annotation){
     //this is where the truck info comes up at the bottom
     //pass a function in from the results page to display res info
-
+    console.log('this.props.trucks:', this.props.trucks)
     this.props.onPress(annotation);
   }
   render(){
+    console.log('this.props:', this.props)
+    let latitude;
+    if(!this.props.trucks){
+      latitude = "null"
+    } else {
+      // latitude = this.props.trucks[0].lat;
+      latitude = "data"
+    }
+
     let mrks = markers.map(marker => {
       let { latitude, longitude, title } = marker;
       return marker
@@ -91,7 +101,16 @@ export default class IosMaps extends Component{
         annotations={mrks}
         zoomEnabled={true}
         />
+        <Text>{latitude}</Text>
       </View>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    trucks: state.trucks
+  }
+}
+
+export default connect(mapStateToProps, null)(IosMaps);
