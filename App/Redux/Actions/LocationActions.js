@@ -11,15 +11,26 @@ export function setLocation(lat, lng){
   }
 }
 
-export function getTrucks(coordsObj) {
-  const api = create({
-    baseURL: 'http://localhost:5000',
-    headers: {'Content-Type': 'application/json'}
-  })
+export function receiveTrucks(trucks){
+  return {
+    type: 'RECEIVE_TRUCKS',
+    payload: {
+      trucks
+    }
+  }
+}
 
-  api.put('/api/restaurants/location', coordsObj)
+export function getTrucks(coordsObj) {
+  return dispatch => {
+    const api = create({
+      baseURL: 'http://localhost:5000',
+      headers: {'Content-Type': 'application/json'}
+    })
+
+    api.put('/api/restaurants/location', coordsObj)
     .then(res => {
-      return res.data
+      dispatch(receiveTrucks(res.data.results))
     })
     .catch(console.error)
+  }
 }

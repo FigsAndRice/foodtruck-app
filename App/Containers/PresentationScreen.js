@@ -6,7 +6,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 
 import RoundedButton from './Components/RoundedButton';
 import YellowButton from './Components/YellowButton';
-import { setLocation } from '../Redux/Actions/LocationActions'
+import { setLocation, getTrucks } from '../Redux/Actions/LocationActions'
 
 import styles from './Styles/RootContainerStyle';
 
