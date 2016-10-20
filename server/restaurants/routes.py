@@ -9,8 +9,12 @@ restaurants_app = Blueprint('restaurants_app', __name__)
 
 @restaurants_app.before_request
 def check_time():
-	#divide by 1000
-	print 'We are being called %d' % time()
+	#divide by 1000 the json request 
+	actual_time = time()
+	users = Restaurant.objects
+
+	for user in users:
+		print user.email
 
 #Register route
 @restaurants_app.route('/register', methods=['POST'])
