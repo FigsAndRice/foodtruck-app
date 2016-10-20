@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, StatusBar, Text, TextInput, StyleSheet, Picker, TouchableHighlight } from 'react-native';
+import { Actions as NavigationActions } from 'react-native-router-flux';
 
 import styles from '../Styles/RootContainerStyle';
 import { register } from '../../Redux/Actions/UserActions';
@@ -38,6 +39,11 @@ class Register extends Component {
     } else {
       alert("Please fill out all fields.");
     }
+  }
+
+  cancel() {
+    // SEND BACK TO SPLASH SCREEN
+    NavigationActions.pop();
   }
 
   render(){
@@ -86,9 +92,14 @@ class Register extends Component {
           value={this.state.password2}
           secureTextEntry={true}
         />
-        <TouchableHighlight style={style.button} onPress={this._onPressButton}>
-            <Text>Register</Text>
-        </TouchableHighlight>
+        <View style={styles.inline}>
+          <TouchableHighlight style={style.cancelButton} onPress={this.cancel}>
+              <Text>Cancel</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style={style.button} onPress={this._onPressButton}>
+              <Text>Register</Text>
+          </TouchableHighlight>
+        </View>
       </View>
       // </ScrollView>
     )
@@ -102,12 +113,25 @@ const style = {
   button: {
     // width: 100,
     padding: 15,
+    backgroundColor: '#FFFF8D',
+    borderStyle: 'solid',
+    borderColor: 'white',
+    borderWidth: 2,
+    borderRadius: 10,
+    elevation: 10,
+    margin: 20
+    // textAlign: 'center',
+  },
+  cancelButton: {
+    // width: 100,
+    padding: 15,
     backgroundColor: '#e7e7e7',
     borderStyle: 'solid',
     borderColor: 'white',
     borderWidth: 2,
     borderRadius: 10,
     elevation: 10,
+    margin: 20
     // textAlign: 'center',
   }
 }
