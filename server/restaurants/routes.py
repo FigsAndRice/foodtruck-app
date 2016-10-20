@@ -12,9 +12,11 @@ def check_time():
 	#divide by 1000 the json request 
 	actual_time = time()
 	users = Restaurant.objects
-
+	print actual_time
 	for user in users:
-		print user.email
+		user_time = float(user.hours) / 1000
+		if user.isOpen and actual_time >= user_time:
+			user.modify(**dict(isOpen=False, hours=0))
 
 #Register route
 @restaurants_app.route('/register', methods=['POST'])
