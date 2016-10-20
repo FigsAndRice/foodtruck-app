@@ -147,12 +147,16 @@ def get_by_location():
 
 	return jsonify(results= res)
 
+
+#Conditions email=email_address
 @restaurants_app.route('/reset', methods=['POST'])
 def reset_password():
 	content = request.get_json()
 
 	user = Restaurant.objects(email=content['email']).first()
 	if user:
-		return user.get_token()
+		token = user.get_token()
+		print(token.split('.', 2))
+		return token
 
 	return jsonify({'error': 'Email not found.'}), 404
