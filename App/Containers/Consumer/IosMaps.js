@@ -74,23 +74,29 @@ class IosMaps extends Component{
   _press(annotation){
     //this is where the truck info comes up at the bottom
     //pass a function in from the results page to display res info
-    console.log('this.props.trucks:', this.props.trucks)
+    console.log('annotation:', annotation)
     this.props.onPress(annotation);
   }
   render(){
     console.log('this.props:', this.props)
-    let latitude;
+    let mrks;
+
     if(!this.props.trucks){
-      latitude = "null"
+      mrks = []
     } else {
-      // latitude = this.props.trucks[0].lat;
-      latitude = "data"
+      mrks = this.props.trucks.map(marker => {
+         let { lat, lng, name, _id } = marker;
+
+         let pin = {
+           latitude: lat,
+           longitude: lng,
+           title: name,
+           id: _id.$oid
+         }
+         return pin
+       })
     }
 
-    let mrks = markers.map(marker => {
-      let { latitude, longitude, title } = marker;
-      return marker
-    })
     return(
       <View>
         <MapView
@@ -103,7 +109,6 @@ class IosMaps extends Component{
         annotations={mrks}
         zoomEnabled={true}
         />
-        <Text>{latitude}</Text>
       </View>
     )
   }
