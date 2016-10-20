@@ -2,7 +2,6 @@ from flask import Blueprint, request, jsonify, session
 from restaurants.models import Restaurant
 from restaurants.middlewares import Register
 from decorators import login_required
-
 restaurants_app = Blueprint('restaurants_app', __name__)
 
 #Register route
@@ -147,3 +146,5 @@ def get_by_location():
 		lng__gte=content['minLongitude'])
 
 	return jsonify(results= res)
+
+
