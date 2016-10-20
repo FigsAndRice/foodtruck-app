@@ -159,29 +159,38 @@ def get_token():
 	if user:
 		token = user.get_token()
 		token = token.split('.', 2)[2]
-		ccontent['token'] = token
+		content['token'] = token
+		content['name'] = user['name']
 		reset = Reset(**content)
 		reset.send_email()
-		return jsonify({"token": token})
+		return jsonify({"message": token})
 
 	return jsonify({'error': 'Email not found.'}), 404
 
 
 #email, new_pwd, token
-@restaurants_app.route('/secret', methods=['POST'])
+@restaurants_app.route('/reset', methods=['POST'])
 def reset_password():
 	content = request.get_json()
 
 	user = Restaurant.objects(email=content['email']).first()
 
 	if not user:
-		return jsonify({'error': 'Email not found.'}), 404
+		return jsonify({'error': 'Email not found.'}), 400
 	try:
 		user.check_token_password(content['token'])
 	except SignatureExpired:
-		return jsonify({"error": "Your token has expired."}), 404
+		return jsonify({"error": "Your token has expired."}), 400
 	except BadData:
-		return jsonify({'error': 'Wrong token.'}), 404
+		return jsonify({'error': 'Wrong token.'}), 400
 	
+	rg = Register(**dict(pwd=content['new_pwd']))
+	check_password = rg.check_password()
+	if check_password:
+		return (jsonify({'error': check_password}), 400)
 
-	#user.change_password(content['new_pwd'])
+
+	user.change_password(content['new_pwd'])
+	user.save()
+
+	return jsonify({"message": "Password changed."})

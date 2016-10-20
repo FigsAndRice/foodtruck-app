@@ -101,6 +101,8 @@ class Reset():
     def __init__(self,  **kwargs):
         for (k, v) in kwargs.items():
          setattr(self, k, v)
+
+
     def send_email(self):
         sender = current_app.config['MAIL_DEFAULT_SENDER']
         msg = Message(
@@ -119,5 +121,5 @@ class Reset():
             'reset_password.html', **context
         )
         msg.html = html
-
+        mail.send(msg)
 
