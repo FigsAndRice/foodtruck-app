@@ -1,7 +1,8 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import TimedSerializer, BadData, SignatureExpired
+
 class Restaurant(db.Document):
   name = db.StringField(
     verbose_name=u'Name',
@@ -59,5 +60,7 @@ class Restaurant(db.Document):
     return check_password_hash(self.pwd, password)
 
   def get_token(self):
-    s = Serializer(current_app.config['SECRET_KEY'], 5)
-    return s.dumps({'user': self.id}).decode('utf-8')  
+    reset_serializer = TimedSerializer(current_app.config['SECRET_KEY'])
+    token = reset_serializer.dumps(self.email)
+    return token
+
