@@ -308,7 +308,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 NetworkResponse networkResponse = error.networkResponse;
-                if (networkResponse != null && networkResponse.statusCode == 404) {
+                if (networkResponse != null && networkResponse.statusCode == 400) {
                     String errorMsg = new String(networkResponse.data);
                     errorMsg = trimMessage(errorMsg, "error");
                     Log.d("error message ", errorMsg);
@@ -371,8 +371,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 else
                     try {
-                        get_token(forgot_email.getText().toString());
-                        //alertDialog.dismiss();
+                        get_token(forgot_email.getText().toString(), alertDialog);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -382,7 +382,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public boolean get_token(String email) throws JSONException {
+    public void get_token(String email, final AlertDialog alertDialog) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("email", email);
 
@@ -390,16 +390,38 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Snackbar snackbar = Snackbar.make(layout, "Token has been sent. Please check your email." ,Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Close", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
 
+                                    }
+                                });
+                        snackbar.show();
+                        alertDialog.dismiss();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode == 400) {
+                            String errorMsg = new String(networkResponse.data);
+                            errorMsg = trimMessage(errorMsg, "error");
+                            Log.d("error message ", errorMsg);
+                            Snackbar snackbar = Snackbar.make(layout, errorMsg ,Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("Close", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                        }
+                                    });
+                            snackbar.show();
+                        }
                     }
                 }
         );
-        return false;
+
+        queue.add(jsonObjectRequest);
     }
 }
