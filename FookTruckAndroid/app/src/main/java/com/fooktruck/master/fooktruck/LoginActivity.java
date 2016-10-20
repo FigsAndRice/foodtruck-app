@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                forgot_password();
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -339,5 +339,28 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return trimmedString;
+    }
+
+    public void forgot_password() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+        View forgot = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
+        alertDialog.setView(forgot);
+
+        final EditText signup_name = (EditText) forgot.findViewById(R.id.forgot_email);
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Send Token!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 }
