@@ -19,10 +19,13 @@ class Results extends Component {
       this._onMarkerPress = this._onMarkerPress.bind(this);
     }
     _onMarkerPress(truck){
-      this.setState({truck})
+      let decodeTruck = decodeURIComponent(truck.id);
+      let passTruck = this.props.trucks.filter(truck => truck._id.$oid === decodeTruck ? truck : null)
+      this.setState({ truck: passTruck[0] });
     }
     render() {
       let mapView;
+      let truckView;
       let { lat, lng } = this.props.location;
 
       if(Platform.OS === 'ios'){
@@ -30,10 +33,15 @@ class Results extends Component {
       } else {
         mapView = <View />;
       }
+      if(!this.state.truck){
+        truckView = <View />
+      } else {
+        truckView = <TruckInfo truck={this.state.truck}/>
+      }
       return (
       	<View>
           {mapView}
-          <TruckInfo truck={this.state.truck}/>
+          {truckView}
     		</View>
       )
     }
