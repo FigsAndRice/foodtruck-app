@@ -45,6 +45,6 @@ android/keystores/debug.keystore
 server/*.pyc
 sever/restaurants/*.pyc
 server/venv
-
+server/.env
 #ios
 ios/Pods/
