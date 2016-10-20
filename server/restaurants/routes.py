@@ -157,7 +157,7 @@ def get_by_location():
 
 	res = Restaurant.objects(lat__lte=content['maxLatitude'],
 		lat__gte=content['minLatitude'], lng__lte=content['maxLongitude'],
-		lng__gte=content['minLongitude'])
+		lng__gte=content['minLongitude'], isOpen=True)
 
 	return jsonify(results= res)
 
