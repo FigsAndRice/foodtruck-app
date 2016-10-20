@@ -10,20 +10,7 @@ class UserMenu extends Component {
     // Hardcoded data
     this.state = {
       dataSource: ds.cloneWithRows([
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Rice',price: '20.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Tikka',price: '10.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Masala',price: '9.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Pepper Chicken',price: '11.50' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken 65',price: '15.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Tandoori Chicken',price: '7.89' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Lolipop',price: '6.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Curry',price: '8.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Biriyani',price: '25.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Gravy',price: '20.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Masala',price: '9.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Pepper Chicken',price: '11.50' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken 65',price: '15.99' },
-        {details: 'this is made abfaiub basidu halalguys bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Tandoori Chicken',price: '7.89' }
+        // Results Array
       ])
     };
   }
