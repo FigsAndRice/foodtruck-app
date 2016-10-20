@@ -12,7 +12,7 @@ def check_time():
 	#divide by 1000 the json request 
 	actual_time = time()
 	users = Restaurant.objects
-	print actual_time
+	print actual_time	
 	for user in users:
 		user_time = float(user.hours) / 1000
 		if user.isOpen and actual_time >= user_time:
@@ -157,7 +157,7 @@ def get_by_location():
 
 	res = Restaurant.objects(lat__lte=content['maxLatitude'],
 		lat__gte=content['minLatitude'], lng__lte=content['maxLongitude'],
-		lng__gte=content['minLongitude'])
+		lng__gte=content['minLongitude'], isOpen=True)
 
 	return jsonify(results= res)
 
@@ -176,7 +176,7 @@ def get_token():
 		content['name'] = user['name']
 		reset = Reset(**content)
 		reset.send_email()
-		return jsonify({"message": token})
+		return jsonify({"message": "Token has been sent."})
 
 	return jsonify({'error': 'Email not found.'}), 404
 
