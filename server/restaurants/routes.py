@@ -176,7 +176,7 @@ def reset_password():
 	try:
 		user.check_token_password(content['token'])
 	except SignatureExpired:
-		return jsonify({"error": "Your token has expired."})
+		return jsonify({"error": "Your token has expired."}), 404
 	except BadData:
-		return jsonify({'error': 'Wrong token.'})
+		return jsonify({'error': 'Wrong token.'}), 404
 	return 'good token'

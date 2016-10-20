@@ -68,6 +68,6 @@ class Restaurant(db.Document):
     serializer = TimedSerializer(current_app.config['SECRET_KEY'])
     full_token = '"' + self.email + '".' + token
 
-    return serializer.loads(full_token, max_age=300)
+    return serializer.loads(full_token, max_age=1800)
     
 
