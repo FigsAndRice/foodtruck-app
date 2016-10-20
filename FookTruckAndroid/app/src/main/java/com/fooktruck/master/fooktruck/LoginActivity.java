@@ -1,5 +1,6 @@
 package com.fooktruck.master.fooktruck;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -343,7 +345,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void forgot_password() {
         final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-        View forgot = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
+        final View forgot = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
         alertDialog.setView(forgot);
 
         final EditText forgot_email = (EditText) forgot.findViewById(R.id.forgot_email);
@@ -371,6 +373,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 else
                     try {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(forgot.getWindowToken(), 0);
                         get_token(forgot_email.getText().toString(), alertDialog);
 
                     } catch (JSONException e) {
