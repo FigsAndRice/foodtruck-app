@@ -110,7 +110,6 @@ class Reset():
             sender=sender,
             recipients=[self.email]
         )
-
         context = dict(
             name=self.name,
             email=self.email,
@@ -122,4 +121,3 @@ class Reset():
         )
         msg.html = html
         mail.send(msg)
-

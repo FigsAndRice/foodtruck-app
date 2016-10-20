@@ -33,7 +33,7 @@ class Login extends Component {
 
   cancel() {
     // SEND BACK TO SPLASH SCREEN
-    NavigationActions.presentationScreen();
+    NavigationActions.pop();
   }
 
   render() {

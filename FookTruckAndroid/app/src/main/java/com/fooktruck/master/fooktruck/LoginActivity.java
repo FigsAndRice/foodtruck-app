@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     protected EditText password;
     protected Button login;
     protected Button newUser;
+    protected Button forgot;
     protected ProgressBar loading;
 
     @Override
@@ -70,11 +71,18 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         login = (Button) findViewById(R.id.loginbtn);
+        forgot= (Button) findViewById(R.id.forgotbtn);
         newUser = (Button) findViewById(R.id.register);
         loading = (ProgressBar) findViewById(R.id.loading_profile);
         loading.setVisibility(View.INVISIBLE);
     }
     public void addListeners() {
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
