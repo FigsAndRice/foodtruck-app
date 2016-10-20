@@ -3,7 +3,14 @@ from restaurants.models import Restaurant
 from restaurants.middlewares import Register, Reset
 from decorators import login_required
 from itsdangerous import BadData, SignatureExpired
+from time import time 
 restaurants_app = Blueprint('restaurants_app', __name__)
+
+
+@restaurants_app.before_request
+def check_time():
+	#divide by 1000
+	print 'We are being called %d' % time()
 
 #Register route
 @restaurants_app.route('/register', methods=['POST'])
