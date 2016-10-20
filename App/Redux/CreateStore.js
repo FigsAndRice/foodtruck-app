@@ -5,14 +5,17 @@ import { autoRehydrate, persistStore } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga'
 import reducers from './Reducers';
 
+import mySaga from './Reducers/sagas';
 
-const middleware = applyMiddleware(createSagaMiddleware(), logger());
-
+const sagaMiddlware = createSagaMiddleware();
+const middleware = applyMiddleware(sagaMiddlware, logger());
 
 const store = createStore(reducers, compose(
     middleware, autoRehydrate()
   ));
 
 persistStore(store, {storage: AsyncStorage});
+
+sagaMiddlware.run(mySaga);
 
 export default store;

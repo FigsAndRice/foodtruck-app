@@ -66,7 +66,9 @@ class IosMaps extends Component{
     let maxLongitude = longitude + .05;
     let minLongitude = longitude - .05;
     let coordsObj = { maxLatitude, minLatitude, maxLongitude, minLongitude };
-    getTrucks(coordsObj);
+    // getTrucks(coordsObj);
+    const { dispatch } = this.props;
+    dispatch({type: 'GET_TRUCKS', payload: coordsObj })
   }
 
   _press(annotation){
