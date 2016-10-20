@@ -60,7 +60,14 @@ class Restaurant(db.Document):
     return check_password_hash(self.pwd, password)
 
   def get_token(self):
-    reset_serializer = TimedSerializer(current_app.config['SECRET_KEY'])
-    token = reset_serializer.dumps(self.email)
+    serializer = TimedSerializer(current_app.config['SECRET_KEY'])
+    token = serializer.dumps(self.email)
     return token
+
+  def check_token_password(self, token):
+    serializer = TimedSerializer(current_app.config['SECRET_KEY'])
+    full_token = '"' + self.email + '".' + token
+
+    return serializer.loads(full_token, max_age=300)
+    
 

@@ -149,8 +149,9 @@ def get_by_location():
 
 
 #Conditions email=email_address
-@restaurants_app.route('/reset', methods=['POST'])
-def reset_password():
+#gets token from user 
+@restaurants_app.route('/token', methods=['POST'])
+def get_token():
 	content = request.get_json()
 
 	user = Restaurant.objects(email=content['email']).first()
@@ -160,3 +161,22 @@ def reset_password():
 		return token
 
 	return jsonify({'error': 'Email not found.'}), 404
+
+
+#email, new_pwd, token
+@restaurants_app.route('/secret', methods=['POST'])
+def reset_password():
+	content = request.get_json()
+
+	user = Restaurant.objects(email=content['email']).first()
+
+	if not user:
+		return jsonify({'error': 'Email not found.'}), 404
+	try:
+		user.check_token_password()
+	except SignatureExpired:
+      return "Your token has expired."
+  except BadSignature:
+  	return "Wrong token."
+
+  return 'good token'
