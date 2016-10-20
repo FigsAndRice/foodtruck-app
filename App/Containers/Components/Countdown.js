@@ -42,6 +42,18 @@ export default class Countdown extends Component {
     }
   }
 
+  componentWillReceiveNextProps() {
+    if (this.props.hours) {
+      let { hours } = this.props;
+      this.setState({
+        hoursLeft: Math.floor(((hours - Date.now()) / 1000 / 60 / 60) % 60),
+        minutesLeft: Math.floor(((hours - Date.now()) / 1000 / 60) % 60),
+        secondsLeft: Math.floor(((hours - Date.now()) / 1000) % 60)
+      });
+      this.timer = window.setInterval(this.tick, 1000);
+    }
+  }
+
   componentWillUnmount() {
     window.clearInterval(this.timer);
   }
