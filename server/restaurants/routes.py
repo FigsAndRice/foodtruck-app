@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, session
 from restaurants.models import Restaurant
 from restaurants.middlewares import Register
 from decorators import login_required
+from itsdangerous import BadData, SignatureExpired
 restaurants_app = Blueprint('restaurants_app', __name__)
 
 #Register route
@@ -173,10 +174,9 @@ def reset_password():
 	if not user:
 		return jsonify({'error': 'Email not found.'}), 404
 	try:
-		user.check_token_password()
+		user.check_token_password(content['token'])
 	except SignatureExpired:
-      return "Your token has expired."
-  except BadSignature:
-  	return "Wrong token."
-
-  return 'good token'
+		return jsonify({"error": "Your token has expired."})
+	except BadData:
+		return jsonify({'error': 'Wrong token.'})
+	return 'good token'

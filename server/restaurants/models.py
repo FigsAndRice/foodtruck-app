@@ -1,7 +1,7 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
-from itsdangerous import TimedSerializer, BadData, SignatureExpired
+from itsdangerous import TimedSerializer
 
 class Restaurant(db.Document):
   name = db.StringField(
