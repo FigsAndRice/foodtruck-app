@@ -178,7 +178,7 @@ def get_token():
 		reset.send_email()
 		return jsonify({"message": "Token has been sent."})
 
-	return jsonify({'error': 'Email not found.'}), 404
+	return jsonify({'error': 'Email not found.'}), 400
 
 
 #email, new_pwd, token
