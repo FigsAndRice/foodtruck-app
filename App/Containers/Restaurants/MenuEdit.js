@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Alert,
   Modal,
   Image,
   View,
@@ -19,25 +20,58 @@ class MenuEdit extends Component {
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    // Hardcoded data
+    var foods = [];
+
     this.state = {
       addModalVisible: false,
+      editModalVisible: false,
+      editItem: '',
+      editPrice: '',
       itemName: '',
       itemPrice: '',
-      dataSource: ds.cloneWithRows([
-        // Menu Array
-      ])
+      dataSource: ds.cloneWithRows(foods),
+      // foods: [];
+      db: foods,
+      editf: ""
     };
+
     this._onAddPressed=this._onAddPressed.bind(this);
     this.addToMenu=this.addToMenu.bind(this);
+    this._onDeletePressed=this._onDeletePressed.bind(this);
+    this._onEditPressed=this._onEditPressed.bind(this);
+    this.updateToMenu=this.updateToMenu.bind(this);
+
   }
 
   _onEditPressed(data) {
-    alert("clicked edit "+data.food);
+    // window.prompt("clicked edit "+data.food);
+    this.setState({
+      editModalVisible: true,
+      editItem: data.food,
+      editPrice: data.price,
+      editf: data.food
+    });
   }
 
   _onDeletePressed(data) {
-    alert("clicked delete "+data.food);
+    let { db } = this.state;
+    let foods = db.filter(item => item.food !== data.food);
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.setState({ dataSource: ds.cloneWithRows(foods), db: foods });
+    // alert("clicked delete "+data.food);
+  }
+
+  updateToMenu(){
+    let { db } = this.state;
+    let item = { food: this.state.editItem, price: this.state.editPrice};
+    if (item.food !== '' && item.price !== '') {
+      let index = db.findIndex(x =>x.food === this.state.editf);
+      console.log("index:",index);
+      db[index] = item;
+      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+      this.setState({ dataSource: ds.cloneWithRows(db), db, editItem: "", editPrice: "" });
+      this.editModalVisible(false);
+    }
   }
 
   _onAddPressed() {
@@ -50,13 +84,68 @@ class MenuEdit extends Component {
     this.setState({addModalVisible: visible});
   }
 
+  editModalVisible(visible) {
+    this.setState({editModalVisible: visible});
+  }
+
   addToMenu() {
-    alert("Adding to menu "+this.state.itemName+" priced $"+this.state.itemPrice);
+    let { db } = this.state;
+    let item = { food: this.state.itemName, price: this.state.itemPrice};
+    if (item.food !== '' && item.price !== '') {
+      let data = db.concat(item);
+      // console.log(data);
+      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+      this.setState({ dataSource: ds.cloneWithRows(data), db: data, itemName: "", itemPrice: "" });
+      this.setModalVisible(false);
+    }
   }
 
   render() {
     return (
       <View style= {styles.container}>
+      {/*  Edit menu Modal*/}
+      <Modal
+        animationType={"slide"}
+        transparent={false}
+        visible={this.state.editModalVisible}
+        onRequestClose={() => {alert("Modal has been closed.")}}
+        >
+        <View style={{marginTop: 22, alignSelf: 'center'}}>
+        <View style={{marginTop: 50}}>
+          <Text style={{alignSelf:'center'}}>EDIT ITEM</Text>
+          <TextInput
+            onChangeText={(text) => this.setState({editItem: text})}
+            style={textBox}
+            placeholder="ITEM NAME"
+            value={this.state.editItem} />
+          <TextInput
+            onChangeText={(text) => this.setState({editPrice: text})}
+            style={textBox}
+            keyboardType="numeric"
+            placeholder="PRICE"
+            value={this.state.editPrice} />
+        </View>
+          <View style={modalClose}>
+            <TouchableHighlight
+              onPress={this.updateToMenu}
+              style={saveButton}
+            >
+              <Text style={{alignSelf: 'center',color:'white'}}>Update</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={closeButton}
+              onPress={() => {
+                this.editModalVisible(false)
+              }}
+            >
+              <Text style={{alignSelf: 'center',color:'white'}}>Cancel</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
+
+
+      {/*  Add to Menu modal*/}
         <Modal
           animationType={"slide"}
           transparent={false}
@@ -69,12 +158,14 @@ class MenuEdit extends Component {
             <TextInput
               onChangeText={(text) => this.setState({itemName: text})}
               style={textBox}
-              placeholder="ITEM NAME"/>
+              placeholder="ITEM NAME"
+              required />
             <TextInput
               onChangeText={(text) => this.setState({itemPrice: text})}
               style={textBox}
               keyboardType="numeric"
-              placeholder="PRICE"/>
+              placeholder="PRICE"
+              required />
           </View>
             <View style={modalClose}>
               <TouchableHighlight
@@ -89,12 +180,13 @@ class MenuEdit extends Component {
                   this.setModalVisible(false)
                 }}
               >
-                <Text style={{alignSelf: 'center',color:'white'}}>Close</Text>
+                <Text style={{alignSelf: 'center',color:'white'}}>Cancel</Text>
               </TouchableHighlight>
             </View>
           </View>
         </Modal>
       <ListView
+        enableEmptySections = {true}
         style = {listStyle}
         dataSource = {this.state.dataSource}
         renderRow = {(rowData) => { return (
