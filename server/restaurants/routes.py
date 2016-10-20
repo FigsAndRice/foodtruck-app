@@ -156,7 +156,7 @@ def reset_password():
 	user = Restaurant.objects(email=content['email']).first()
 	if user:
 		token = user.get_token()
-		print(token.split('.', 2))
+		token = token.split('.', 2)[2]
 		return token
 
 	return jsonify({'error': 'Email not found.'}), 404
