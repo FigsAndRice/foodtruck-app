@@ -25,7 +25,7 @@ class TruckInfo extends Component {
       <View>
         <View style={itemStyle}>
           <Image
-          style={{width: 150, height: 150}}
+          style={{width: 125, height: 125}}
           source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}} />
             <View style={infoStyle}>
               <Text>Restaurant Name</Text>
