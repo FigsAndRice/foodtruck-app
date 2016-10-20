@@ -4,45 +4,6 @@ import { View, MapView, Text } from 'react-native';
 
 import { getTrucks } from '../../Redux/Actions/LocationActions';
 
-let markers = [
-  {
-    latitude: 39.299236,
-    longitude: -76.609383,
-    title: 'Center',
-    subtitle: '1234 Foo Drive',
-  },
-  {
-    latitude: 39.249236,
-    longitude: -76.609383,
-    title: 'Foo Place',
-    subtitle: '1234 Foo Drive'
-  },
-  {
-    latitude: 39.349236,
-    longitude: -76.609383,
-    title: 'Foo Place',
-    subtitle: '1234 Foo Drive'
-  },
-  {
-    latitude: 39.299236,
-    longitude: -76.659383,
-    title: 'Foo Place',
-    subtitle: '1234 Foo Drive'
-  },
-  {
-    latitude: 39.299236,
-    longitude: -76.559383,
-    title: 'Foo Place',
-    subtitle: '1234 Foo Drive'
-  },
-  {
-    latitude: 39.298336,
-    longitude: -76.568383,
-    title: 'Foo Place',
-    subtitle: '1234 Foo Drive'
-  }
-]
-
 class IosMaps extends Component{
   constructor(props) {
       super(props);
@@ -74,11 +35,9 @@ class IosMaps extends Component{
   _press(annotation){
     //this is where the truck info comes up at the bottom
     //pass a function in from the results page to display res info
-    console.log('annotation:', annotation)
     this.props.onPress(annotation);
   }
   render(){
-    console.log('this.props:', this.props)
     let mrks;
 
     if(!this.props.trucks){

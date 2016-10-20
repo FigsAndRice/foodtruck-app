@@ -20,7 +20,6 @@ class TruckInfo extends Component {
 
   render() {
    let { truck } = this.props;
-   console.log('truck:', truck.hours)
     return (
       <View>
         <View style={itemStyle}>
@@ -29,7 +28,7 @@ class TruckInfo extends Component {
           source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}} />
             <View style={infoStyle}>
               <Text>Restaurant Name</Text>
-              <Countdown hours={truck.hours} />
+              <Countdown />
               <Text>{truck.name}</Text>
               <RoundedButton onPress={NavigationActions.results}> M e n u </RoundedButton>
             </View>

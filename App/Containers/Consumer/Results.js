@@ -19,8 +19,11 @@ class Results extends Component {
       this._onMarkerPress = this._onMarkerPress.bind(this);
     }
     _onMarkerPress(truck){
+      let { dispatch } = this.props;
       let decodeTruck = decodeURIComponent(truck.id);
       let passTruck = this.props.trucks.filter(truck => truck._id.$oid === decodeTruck ? truck : null)
+      console.log('passTruck[0].hours:', passTruck[0].hours)
+      dispatch({type: 'SET_HOURS', payload: passTruck[0].hours })
       this.setState({ truck: passTruck[0] });
     }
     render() {
@@ -36,7 +39,7 @@ class Results extends Component {
       if(!this.state.truck){
         truckView = <View />
       } else {
-        truckView = <TruckInfo truck={this.state.truck}/>
+        truckView = <TruckInfo hours={this.state.hours} truck={this.state.truck}/>
       }
       return (
       	<View>

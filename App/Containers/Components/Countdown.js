@@ -11,7 +11,7 @@ const style = {
   }
 }
 
-export default class Countdown extends Component {
+class Countdown extends Component {
   constructor(props) {
     super(props);
 
@@ -42,7 +42,7 @@ export default class Countdown extends Component {
     }
   }
 
-  componentWillReceiveNextProps() {
+  componentWillReceiveProps() {
     if (this.props.hours) {
       let { hours } = this.props;
       this.setState({
@@ -95,3 +95,11 @@ export default class Countdown extends Component {
   }
 
 }
+
+const mapStateToProps = (state) => {
+  return {
+    hours: state.hours
+  }
+}
+
+export default connect(mapStateToProps)(Countdown)
