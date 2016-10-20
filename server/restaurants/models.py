@@ -45,7 +45,7 @@ class Restaurant(db.Document):
     default=0.00,
     precision=9
   )
-  menu = db.ListField(db.StringField(verbose_name=u'Menu', max_length=50))
+  menu = db.ListField(db.DictField(verbose_name=u'Menu'))
 
   def __unicode__(self):
     return self.email
