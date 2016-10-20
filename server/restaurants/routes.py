@@ -1,9 +1,22 @@
 from flask import Blueprint, request, jsonify, session
 from restaurants.models import Restaurant
-from restaurants.middlewares import Register
+from restaurants.middlewares import Register, Reset
 from decorators import login_required
-
+from itsdangerous import BadData, SignatureExpired
+from time import time 
 restaurants_app = Blueprint('restaurants_app', __name__)
+
+
+@restaurants_app.before_request
+def check_time():
+	#divide by 1000 the json request 
+	actual_time = time()
+	users = Restaurant.objects
+	print actual_time
+	for user in users:
+		user_time = float(user.hours) / 1000
+		if user.isOpen and actual_time >= user_time:
+			user.modify(**dict(isOpen=False, hours=0))
 
 #Register route
 @restaurants_app.route('/register', methods=['POST'])
@@ -147,3 +160,50 @@ def get_by_location():
 		lng__gte=content['minLongitude'])
 
 	return jsonify(results= res)
+
+
+#Conditions email=email_address
+#gets token from user 
+@restaurants_app.route('/token', methods=['POST'])
+def get_token():
+	content = request.get_json()
+
+	user = Restaurant.objects(email=content['email']).first()
+	if user:
+		token = user.get_token()
+		token = token.split('.', 2)[2]
+		content['token'] = token
+		content['name'] = user['name']
+		reset = Reset(**content)
+		reset.send_email()
+		return jsonify({"message": token})
+
+	return jsonify({'error': 'Email not found.'}), 404
+
+
+#email, new_pwd, token
+@restaurants_app.route('/reset', methods=['POST'])
+def reset_password():
+	content = request.get_json()
+
+	user = Restaurant.objects(email=content['email']).first()
+
+	if not user:
+		return jsonify({'error': 'Email not found.'}), 400
+	try:
+		user.check_token_password(content['token'])
+	except SignatureExpired:
+		return jsonify({"error": "Your token has expired."}), 400
+	except BadData:
+		return jsonify({'error': 'Wrong token.'}), 400
+	
+	rg = Register(**dict(pwd=content['new_pwd']))
+	check_password = rg.check_password()
+	if check_password:
+		return (jsonify({'error': check_password}), 400)
+
+
+	user.change_password(content['new_pwd'])
+	user.save()
+
+	return jsonify({"message": "Password changed."})

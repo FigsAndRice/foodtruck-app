@@ -97,4 +97,29 @@ class Register():
         msg.html = html
         mail.send(msg)
 
+class Reset():
+    def __init__(self,  **kwargs):
+        for (k, v) in kwargs.items():
+         setattr(self, k, v)
+
+
+    def send_email(self):
+        sender = current_app.config['MAIL_DEFAULT_SENDER']
+        msg = Message(
+            "Reset Password",
+            sender=sender,
+            recipients=[self.email]
+        )
+
+        context = dict(
+            name=self.name,
+            email=self.email,
+            token=self.token
+        )
+
+        html = render_template(
+            'reset_password.html', **context
+        )
+        msg.html = html
+        mail.send(msg)
 

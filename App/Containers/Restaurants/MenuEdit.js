@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import { Modal, Image, View, ListView, ScrollView, StatusBar, Text, TextInput, StyleSheet, Picker, TouchableHighlight } from 'react-native';
+import {
+  Modal,
+  Image,
+  View,
+  ListView,
+  ScrollView,
+  StatusBar,
+  Text,
+  TextInput,
+  StyleSheet,
+  Picker,
+  TouchableHighlight
+} from 'react-native';
 
 import styles from '../Styles/RootContainerStyle';
 
@@ -13,26 +25,11 @@ class MenuEdit extends Component {
       itemName: '',
       itemPrice: '',
       dataSource: ds.cloneWithRows([
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://kcapogrossi.files.wordpress.com/2013/03/fried-rice-with-chicken-sausage1.jpg', food : 'Chicken Rice',price: '20.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://upload.wikimedia.org/wikipedia/commons/8/81/Chickentikkakabab.jpg', food : 'Chicken Tikka',price: '10.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://3.bp.blogspot.com/-HIlO5Uwkj9g/Ud_xQql6RPI/AAAAAAAAXpw/U4oiQ0tc2S8/s1600/3.JPG', food : 'Chicken Masala',price: '9.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Pepper Chicken',price: '11.50' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken 65',price: '15.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Tandoori Chicken',price: '7.89' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Lolipop',price: '6.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Curry',price: '8.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Biriyani',price: '25.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Gravy',price: '20.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken Masala',price: '9.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Pepper Chicken',price: '11.50' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Chicken 65',price: '15.99' },
-        {details: 'this is made abfaiub basidu bbfkoe', imgurl: 'https://facebook.github.io/react/img/logo_og.png', food : 'Tandoori Chicken',price: '7.89' }
+        // Menu Array
       ])
     };
     this._onAddPressed=this._onAddPressed.bind(this);
     this.addToMenu=this.addToMenu.bind(this);
-    // this.setModalVisible=this.setModalVisible.bind(this);
-
   }
 
   _onEditPressed(data) {

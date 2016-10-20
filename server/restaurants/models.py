@@ -1,6 +1,8 @@
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import current_app
+from itsdangerous import TimedSerializer
+
 class Restaurant(db.Document):
   name = db.StringField(
     verbose_name=u'Name',
@@ -56,4 +58,18 @@ class Restaurant(db.Document):
 
   def check_password(self, password):
     return check_password_hash(self.pwd, password)
+
+  def get_token(self):
+    serializer = TimedSerializer(current_app.config['SECRET_KEY'])
+    token = serializer.dumps(self.email)
+    return token
+
+  def check_token_password(self, token):
+    serializer = TimedSerializer(current_app.config['SECRET_KEY'])
+    full_token = '"' + self.email + '".' + token
+
+    return serializer.loads(full_token, max_age=1800)
+
+  def change_password(self, new_password):
+    self.set_password(new_password)
 
