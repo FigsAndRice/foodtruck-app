@@ -26,13 +26,13 @@ def register():
 
 	#1. check email
 	if not register.check_email():
-		return (jsonify({'error': 'Not valid email address.'}), 404)
+		return (jsonify({'error': 'Not valid email address.'}), 400)
 	if len(Restaurant.objects(email=content['email'])):
-		return (jsonify({'error': 'Email is alredy in used.'}), 404)
+		return (jsonify({'error': 'Email is alredy in used.'}), 400)
 	#2. check password
 	check_password = register.check_password()
 	if check_password:
-		return (jsonify({'error': check_password}), 404)
+		return (jsonify({'error': check_password}), 400)
 	#3. hash password
 	res = Restaurant(**content)
 	res.set_password(content['pwd'])

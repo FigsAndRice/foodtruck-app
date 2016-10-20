@@ -1,5 +1,6 @@
 package com.fooktruck.master.fooktruck;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -80,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                forgot_password();
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +139,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-        Log.d("username", "username " + String.valueOf(username.getText()));
         final String email =  username.getText().toString();
         final String pwd = password.getText().toString();
 
@@ -308,7 +310,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 NetworkResponse networkResponse = error.networkResponse;
-                if (networkResponse != null && networkResponse.statusCode == 404) {
+                if (networkResponse != null && networkResponse.statusCode == 400) {
                     String errorMsg = new String(networkResponse.data);
                     errorMsg = trimMessage(errorMsg, "error");
                     Log.d("error message ", errorMsg);
@@ -339,5 +341,91 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return trimmedString;
+    }
+
+    public void forgot_password() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+        final View forgot = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
+        alertDialog.setView(forgot);
+
+        final EditText forgot_email = (EditText) forgot.findViewById(R.id.forgot_email);
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Send Token!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (forgot_email.getText().toString().isEmpty())
+                    forgot_email.setError("This is a required field.");
+
+                else
+                    try {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(forgot.getWindowToken(), 0);
+                        get_token(forgot_email.getText().toString(), alertDialog);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+            }
+        });
+    }
+
+    public void get_token(String email, final AlertDialog alertDialog) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("email", email);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "token", jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Snackbar snackbar = Snackbar.make(layout, "Token has been sent. Please check your email." ,Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Close", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                    }
+                                });
+                        snackbar.show();
+                        alertDialog.dismiss();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        NetworkResponse networkResponse = error.networkResponse;
+                        if (networkResponse != null && networkResponse.statusCode == 400) {
+                            String errorMsg = new String(networkResponse.data);
+                            errorMsg = trimMessage(errorMsg, "error");
+                            Log.d("error message ", errorMsg);
+                            Snackbar snackbar = Snackbar.make(layout, errorMsg ,Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("Close", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                        }
+                                    });
+                            snackbar.show();
+                        }
+                    }
+                }
+        );
+
+        queue.add(jsonObjectRequest);
     }
 }
