@@ -69,5 +69,7 @@ class Restaurant(db.Document):
     full_token = '"' + self.email + '".' + token
 
     return serializer.loads(full_token, max_age=1800)
-    
+
+  def change_password(self, new_password):
+    self.set_password(new_password)
 
