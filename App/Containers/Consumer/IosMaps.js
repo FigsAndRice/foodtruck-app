@@ -85,23 +85,14 @@ class IosMaps extends Component{
       mrks = []
     } else {
       mrks = this.props.trucks.map(marker => {
-          let { lat, lng, name, _id } = marker;
-        if(marker.isOpen){
-          let pin = {
-            latitude: lat,
-            longitude: lng,
-            title: name,
-            id: _id.$oid
-          }
-          return pin
-        } else {
-          let pin = {
-            latitude: -82.8628,
-            longitude: 135.0000,
-            id: _id.$oid
-          }
-          return pin
+        let { lat, lng, name, _id } = marker;
+        let pin = {
+          latitude: lat,
+          longitude: lng,
+          title: name,
+          id: _id.$oid
         }
+          return pin
       })
     }
 
