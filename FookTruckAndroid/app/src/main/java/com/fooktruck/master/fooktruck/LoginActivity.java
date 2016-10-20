@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -136,7 +137,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-        Log.d("username", "username " + String.valueOf(username.getText()));
         final String email =  username.getText().toString();
         final String pwd = password.getText().toString();
 
@@ -346,7 +346,7 @@ public class LoginActivity extends AppCompatActivity {
         View forgot = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
         alertDialog.setView(forgot);
 
-        final EditText signup_name = (EditText) forgot.findViewById(R.id.forgot_email);
+        final EditText forgot_email = (EditText) forgot.findViewById(R.id.forgot_email);
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Send Token!", new DialogInterface.OnClickListener() {
             @Override
@@ -362,5 +362,44 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (forgot_email.getText().toString().isEmpty())
+                    forgot_email.setError("This is a required field.");
+
+                else
+                    try {
+                        get_token(forgot_email.getText().toString());
+                        //alertDialog.dismiss();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+            }
+        });
+    }
+
+    public boolean get_token(String email) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("email", email);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "token", jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        
+                    }
+                }
+        );
+        return false;
     }
 }
