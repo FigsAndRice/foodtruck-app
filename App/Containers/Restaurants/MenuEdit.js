@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Actions as NavigationActions } from 'react-native-router-flux';
+
 import {
   Alert,
   Modal,
@@ -11,7 +13,8 @@ import {
   TextInput,
   StyleSheet,
   Picker,
-  TouchableHighlight
+  TouchableHighlight,
+  Navigator
 } from 'react-native';
 
 import styles from '../Styles/RootContainerStyle';
@@ -20,6 +23,7 @@ class MenuEdit extends Component {
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
     var foods = [];
 
     this.state = {
@@ -30,9 +34,8 @@ class MenuEdit extends Component {
       itemName: '',
       itemPrice: '',
       dataSource: ds.cloneWithRows(foods),
-      // foods: [];
       db: foods,
-      editf: ""
+      editf: ''
     };
 
     this._onAddPressed=this._onAddPressed.bind(this);
@@ -105,7 +108,7 @@ class MenuEdit extends Component {
       <View style= {styles.container}>
       {/*  Edit menu Modal*/}
       <Modal
-        animationType={"slide"}
+        animationType={"fade"}
         transparent={false}
         visible={this.state.editModalVisible}
         onRequestClose={() => {alert("Modal has been closed.")}}
@@ -138,7 +141,7 @@ class MenuEdit extends Component {
                 this.editModalVisible(false)
               }}
             >
-              <Text style={{alignSelf: 'center',color:'white'}}>Cancel</Text>
+              <Text style={{alignSelf: 'center', color: 'white'}}>Cancel</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -185,20 +188,30 @@ class MenuEdit extends Component {
             </View>
           </View>
         </Modal>
+        <View style={{paddingTop: 60}}>
+          <TouchableHighlight
+            onPress={this._onAddPressed}
+            style={Addbutton}
+          >
+          <Text style={{textAlign:'center',color: 'white'}}>Add Item</Text>
+          </TouchableHighlight>
+        </View>
       <ListView
         enableEmptySections = {true}
         style = {listStyle}
         dataSource = {this.state.dataSource}
         renderRow = {(rowData) => { return (
-            <View style={itemStyle}>
-              <Image
+            // <View style={itemStyle}>
+              /* <Image
                 style={{width: 90, height: 90}}
                 source={{uri: rowData.imgurl}}
-              />
+              /> */
               <View style={infoStyle}>
-                <Text style={{paddingLeft:5,color:'white'}}>{rowData.food}</Text>
-                <Text style={{paddingLeft:5,color:'white'}}>${rowData.price}</Text>
-                <View style={{flexDirection:'row'}}>
+                <View style={{width: 210}}>
+                  <Text style={{paddingLeft:5,color:'white', fontSize: 22}}>{rowData.food}</Text>
+                  <Text style={priceStyle}>Price: ${rowData.price}</Text>
+                </View>
+                <View style={{flexDirection:'row', justifyContent: 'flex-end', alignItems: 'flex-end'}}>
                 <TouchableHighlight
                   onPress={this._onEditPressed.bind(null,rowData)}
                   style={editbutton}
@@ -213,21 +226,40 @@ class MenuEdit extends Component {
                 </TouchableHighlight>
                 </View>
               </View>
-            </View>
+            // </View>
           )}
         }
       />
-      <View>
+      <View style={{flexDirection: "row"}}>
         <TouchableHighlight
-          onPress={this._onAddPressed}
-          style={Addbutton}
+          style={savebutton}
+          onPress={()=>{
+            alert("Changes saved");
+          }}
         >
-        <Text style={{textAlign:'center',color: 'white'}}>Add Item</Text>
+        <Text style={{textAlign:'center',color: 'white'}}>Save Edits</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          style={cancelbutton}
+          onPress={() => {
+            NavigationActions.pop(0);
+          }}
+        >
+        <Text style={{textAlign:'center',color: 'white'}}>Discard</Text>
         </TouchableHighlight>
       </View>
+
       </View>
     )
   }
+}
+
+const priceStyle = {
+  paddingLeft:5,
+  color:'white',
+  fontSize: 20,
+  fontStyle: 'italic',
+  fontWeight: 'bold'
 }
 
 const textBox = {
@@ -252,6 +284,8 @@ const modalClose = {
 
 const editbutton = {
   margin: 5,
+  marginTop: 15,
+  marginBottom: 15,
   padding: 2,
   width: 50,
   backgroundColor: '#e7e7e7',
@@ -275,6 +309,18 @@ const closeButton = {
   elevation: 10,
 }
 
+const savebutton = {
+  margin: 15,
+  padding: 5,
+  width: 100,
+  backgroundColor: '#13ce66',
+  borderStyle: 'solid',
+  borderColor: '#13ce66',
+  borderWidth: 2,
+  borderRadius: 5,
+  elevation: 10,
+}
+
 const saveButton = {
   margin: 15,
   padding: 5,
@@ -288,13 +334,25 @@ const saveButton = {
   elevation: 10,
 }
 
+const cancelbutton = {
+  margin: 15,
+  padding: 5,
+  width: 100,
+  backgroundColor: '#b85942',
+  borderStyle: 'solid',
+  borderColor: '#b85942',
+  borderWidth: 2,
+  borderRadius: 5,
+  elevation: 10,
+}
+
 const Addbutton = {
   margin: 15,
   padding: 2,
-  width: 200,
-  backgroundColor: '#13ce66',
+  width: 100,
+  // backgroundColor: '#13ce66',
   borderStyle: 'solid',
-  borderColor: '#13ce66',
+  borderColor: '#e7e7e7',
   borderWidth: 2,
   borderRadius: 5,
   elevation: 10,
@@ -302,6 +360,8 @@ const Addbutton = {
 
 const deletebutton = {
   margin: 5,
+  marginTop: 15,
+  marginBottom: 15,
   padding: 2,
   width: 50,
   backgroundColor: '#ff5722',
@@ -313,7 +373,7 @@ const deletebutton = {
 }
 
 const listStyle = {
-  paddingTop: 70,
+  paddingTop: 0,
   width: 340,
 }
 
@@ -321,12 +381,16 @@ const itemStyle = {
   height: 100,
   padding: 5,
   flexDirection: 'row',
-  flexWrap: 'wrap',
+  // flexWrap: 'wrap',
 }
 
 const infoStyle = {
   margin: 5,
-  marginLeft: 60
+  flexDirection: 'row',
+  borderColor: '#e7e7e7',
+  borderStyle: 'solid',
+  borderBottomWidth: 1,
+  paddingBottom: 10,
 }
 
 export default MenuEdit;
