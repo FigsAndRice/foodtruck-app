@@ -27,7 +27,7 @@ console.log(axios)
      	data.append('file', file)
      	data.append('name', 'Juan Carlos')
      	console.log('data', data)
-      axios.post('http://192.168.1.12:5000/api/restaurants/upload_profile', data)
+      axios.post('http://192.168.1.12:5000/api/restaurants/upload_profile/580689d6d5e74eeff13040cb', data)
       .then(function (response) {
         console.log(response.data);
       })

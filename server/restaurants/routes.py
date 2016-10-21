@@ -209,8 +209,18 @@ def reset_password():
 
 	return jsonify({"message": "Password changed."})
 
-@restaurants_app.route('/upload_profile', methods=['POST'])
-def upload_profile():
+@restaurants_app.route('/upload_profile/<id>', methods=['POST'])
+def upload_profile(id):
+	user = 	Restaurant.objects(id=id).first()
+	if not len(user):
+		return jsonify({'error': 'Food Truck could not be found!'}), 400
 	file = request.files['file']
 	
-	return s3_upload(file)
+	link = s3_upload(file)
+
+	
+	user = 	Restaurant.objects(id=id).first()
+	user.modify(**dict(profile_picture=link))
+	user['pwd'] =  None
+	return jsonify(results = user)
+
