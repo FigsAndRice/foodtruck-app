@@ -43,7 +43,13 @@ class MenuEdit extends Component {
     this._onDeletePressed=this._onDeletePressed.bind(this);
     this._onEditPressed=this._onEditPressed.bind(this);
     this.updateToMenu=this.updateToMenu.bind(this);
+    this._onSavePressed=this._onSavePressed.bind(this);
 
+
+  }
+
+  _onSavePressed(){
+    alert(`${JSON.stringify(this.state.db)}`)
   }
 
   _onEditPressed(data) {
@@ -233,9 +239,7 @@ class MenuEdit extends Component {
       <View style={{flexDirection: "row"}}>
         <TouchableHighlight
           style={savebutton}
-          onPress={()=>{
-            alert("Changes saved");
-          }}
+          onPress={this._onSavePressed}
         >
         <Text style={{textAlign:'center',color: 'white'}}>Save Edits</Text>
         </TouchableHighlight>
