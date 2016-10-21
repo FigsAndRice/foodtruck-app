@@ -13,7 +13,8 @@ class Results extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          truck: ''
+          truck: '',
+          coords: ''
         }
         this.displayName = 'Results';
       this._onMarkerPress = this._onMarkerPress.bind(this);
@@ -21,10 +22,13 @@ class Results extends Component {
     _onMarkerPress(truck){
       let { dispatch } = this.props;
       let decodeTruck = decodeURIComponent(truck.id);
-      let passTruck = this.props.trucks.filter(truck => truck._id.$oid === decodeTruck ? truck : null)
-      console.log('passTruck[0].hours:', passTruck[0].hours)
-      dispatch({type: 'SET_HOURS', payload: passTruck[0].hours })
-      this.setState({ truck: passTruck[0] });
+      let passTruck = this.props.trucks.filter(truck => truck._id.$oid === decodeTruck ? truck : null);
+      dispatch({type: 'SET_HOURS', payload: passTruck[0].hours });
+      let coords = {
+        lat: truck.latitude,
+        lng: truck.longitude
+      };
+      this.setState({ truck: passTruck[0], coords });
     }
     render() {
       let mapView;
@@ -39,7 +43,7 @@ class Results extends Component {
       if(!this.state.truck){
         truckView = <View />
       } else {
-        truckView = <TruckInfo hours={this.state.hours} truck={this.state.truck}/>
+        truckView = <TruckInfo hours={this.state.hours} truck={this.state.truck} coords={this.state.coords} />
       }
       return (
       	<View>

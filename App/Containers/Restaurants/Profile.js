@@ -66,6 +66,9 @@ class Profile extends Component {
         lng: user.lng,
         menu: user.menu
       });
+      if (user.hours <= Date.now()) {
+        this.setState({isOpen: false, hours: 0})
+      }
     })
   }
 
@@ -111,10 +114,10 @@ class Profile extends Component {
       putObj.hours = 0;
       this.props.dispatch({type: 'SET_HOURS', payload: 0});
     } else {
-      if (this.state.hours <= 0) {
-        alert('Please specify hours open.');
-        return;
-      }
+      // if (this.state.hours === 0) {
+      //   alert('Please specify hours open.');
+      //   return;
+      // }
       putObj.isOpen = true;
       putObj.hours = Date.now() + this.state.hours*60*60*1000;
       this.setState({
