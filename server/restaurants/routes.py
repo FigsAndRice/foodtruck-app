@@ -210,5 +210,5 @@ def reset_password():
 
 @restaurants_app.route('/upload_profile', methods=['POST'])
 def upload_profile():
-	print request.form 
-	return request.form['name']
+	print request.files
+	return 'hello'
