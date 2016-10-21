@@ -212,5 +212,5 @@ def reset_password():
 @restaurants_app.route('/upload_profile', methods=['POST'])
 def upload_profile():
 	file = request.files['file']
-	s3_upload(file)
-	return 'hello'
+	
+	return s3_upload(file)

@@ -4,6 +4,11 @@ from flask import current_app
 from itsdangerous import TimedSerializer
 
 class Restaurant(db.Document):
+
+  profile_picture = db.StringField(
+    verbose_name=u'Profile Picture',
+    default='https://s3.amazonaws.com/foodtruckfinder45/fast-food.png'
+  )
   name = db.StringField(
     verbose_name=u'Name',
     max_length=100,
