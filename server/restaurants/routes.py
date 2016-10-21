@@ -12,7 +12,7 @@ def check_time():
 	#divide by 1000 the json request 
 	actual_time = time()
 	users = Restaurant.objects
-	print actual_time	
+
 	for user in users:
 		user_time = float(user.hours) / 1000
 		if user.isOpen and actual_time >= user_time:
@@ -207,3 +207,8 @@ def reset_password():
 	user.save()
 
 	return jsonify({"message": "Password changed."})
+
+@restaurants_app.route('/upload_profile', methods=['POST'])
+def upload_profile():
+	print request.form 
+	return request.form['name']
