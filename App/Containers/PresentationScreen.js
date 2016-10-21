@@ -55,7 +55,7 @@ class RootContainer extends Component {
   }
   render() {
     return (
-      <View style={styles.container} className="container">
+      <View style={styles.container}>
         <Text style={styles.text}>Fook</Text>
         <View style={inputStyle}>
         <RoundedButton style={inputStyle} onPress={this._enterCurrentLocation}>Current Location</RoundedButton>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Picker, AsyncStorage } from 'react-native';
 import { Actions as NavigationActions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 
 import YellowButton from '../Components/YellowButton';
 import RedButton from '../Components/RedButton';
@@ -43,17 +44,12 @@ class Profile extends Component {
       lng: '',
       menu: [],
       initialPosition: 'unknown',
-      lastPosition: 'unknown',
-      region: {
-        latitude: 39.299236,
-        longitude: -76.609383
-      }
+      lastPosition: 'unknown'
     }
 
     this.pick = this.pick.bind(this);
     this.openTruck = this.openTruck.bind(this);
     this.logoutProfile = this.logoutProfile.bind(this);
-    this.currentLocation = this.currentLocation.bind(this);
   }
 
   componentDidMount() {
@@ -70,6 +66,9 @@ class Profile extends Component {
         lng: user.lng,
         menu: user.menu
       });
+      if (user.hours <= Date.now()) {
+        this.setState({isOpen: false, hours: 0})
+      }
     })
   }
 
@@ -83,13 +82,27 @@ class Profile extends Component {
 
   openTruck() {
     let { id, name, email, cuisine, isOpen, hours, lat, lng, menu } = this.state;
-
     let _id = { $oid: id };
     let putObj = { _id, name, email, cuisine, isOpen, hours, lat, lng, menu };
-    if (!lat || !lng) {
-      alert('Please verify location.');
-      return;
-    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        let initialPosition = JSON.stringify(position);
+        this.setState({initialPosition});
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      let lastPosition = position;
+      let { latitude, longitude } = position.coords;
+      this.setState({
+        lastPosition,
+        lat: latitude,
+        lng: longitude
+      });
+      putObj.lat = latitude;
+      putObj.lng = longitude;
+    });
     if (this.state.isOpen) {
       this.setState({
         isOpen: false,
@@ -99,17 +112,19 @@ class Profile extends Component {
       });
       putObj.isOpen = false;
       putObj.hours = 0;
+      this.props.dispatch({type: 'SET_HOURS', payload: 0});
     } else {
-      if (this.state.hours <= 0) {
-        alert('Please specify hours open.');
-        return;
-      }
+      // if (this.state.hours === 0) {
+      //   alert('Please specify hours open.');
+      //   return;
+      // }
       putObj.isOpen = true;
       putObj.hours = Date.now() + this.state.hours*60*60*1000;
       this.setState({
         isOpen: true,
         hours: putObj.hours
       });
+      this.props.dispatch({type: 'SET_HOURS', payload: Date.now() + this.state.hours*60*60*1000});
     }
 
     AsyncStorage.setItem('user', JSON.stringify(putObj), () => {
@@ -124,28 +139,6 @@ class Profile extends Component {
     logout();
   }
 
-  currentLocation() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        let initialPosition = JSON.stringify(position);
-        this.setState({initialPosition});
-      },
-      (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      let lastPosition = position;
-      let { latitude, longitude } = position.coords;
-      let region = { latitude, longitude }
-      this.setState({
-        lastPosition,
-        region,
-        lat: latitude,
-        lng: longitude
-      });
-    });
-  }
-
   render() {
     let hours = [1,2,3,4,5,6,7,8,9,10,11,12];
     let hourItems = hours.map(hour => {
@@ -155,10 +148,10 @@ class Profile extends Component {
     })
 
     let openButton;
-    if (this.state.hours*60*60*1000 > Date.now()) {
+    if (this.props.hours*60*60*1000 > Date.now()) {
       openButton = (
         <View>
-          <Countdown hours={this.state.hours}/>
+          <Countdown />
           <RedButton text="Close" onPress={this.openTruck} />
         </View>
       )
@@ -173,7 +166,6 @@ class Profile extends Component {
             {hourItems}
           </Picker>
           <View>
-            <RoundedButton text="Location" onPress={this.currentLocation} />
             <GreenButton text="Open" onPress={this.openTruck} />
           </View>
         </View>
@@ -192,4 +184,14 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+mapStateToProps = (state) => {
+  return {
+    hours: state.hours
+  }
+}
+
+mapDispatchToProps = (dispatch) => {
+  return {dispatch}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
