@@ -4,6 +4,7 @@ from restaurants.middlewares import Register, Reset
 from decorators import login_required
 from itsdangerous import BadData, SignatureExpired
 from time import time 
+from tools.s3_uploader import s3_upload
 restaurants_app = Blueprint('restaurants_app', __name__)
 
 
@@ -210,5 +211,6 @@ def reset_password():
 
 @restaurants_app.route('/upload_profile', methods=['POST'])
 def upload_profile():
-	print request.files
+	file = request.files['file']
+	s3_upload(file)
 	return 'hello'
