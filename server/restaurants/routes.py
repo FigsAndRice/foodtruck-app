@@ -85,6 +85,7 @@ def update(id):
 
 		user.modify(**content)
 		user = 	Restaurant.objects(id=id).first()
+		user['pwd'] = None
 		return jsonify(results = user)
 
 
