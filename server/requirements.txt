@@ -5,3 +5,4 @@ flask_mail==0.9.1
 flask_mongoengine==0.8
 validators==0.11.0
 boto
+uuid
