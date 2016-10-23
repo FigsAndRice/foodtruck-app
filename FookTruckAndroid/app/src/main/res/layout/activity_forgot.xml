@@ -35,6 +35,18 @@
         android:layout_height="80px"
         android:layout_gravity="center"
         android:layout_marginTop="30px"
+        android:id="@+id/old_password"
+        android:textColor="#000000"
+        android:hint="Old Password"
+        android:textColorHint="#000000"
+        android:inputType="textPassword"
+        android:background="@drawable/edittext_bg"
+        />
+    <EditText
+        android:layout_width="319dp"
+        android:layout_height="80px"
+        android:layout_gravity="center"
+        android:layout_marginTop="30px"
         android:id="@+id/change_password"
         android:textColor="#000000"
         android:hint="New Password"

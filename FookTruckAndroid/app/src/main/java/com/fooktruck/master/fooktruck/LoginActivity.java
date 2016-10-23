@@ -31,14 +31,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.support.design.widget.Snackbar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Handler;
+
 
 public class LoginActivity extends AppCompatActivity {
     final String URL = "http://192.168.1.12:5000/api/restaurants/";
@@ -334,7 +332,7 @@ public class LoginActivity extends AppCompatActivity {
         queue.add(jsonObjectRequest);
     }
 
-    public String trimMessage(String json, String key){
+    public String trimMessage(String json, String key) {
         String trimmedString = null;
 
         try{
@@ -394,7 +392,7 @@ public class LoginActivity extends AppCompatActivity {
     public void get_token(String email, final AlertDialog alertDialog) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("email", email);
-        
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "token", jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
