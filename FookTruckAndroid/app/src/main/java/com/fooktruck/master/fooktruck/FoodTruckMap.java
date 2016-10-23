@@ -6,10 +6,13 @@ import android.content.pm.PackageManager;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,6 +37,7 @@ public class FoodTruckMap extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
 
 
     }

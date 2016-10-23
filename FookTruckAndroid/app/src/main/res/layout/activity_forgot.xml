@@ -24,7 +24,7 @@
         android:layout_height="80px"
         android:layout_gravity="center"
         android:layout_marginTop="30px"
-        android:id="@+id/email"
+        android:id="@+id/email_token"
         android:background="@drawable/edittext_bg"
         android:textColor="#000000"
         android:hint="Email"
@@ -60,7 +60,7 @@
         android:text="Password must have a legnth between 8 and 16 characters. Password must contain at leat one uppercase letter, one lowercase letter, one digit 0-9, and one special symbol $#@$%^..."
         android:textStyle="bold"
         android:textColor="@color/colorAccent"
-        android:gravity="center"
+        android:gravity="center" />
     <EditText
         android:layout_width="319dp"
         android:layout_height="80px"
@@ -73,11 +73,16 @@
         android:inputType="textPassword"
         android:background="@drawable/edittext_bg"
         />
-
+    <ProgressBar
+        android:id="@+id/loading_forgot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:layout_gravity="center"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/change_password_btn"
+        android:id="@+id/change_password_btn_forgot"
         android:textColor="#ffffff"
         android:text="Change Password"
         android:drawableLeft="@drawable/ic_secure"

@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import android.support.design.widget.Snackbar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Handler;
 
 public class LoginActivity extends AppCompatActivity {
     final String URL = "http://192.168.1.12:5000/api/restaurants/";
@@ -272,8 +273,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                     try {
-                        createUser(signup_name.getText().toString(), signup_email.getText().toString(), signup_pwd.getText().toString(), signup_cuisine.getSelectedItem().toString());
+                        createUser(signup_name.getText().toString(), signup_email.getText().toString(), signup_pwd.getText().toString(),
+                                signup_cuisine.getSelectedItem().toString());
                         alertDialog.dismiss();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -283,7 +286,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void createUser(String name, String email, String password, String cuisine) throws JSONException {
+    public void createUser(String name, String email, String password,
+                           String cuisine) throws JSONException {
         final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
 
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -305,6 +309,7 @@ public class LoginActivity extends AppCompatActivity {
                         alertDialog.setTitle("Thanks for registering!");
                         alertDialog.setMessage("Your account was created.");
                         alertDialog.show();
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -389,20 +394,15 @@ public class LoginActivity extends AppCompatActivity {
     public void get_token(String email, final AlertDialog alertDialog) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("email", email);
-
+        
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "token", jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Snackbar snackbar = Snackbar.make(layout, "Token has been sent. Please check your email." ,Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Close", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-
-                                    }
-                                });
-                        snackbar.show();
+                        Intent i = new Intent(getApplicationContext(), ForgotActivity.class);
+                        startActivity(i);
                         alertDialog.dismiss();
+
                     }
                 },
                 new Response.ErrorListener() {
