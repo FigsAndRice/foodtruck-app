@@ -12,6 +12,13 @@
     android:weightSum="1"
     android:id="@+id/forgot_layout">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Password"
+        android:textSize="24dp"
+        android:textColor="@color/colorPrimary"
+        android:drawableRight="@drawable/ic_action_change_pasword"/>
     <EditText
         android:layout_width="322dp"
         android:layout_height="80px"
@@ -47,6 +54,13 @@
         android:inputType="textPassword"
         android:background="@drawable/edittext_bg"
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Password must have a legnth between 8 and 16 characters. Password must contain at leat one uppercase letter, one lowercase letter, one digit 0-9, and one special symbol $#@$%^..."
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:gravity="center"
     <EditText
         android:layout_width="319dp"
         android:layout_height="80px"
@@ -59,12 +73,7 @@
         android:inputType="textPassword"
         android:background="@drawable/edittext_bg"
         />
-    <ProgressBar
-        android:id="@+id/loading_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:layout_gravity="center"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
