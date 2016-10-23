@@ -19,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,7 +36,7 @@ public class ForgotActivity extends AppCompatActivity {
     protected ProgressBar loading;
     protected Button submit;
     protected LinearLayout linear;
-
+    private String URL = "http://192.168.1.12:5000/api/restaurants/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class ForgotActivity extends AppCompatActivity {
                     }
                 });
         snackbar.show();
+        queue = Volley.newRequestQueue(this);
         initLayout();
         addListeners();
     }
@@ -68,7 +70,25 @@ public class ForgotActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    change_password();
+
+                    if (email.getText().length() == 0 ||
+                            token.getText().length() == 0
+                            || pwd.getText().length() == 0
+                            || pwd2.getText().length() == 0) {
+                        if(email.getText().length() == 0)
+                            email.setError("Field cannot be left blank.");
+                        if (token.getText().length() == 0)
+                            token.setError("Field cannot be left blank.");
+                        if (pwd.getText().length() == 0)
+                            pwd.setError("Field cannot be left blank.");
+                        if (pwd2.getText().length() == 0)
+                            pwd2.setError("Field cannot be left blank.");
+
+                    }
+                    else if (!pwd.getText().toString().equals(pwd2.getText().toString()))
+                        pwd2.setError("Passwords do not match.");
+                    else
+                        change_password();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -82,12 +102,13 @@ public class ForgotActivity extends AppCompatActivity {
         jsonObject.put("email", email.getText().toString());
         jsonObject.put("new_pwd", pwd.getText().toString());
         jsonObject.put("token", token.getText().toString());
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "token", jsonObject,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL + "reset", jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
-
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 },
                 new Response.ErrorListener() {
@@ -110,6 +131,7 @@ public class ForgotActivity extends AppCompatActivity {
                     }
                 }
         );
+        queue.add(jsonObjectRequest);
     }
 
     public String trimMessage(String json, String key) {
