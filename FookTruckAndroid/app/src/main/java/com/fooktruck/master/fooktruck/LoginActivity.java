@@ -58,8 +58,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         layout = (LinearLayout) findViewById(R.id.content);
         queue = Volley.newRequestQueue(this);
-        initLayout();
-        addListeners();
+        SharedPreferences prefs = this.getSharedPreferences(Cookie, MODE_PRIVATE);
+
+        cookie = prefs.getString("Cookie", null);
+
+        if (cookie != null) {
+            profile();
+            finish();
+        } else {
+            initLayout();
+            addListeners();
+        }
     }
 
     @Override
@@ -88,9 +97,9 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                login();
-                Intent i = new Intent(getApplicationContext(), FoodTruckMap.class);
-                startActivity(i);
+               login();
+                //Intent i = new Intent(getApplicationContext(), FoodTruckMap.class);
+                //startActivity(i);
             }
         });
         newUser.setOnClickListener(new View.OnClickListener() {
@@ -161,9 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 loading.setVisibility(View.INVISIBLE);
-                                alertDialog.setTitle("HTTP 200");
-                                alertDialog.setMessage("You are login!");
-                                alertDialog.show();
+                                profile();
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -201,9 +208,9 @@ public class LoginActivity extends AppCompatActivity {
                             cookie = (String) headers.get("set-cookie");
                             Log.d("Headers", cookie);
                             Log.d("connect.sid", "new cookie " + headers.get("session"));
-    //                        SharedPreferences.Editor editor = MainActivity.this.getSharedPreferences(Cookie, MODE_PRIVATE).edit();
-    //                        editor.putString("Cookie", cookie);
-    //                        editor.commit();
+                           SharedPreferences.Editor editor = LoginActivity.this.getSharedPreferences(Cookie, MODE_PRIVATE).edit();
+                           editor.putString("Cookie", cookie);
+                           editor.commit();
                         }
                         return super.parseNetworkResponse(response);
 
@@ -426,4 +433,10 @@ public class LoginActivity extends AppCompatActivity {
 
         queue.add(jsonObjectRequest);
     }
+
+    public void profile() {
+        Intent i = new Intent(getApplicationContext(), RestaurantActivity.class);
+        startActivity(i);
+    }
 }
+
