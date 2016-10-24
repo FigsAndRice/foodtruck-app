@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -21,6 +22,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +35,8 @@ public class RestaurantActivity extends AppCompatActivity {
     private String cookie = "";
     final String URL = "http://192.168.1.12:5000/api/restaurants/";
     protected static final String Cookie = "COOKIE_SAVE";
+    protected ImageView profile_pic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +45,13 @@ public class RestaurantActivity extends AppCompatActivity {
 
         cookie = prefs.getString("Cookie", null);
         Log.d("cookie ", "I am here " + cookie);
+        initLayout();
         getProfile();
     }
 
+    public void initLayout() {
+        profile_pic = (ImageView) findViewById(R.id.restaurant_picture);
+    }
     public void getProfile() {
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL + "profile" , null,
@@ -53,7 +61,9 @@ public class RestaurantActivity extends AppCompatActivity {
 
                         try {
                             JSONObject obj =  (JSONObject) response.get("results");
-                            Log.d("image link ", (String) obj.get("profile_picture"));
+                            String img_url = (String) obj.get("profile_picture");
+
+                            Glide.with(getBaseContext()).load(img_url).into(profile_pic);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
