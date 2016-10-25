@@ -51,6 +51,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
     public void initLayout() {
         profile_pic = (ImageView) findViewById(R.id.restaurant_picture);
+
     }
     public void getProfile() {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -63,7 +64,7 @@ public class RestaurantActivity extends AppCompatActivity {
                             JSONObject obj =  (JSONObject) response.get("results");
                             String img_url = (String) obj.get("profile_picture");
 
-                            Glide.with(getBaseContext()).load(img_url).into(profile_pic);
+                            Glide.with(getBaseContext()).load(img_url).override(300, 300).into(profile_pic);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
