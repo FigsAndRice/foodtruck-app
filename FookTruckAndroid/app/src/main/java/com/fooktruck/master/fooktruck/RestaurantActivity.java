@@ -64,7 +64,7 @@ public class RestaurantActivity extends AppCompatActivity {
                             JSONObject obj =  (JSONObject) response.get("results");
                             String img_url = (String) obj.get("profile_picture");
 
-                            Glide.with(getBaseContext()).load(img_url).override(300, 300).into(profile_pic);
+                            Glide.with(getBaseContext()).load(img_url).override(300, 300).fitCenter().into(profile_pic);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
