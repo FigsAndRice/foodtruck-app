@@ -44,6 +44,7 @@ import java.util.Map;
 public class RestaurantActivity extends AppCompatActivity {
     private String cookie = "";
     private String id = "";
+    private RequestQueue queue;
     final String URL = "http://192.168.1.3:5000/api/restaurants/";
     protected static final String Cookie = "COOKIE_SAVE";
     protected ImageView profile_pic;
@@ -56,7 +57,7 @@ public class RestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
         SharedPreferences prefs = this.getSharedPreferences(Cookie, MODE_PRIVATE);
-
+        queue = Volley.newRequestQueue(this);
         cookie = prefs.getString("Cookie", null);
         Log.d("cookie ", "I am here " + cookie);
         initLayout();
@@ -110,7 +111,6 @@ public class RestaurantActivity extends AppCompatActivity {
         }
     }
     public void getProfile() {
-        RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL + "profile" , null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -154,7 +154,7 @@ public class RestaurantActivity extends AppCompatActivity {
         View signup = getLayoutInflater().inflate(R.layout.dialog_edit_cuisine, null);
         alertDialog.setView(signup);
 
-        final Spinner signup_cuisine = (Spinner) signup.findViewById(R.id.edit_cuisine);
+        final Spinner edit_cuisine = (Spinner) signup.findViewById(R.id.edit_cuisine);
         alertDialog.setTitle("Edit Cuisine");
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Change", new DialogInterface.OnClickListener() {
@@ -174,44 +174,47 @@ public class RestaurantActivity extends AppCompatActivity {
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (! signup_cuisine.getSelectedItem().toString().equals("Cuisine")) {
-//                    RequestQueue queue = Volley.newRequestQueue(this);
-//                    JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL + "profile" , null,
-//                            new Response.Listener<JSONObject>() {
-//                                @Override
-//                                public void onResponse(JSONObject response) {
-//
-//                                    try {
-//                                        JSONObject obj =  (JSONObject) response.get("results");
-//                                        String img_url = (String) obj.get("profile_picture");
-//                                        String cuisineStr = (String) obj.get("cuisine");
-//
-//                                        Glide.with(getBaseContext()).load(img_url).override(300, 300).fitCenter().into(profile_pic);
-//                                        cuisine.setText(cuisineStr);
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }, new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//
-//                        }
-//                    }) {
-//
-//                        @Override
-//                        public Map<String, String> getHeaders() throws AuthFailureError {
-//
-//                            Map<String,String> headers = new HashMap<String, String>();
-//                            headers.put("Cookie", cookie);
-//                            return headers;
-//                        }
-//
-//
-//                    };
-//
-//                    queue.add(req);
+                if (! edit_cuisine .getSelectedItem().toString().equals("Cuisine")) {
+                    JSONObject json = new JSONObject();
+                    try {
+                        json.put("cuisine", edit_cuisine.getSelectedItem().toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JsonObjectRequest req = new JsonObjectRequest(Request.Method.PUT, URL + id , json,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+
+                                    try {
+                                        JSONObject obj =  (JSONObject) response.get("results");
+                                        cuisine.setText((String) obj.get("cuisine"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }) {
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+
+                            Map<String,String> headers = new HashMap<String, String>();
+                            headers.put("Cookie", cookie);
+                            return headers;
+                        }
+
+
+                    };
+
+                    queue.add(req);
                 }
+
+                alertDialog.dismiss();
             }
         });
 
