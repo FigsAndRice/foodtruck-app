@@ -43,6 +43,7 @@ import java.util.Map;
 
 public class RestaurantActivity extends AppCompatActivity {
     private String cookie = "";
+    private String id = "";
     final String URL = "http://192.168.1.3:5000/api/restaurants/";
     protected static final String Cookie = "COOKIE_SAVE";
     protected ImageView profile_pic;
@@ -119,7 +120,8 @@ public class RestaurantActivity extends AppCompatActivity {
                             JSONObject obj =  (JSONObject) response.get("results");
                             String img_url = (String) obj.get("profile_picture");
                             String cuisineStr = (String) obj.get("cuisine");
-
+                            JSONObject _id = (JSONObject ) obj.get("_id");
+                            id = (String) _id.get("$oid");
                             Glide.with(getBaseContext()).load(img_url).override(300, 300).fitCenter().into(profile_pic);
                             cuisine.setText(cuisineStr);
                         } catch (JSONException e) {
@@ -161,6 +163,57 @@ public class RestaurantActivity extends AppCompatActivity {
 
             }
         });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
         alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (! signup_cuisine.getSelectedItem().toString().equals("Cuisine")) {
+//                    RequestQueue queue = Volley.newRequestQueue(this);
+//                    JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL + "profile" , null,
+//                            new Response.Listener<JSONObject>() {
+//                                @Override
+//                                public void onResponse(JSONObject response) {
+//
+//                                    try {
+//                                        JSONObject obj =  (JSONObject) response.get("results");
+//                                        String img_url = (String) obj.get("profile_picture");
+//                                        String cuisineStr = (String) obj.get("cuisine");
+//
+//                                        Glide.with(getBaseContext()).load(img_url).override(300, 300).fitCenter().into(profile_pic);
+//                                        cuisine.setText(cuisineStr);
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }, new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//
+//                        }
+//                    }) {
+//
+//                        @Override
+//                        public Map<String, String> getHeaders() throws AuthFailureError {
+//
+//                            Map<String,String> headers = new HashMap<String, String>();
+//                            headers.put("Cookie", cookie);
+//                            return headers;
+//                        }
+//
+//
+//                    };
+//
+//                    queue.add(req);
+                }
+            }
+        });
+
     }
 }
