@@ -11,11 +11,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +59,7 @@ public class RestaurantActivity extends AppCompatActivity {
         cookie = prefs.getString("Cookie", null);
         Log.d("cookie ", "I am here " + cookie);
         initLayout();
-        addListeners()
+        addListeners();
         getProfile();
     }
 
@@ -142,5 +145,22 @@ public class RestaurantActivity extends AppCompatActivity {
         };
 
         queue.add(req);
+    }
+
+    public void change_cuisine() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(RestaurantActivity.this).create();
+        View signup = getLayoutInflater().inflate(R.layout.dialog_edit_cuisine, null);
+        alertDialog.setView(signup);
+
+        final Spinner signup_cuisine = (Spinner) signup.findViewById(R.id.edit_cuisine);
+        alertDialog.setTitle("Edit Cuisine");
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Change", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alertDialog.show();
     }
 }
