@@ -39,6 +39,7 @@ public class RestaurantActivity extends AppCompatActivity {
     protected static final String Cookie = "COOKIE_SAVE";
     protected ImageView profile_pic;
     protected TextView name;
+    protected TextView cuisine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,11 @@ public class RestaurantActivity extends AppCompatActivity {
     public void initLayout() {
         profile_pic = (ImageView) findViewById(R.id.restaurant_picture);
         name = (TextView) findViewById(R.id.name_restaurant);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "font/Roboto-MediumItalic.ttf");
-        name.setTypeface(custom_font);
+        Typeface roboto_italic = Typeface.createFromAsset(getAssets(), "font/Roboto-MediumItalic.ttf");
+        name.setTypeface(roboto_italic);
+        cuisine = (TextView) findViewById(R.id.cuisine_type);
+        Typeface roboto_regular = Typeface.createFromAsset(getAssets(), "font/Roboto-Regular.ttf");
+        cuisine.setTypeface(roboto_regular);
     }
     public void getProfile() {
         RequestQueue queue = Volley.newRequestQueue(this);
