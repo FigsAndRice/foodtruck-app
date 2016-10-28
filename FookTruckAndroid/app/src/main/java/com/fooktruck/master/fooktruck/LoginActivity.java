@@ -39,7 +39,7 @@ import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity {
-    final String URL = "http://192.168.1.12:5000/api/restaurants/";
+    final String URL = "http://192.168.1.3:5000/api/restaurants/";
     private LinearLayout layout;
     protected static final String Cookie = "COOKIE_SAVE";
     private int status = -1;

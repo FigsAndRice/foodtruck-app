@@ -33,7 +33,7 @@ import java.util.Map;
 
 public class RestaurantActivity extends AppCompatActivity {
     private String cookie = "";
-    final String URL = "http://192.168.1.12:5000/api/restaurants/";
+    final String URL = "http://192.168.1.3:5000/api/restaurants/";
     protected static final String Cookie = "COOKIE_SAVE";
     protected ImageView profile_pic;
 
@@ -63,7 +63,7 @@ public class RestaurantActivity extends AppCompatActivity {
                         try {
                             JSONObject obj =  (JSONObject) response.get("results");
                             String img_url = (String) obj.get("profile_picture");
-
+                            Log.d("testing profile pic", img_url);
                             Glide.with(getBaseContext()).load(img_url).override(300, 300).fitCenter().into(profile_pic);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -78,7 +78,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Log.d("user's cookie", cookie);
+
                 Map<String,String> headers = new HashMap<String, String>();
                 headers.put("Cookie", cookie);
                 return headers;
