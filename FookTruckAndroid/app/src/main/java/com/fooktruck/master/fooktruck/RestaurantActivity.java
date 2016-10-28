@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +43,7 @@ public class RestaurantActivity extends AppCompatActivity {
     protected ImageView profile_pic;
     protected TextView name;
     protected TextView cuisine;
-
+    protected android.app.ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,31 @@ public class RestaurantActivity extends AppCompatActivity {
         cuisine = (TextView) findViewById(R.id.cuisine_type);
         Typeface roboto_regular = Typeface.createFromAsset(getAssets(), "font/Roboto-Regular.ttf");
         cuisine.setTypeface(roboto_regular);
+
+        //Get action bar
+        actionBar = getActionBar();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_restaurant_action, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.action_camera:
+                //your code here
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     public void getProfile() {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -72,8 +100,10 @@ public class RestaurantActivity extends AppCompatActivity {
                         try {
                             JSONObject obj =  (JSONObject) response.get("results");
                             String img_url = (String) obj.get("profile_picture");
-                            Log.d("testing profile pic", img_url);
+                            String cuisineStr = (String) obj.get("cuisine");
+
                             Glide.with(getBaseContext()).load(img_url).override(300, 300).fitCenter().into(profile_pic);
+                            cuisine.setText(cuisineStr);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
