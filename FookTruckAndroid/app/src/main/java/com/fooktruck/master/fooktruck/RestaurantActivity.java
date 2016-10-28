@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,6 +38,7 @@ public class RestaurantActivity extends AppCompatActivity {
     final String URL = "http://192.168.1.3:5000/api/restaurants/";
     protected static final String Cookie = "COOKIE_SAVE";
     protected ImageView profile_pic;
+    protected TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,9 @@ public class RestaurantActivity extends AppCompatActivity {
 
     public void initLayout() {
         profile_pic = (ImageView) findViewById(R.id.restaurant_picture);
-
+        name = (TextView) findViewById(R.id.name_restaurant);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "font/Roboto-MediumItalic.ttf");
+        name.setTypeface(custom_font);
     }
     public void getProfile() {
         RequestQueue queue = Volley.newRequestQueue(this);
