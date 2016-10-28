@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +45,7 @@ public class RestaurantActivity extends AppCompatActivity {
     protected ImageView profile_pic;
     protected TextView name;
     protected TextView cuisine;
+    protected ImageButton edit_cuisine;
     protected android.app.ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,18 @@ public class RestaurantActivity extends AppCompatActivity {
         cookie = prefs.getString("Cookie", null);
         Log.d("cookie ", "I am here " + cookie);
         initLayout();
+        addListeners()
         getProfile();
+    }
+
+    private void addListeners() {
+        edit_cuisine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                change_cuisine();
+            }
+
+        });
     }
 
     public void initLayout() {
@@ -65,6 +79,7 @@ public class RestaurantActivity extends AppCompatActivity {
         Typeface roboto_regular = Typeface.createFromAsset(getAssets(), "font/Roboto-Regular.ttf");
         cuisine.setTypeface(roboto_regular);
 
+        edit_cuisine = (ImageButton) findViewById(R.id.edit_cuisine);
         //Get action bar
         actionBar = getActionBar();
 
